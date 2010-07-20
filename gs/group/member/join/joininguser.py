@@ -2,24 +2,28 @@
 from zope.component import createObject
 from Products.CustomUserFolder.interfaces import IGSUserInfo
 from gs.profile.notify.interfaces import IGSNotifyUser
-from utils import member_id, user_member_of_site, user_division_admin_of_group
+from gs.group.member.base.utils import member_id, user_member_of_site,\
+    user_division_admin_of_group
+from audit import JoinAuditor, JOIN_GROUP, JOIN_SITE, MODERATED
 
 class JoiningUser(object):
     def __init__(self, userInfo):
         self.userInfo = userInfo
+        self.context = userInfo.user
         
     def join(self, groupInfo):
-        self.join_group(groupInfo)
+        auditor = JoinAuditor(self.context, groupInfo, userInfo)
+        self.join_group(groupInfo, auditor)
         self.send_welcome(groupInfo)
-        self.join_site(groupInfo.siteInfo)
-        self.set_moderation(groupInfo)
+        self.join_site(groupInfo.siteInfo, auditor)
+        self.set_moderation(groupInfo, auditor)
         self.tell_admin(groupInfo)
         
-    def join_group(self, groupInfo):
+    def join_group(self, groupInfo, auditor):
         # Beware of regressions 
         #   <https://projects.iopen.net/groupserver/ticket/303>
         self.join_member_group(member_id(groupInfo))
-        # TODO: Audit
+        auditor.info(JOIN_GROUP)
 
     def join_member_group(self, member_group_id):
         site_root = self.userInfo.user.site_root()
@@ -33,34 +37,46 @@ class JoiningUser(object):
         except:
             # TODO: Get RRW to explain to mpj17 why we do this
             return 0
-        # TODO: Audit
-    
+   
     def send_welcome(self, groupInfo):
         # The user only gets a welcome message for joining a group,
         #    not for joining a site 
         #    <https://projects.iopen.net/groupserver/ticket/346>
         notifiedUser = IGSNotifyUser(self.userInfo)
-        # Construct a message
-        # Send a message
+        # TODO: Construct a message
+        # TODO: Send a message
     
-    def join_site(self, siteInfo):
+    def join_site(self, siteInfo, auditor):
         if not user_member_of_site(siteInfo.siteObj):
             self.join_member_group(member_id(siteInfo))
+            auditor.info(JOIN_SITE)
         assert user_member_of_site(siteInfo.siteObj)
         
-    def set_moderation(self, groupInfo):
-        mailingList = createInfo('groupserver.MailingListInfo',
-                        groupInfo.groupObj, groupInfo.id)
-        assert mailingList
-        isDivisionAdmin = user_division_admin_of_group(self.userInfo, 
-                            groupInfo)
+    def set_moderation(self, groupInfo, auditor):
         # This is tricky:
         #     <https://projects.iopen.net/groupserver/ticket/235>
-        if mailingList.is_moderated and
+        mailingList = createInfo('groupserver.MailingListInfo',
+                        groupInfo.groupObj, groupInfo.id)
+        isDivisionAdmin = user_division_admin_of_group(self.userInfo, 
+                            groupInfo)
+        if (mailingList.is_moderated and
             not(isDivisionAdmin) and
-            mailingList.is_moderate_new:
-            # TODO: add to moderation
-            # TODO: Audit
+            mailingList.is_moderate_new):
+            # TODO: Rip this code out into a utility that can be called
+            #   by manage members
+            mList = mailingList.mlist
+            moderatedIds = [ m.id for m in mailingList.moderatees ]
+            assert self.userInfo.id not in moderatedIds, \
+                '%s was marked for moderation in %s (%s), but is '\
+                'already moderated.' % \
+                (self.userInfo.id, groupInfo.name, groupInfo.id)
+            moderatedIds.append(self.userInfo.id)
+            if mlist.hasProperty('moderated_members'):
+                groupList.manage_changeProperties(moderated_members=moderatedIds)
+            else:
+                groupList.manage_addProperty('moderated_members', 
+                    moderatedIds, 'lines')
+            auditor.info(MODERATE)
 
     def tell_admin(self, groupInfo):
         # TODO: Tell all group admins
