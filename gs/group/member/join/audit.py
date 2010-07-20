@@ -181,7 +181,7 @@ class JoinAuditor(object):
             self.__queries = AuditQuery(self.context.zsqlalchemy)
         return self.__queries
 
-   def info(self, code, instanceDatum='', supplementaryDatum=''):
+    def info(self, code, instanceDatum='', supplementaryDatum=''):
         """Log an info event to the audit trail.
             * Creates an ID for the new event,
             * Writes the instantiated event to the audit-table, and
@@ -192,12 +192,12 @@ class JoinAuditor(object):
                     self.instanceUserInfo, self.siteInfo, code, 
                     instanceDatum, 
                     '%s-%s' % (self.groupInfo.name, self.groupInfo.id))
-          
+            
         e = self.factory(self.context, eventId,  code, d,
                 self.userInfo, self.instanceUserInfo, self.siteInfo, 
                 self.groupInfo, instanceDatum, supplementaryDatum, 
                 SUBSYSTEM)
-          
+            
         self.queries.store(e)
         log.info(e)
         return e
