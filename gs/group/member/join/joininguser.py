@@ -1,5 +1,6 @@
 # coding=utf-8
 from zope.component import createObject
+from Products.XWFCore.XWFUtils import get_support_email
 from gs.profile.notify.interfaces import IGSNotifyUser
 from gs.group.member.base.utils import member_id, user_member_of_site,\
     user_division_admin_of_group
@@ -12,6 +13,9 @@ class JoiningUser(object):
         
     def join(self, groupInfo):
         auditor = JoinAuditor(self.context, groupInfo, self.userInfo)
+        # The user only gets a welcome message for joining a group,
+        #    not for joining a site 
+        #    <https://projects.iopen.net/groupserver/ticket/346>
         self.join_group(groupInfo, auditor)
         self.send_welcome(groupInfo)
         self.join_site(groupInfo.siteInfo, auditor)
@@ -34,13 +38,28 @@ class JoiningUser(object):
         acl_users.addGroupsToUser([member_group_id], self.userInfo.id)
    
     def send_welcome(self, groupInfo):
-        # The user only gets a welcome message for joining a group,
-        #    not for joining a site 
-        #    <https://projects.iopen.net/groupserver/ticket/346>
         # TODO: <https://projects.iopen.net/groupserver/ticket/414>
         notifiedUser = IGSNotifyUser(self.userInfo)
-        ndict = {}
-        notifiedUser.send_notification('', '')
+        mailingList = createObject('groupserver.MailingListInfo',
+                        self.context, groupInfo.id)
+        ptnCoachId = groupInfo.get_property('ptn_coach_id','')
+        ptnCoach = createObject('groupserver.UserFromId', 
+                        self.context, ptnCoachId)
+        n_dict = {
+                    'groupId'     : groupInfo.id,
+                    'groupName'   : groupInfo.name,
+                    'siteId'      : groupInfo.siteInfo.id,
+                    'siteName'    : groupInfo.siteInfo.name,
+                    'canonical'   : groupInfo.siteInfo.url,
+                    'grp_email'   : mailingList.get_property('mailto'),
+                    'ptnCoachId'  : groupInfo.get_property('ptn_coach_id',''),
+                    'ptnCoach'    : ptnCoach.name,
+                    'realLife'    : groupInfo.get_property('real_life_group', ''),
+                    'supportEmail': get_support_email(self.context, 
+                                        groupInfo.siteInfo.id)
+                    }
+        notifiedUser.send_notification('add_group', 
+            member_id(groupInfo.id), n_dict)
     
     def join_site(self, siteInfo, auditor):
         if not user_member_of_site(self.userInfo, siteInfo.siteObj):
