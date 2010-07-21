@@ -10,7 +10,7 @@ from Products.CustomUserFolder.interfaces import IGSUserInfo
 from Products.GSAuditTrail import IAuditEvent, BasicAuditEvent, AuditQuery
 from Products.GSAuditTrail.utils import event_id_from_data
 
-SUBSYSTEM = 'groupserver.group.member.join'
+SUBSYSTEM = 'gs.group.member.join'
 import logging
 log = logging.getLogger(SUBSYSTEM) #@UndefinedVariable
 
@@ -37,7 +37,10 @@ class JoinAuditEventFactory(object):
         if code == JOIN_GROUP:
             event = JoinEvent(context, event_id, date, instanceUserInfo,
                                 siteInfo, groupInfo)
-        if code == MODERATED:
+        elif code == JOIN_SITE:
+            event = JoinSiteEvent(context, event_id, date, 
+                        instanceUserInfo, siteInfo, groupInfo)
+        elif code == MODERATED:
             event = ModerateEvent(context, event_id, date,
                                     instanceUserInfo, siteInfo, 
                                     groupInfo)
