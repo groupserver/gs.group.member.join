@@ -3,5 +3,10 @@
   xmlns:browser="http://namespaces.zope.org/browser"
   xmlns:five="http://namespaces.zope.org/five"
   i18n_domain="groupserver">
+  
+  <adapter provides=".interfaces.IGSJoiningUser"
+                for="Products.CustomUserFolder.interfaces.IGSUserInfo"
+                permission="zope2.Public"
+                factory=".joininguser.JoiningUser" />
 
 </configure>

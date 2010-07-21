@@ -60,7 +60,7 @@ class JoinEvent(BasicAuditEvent):
                   siteInfo, groupInfo):
         """ Create a join event
         """
-        BasicAuditEvent.__init__(self, context, id,  JOIN, d, None,
+        BasicAuditEvent.__init__(self, context, id,  JOIN_GROUP, d, None,
           instanceUserInfo, siteInfo, groupInfo, None, None, 
           SUBSYSTEM)
           
@@ -188,15 +188,15 @@ class JoinAuditor(object):
             * Writes the event to the standard Python log.
         """
         d = datetime.now(UTC)
-        eventId = event_id_from_data(self.userInfo, 
+        eventId = event_id_from_data(self.instanceUserInfo,
                     self.instanceUserInfo, self.siteInfo, code, 
                     instanceDatum, 
                     '%s-%s' % (self.groupInfo.name, self.groupInfo.id))
             
         e = self.factory(self.context, eventId,  code, d,
-                self.userInfo, self.instanceUserInfo, self.siteInfo, 
-                self.groupInfo, instanceDatum, supplementaryDatum, 
-                SUBSYSTEM)
+                self.instanceUserInfo, self.instanceUserInfo, 
+                self.siteInfo, self.groupInfo, instanceDatum, 
+                supplementaryDatum, SUBSYSTEM)
             
         self.queries.store(e)
         log.info(e)

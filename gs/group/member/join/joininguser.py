@@ -1,6 +1,5 @@
 # coding=utf-8
 from zope.component import createObject
-from Products.CustomUserFolder.interfaces import IGSUserInfo
 from gs.profile.notify.interfaces import IGSNotifyUser
 from gs.group.member.base.utils import member_id, user_member_of_site,\
     user_division_admin_of_group
@@ -12,7 +11,7 @@ class JoiningUser(object):
         self.context = userInfo.user
         
     def join(self, groupInfo):
-        auditor = JoinAuditor(self.context, groupInfo, userInfo)
+        auditor = JoinAuditor(self.context, groupInfo, self.userInfo)
         self.join_group(groupInfo, auditor)
         self.send_welcome(groupInfo)
         self.join_site(groupInfo.siteInfo, auditor)
@@ -22,7 +21,7 @@ class JoiningUser(object):
     def join_group(self, groupInfo, auditor):
         # Beware of regressions 
         #   <https://projects.iopen.net/groupserver/ticket/303>
-        self.join_member_group(member_id(groupInfo))
+        self.join_member_group(member_id(groupInfo.id))
         auditor.info(JOIN_GROUP)
 
     def join_member_group(self, member_group_id):
@@ -32,31 +31,28 @@ class JoiningUser(object):
         groupNames = acl_users.getGroupNames()
         assert member_group_id in groupNames, \
             '%s not in %s' % (group, groupNames)
-        try:
-            acl_users.addGroupsToUser([member_group_id], self.userInfo.id)
-        except:
-            # TODO: Get RRW to explain to mpj17 why we do this
-            return 0
+        acl_users.addGroupsToUser([member_group_id], self.userInfo.id)
    
     def send_welcome(self, groupInfo):
         # The user only gets a welcome message for joining a group,
         #    not for joining a site 
         #    <https://projects.iopen.net/groupserver/ticket/346>
+        # TODO: <https://projects.iopen.net/groupserver/ticket/414>
         notifiedUser = IGSNotifyUser(self.userInfo)
-        # TODO: Construct a message
-        # TODO: Send a message
+        ndict = {}
+        notifiedUser.send_notification('', '')
     
     def join_site(self, siteInfo, auditor):
-        if not user_member_of_site(siteInfo.siteObj):
-            self.join_member_group(member_id(siteInfo))
+        if not user_member_of_site(self.userInfo, siteInfo.siteObj):
+            self.join_member_group(member_id(siteInfo.id))
             auditor.info(JOIN_SITE)
-        assert user_member_of_site(siteInfo.siteObj)
+        assert user_member_of_site(self.userInfo, siteInfo.siteObj)
         
     def set_moderation(self, groupInfo, auditor):
         # This is tricky:
         #     <https://projects.iopen.net/groupserver/ticket/235>
-        mailingList = createInfo('groupserver.MailingListInfo',
-                        groupInfo.groupObj, groupInfo.id)
+        mailingList = createObject('groupserver.MailingListInfo',
+                        self.context, groupInfo.id)
         isDivisionAdmin = user_division_admin_of_group(self.userInfo, 
                             groupInfo)
         if (mailingList.is_moderated and
