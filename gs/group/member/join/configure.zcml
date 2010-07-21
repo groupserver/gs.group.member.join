@@ -5,8 +5,14 @@
   i18n_domain="groupserver">
   
   <adapter provides=".interfaces.IGSJoiningUser"
-                for="Products.CustomUserFolder.interfaces.IGSUserInfo"
-                permission="zope2.Public"
-                factory=".joininguser.JoiningUser" />
+    for="Products.CustomUserFolder.interfaces.IGSUserInfo"
+    permission="zope2.Public"
+    factory=".joininguser.JoiningUser" />
+
+  <browser:page 
+    for="Products.XWFChat.interfaces.IGSGroupFolder"
+    name="join.html"
+    class=".join.JoinForm"
+    permission="zope2.View"/>
 
 </configure>

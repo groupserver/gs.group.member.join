@@ -10,7 +10,12 @@ class JoiningUser(object):
     def __init__(self, userInfo):
         self.userInfo = userInfo
         self.context = userInfo.user
-        
+    
+    def get_support_email(self, groupInfo):
+        retval = get_support_email(self.context, groupInfo.siteInfo.id)
+        assert retval
+        return retval
+    
     def join(self, groupInfo):
         auditor = JoinAuditor(self.context, groupInfo, self.userInfo)
         # The user only gets a welcome message for joining a group,
@@ -55,8 +60,7 @@ class JoiningUser(object):
                     'ptnCoachId'  : groupInfo.get_property('ptn_coach_id',''),
                     'ptnCoach'    : ptnCoach.name,
                     'realLife'    : groupInfo.get_property('real_life_group', ''),
-                    'supportEmail': get_support_email(self.context, 
-                                        groupInfo.siteInfo.id)
+                    'supportEmail': self.get_support_email(groupInfo)
                     }
         notifiedUser.send_notification('add_group', 
             member_id(groupInfo.id), n_dict)
@@ -94,9 +98,22 @@ class JoiningUser(object):
             auditor.info(MODERATE)
 
     def tell_admin(self, groupInfo):
-        # TODO: Tell all group admins
         #  <https://projects.iopen.net/groupserver/ticket/410>
         for admin in groupInfo.group_admins:
             notifiedUser = IGSNotifyUser(admin)
-            # TODO: Send a message
+            n_dict = {
+                'groupId'      : groupInfo.id,
+                'groupName'    : groupInfo.name,
+                'groupUrl'     : groupInfo.url,
+                'siteName'     : groupInfo.siteInfo.name,
+                'canonical'    : groupInfo.siteInfo.url,
+                'supportEmail' : self.get_support_email(groupInfo),
+                'memberId'     : self.userInfo.id,
+                'memberName'   : self.userInfo.name,
+                'memberUrl'    : self.userInfo.url,
+                'joining_user' : self.userInfo.user,
+                'joining_group': groupInfo.groupObj,
+            }
+            notifiedUser.send_notification('join_group_admin', 
+                groupInfo.id, n_dict)
 
