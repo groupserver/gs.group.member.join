@@ -10,6 +10,21 @@ class JoiningUser(object):
     def __init__(self, userInfo):
         self.userInfo = userInfo
         self.context = userInfo.user
+        self.__joinableGroups = None
+        
+    @property
+    def joinableGroups(self):
+        if self.__joinableGroups == None:
+            groupsInfo = createObject('groupserver.GroupsInfo', 
+                            self.context)
+            u = self.userInfo.user
+            # TODO: --=mpj17=-- This is a silly way to do this. Really,
+            #   there should be a simple way of asking a group if it is
+            #   joinable by a user.
+            self.__joinableGroups = \
+                groupsInfo.get_joinable_group_ids_for_user(u)
+        assert type(self.__joinableGroups) == list
+        return self.__joinableGroups
     
     def get_support_email(self, groupInfo):
         retval = get_support_email(self.context, groupInfo.siteInfo.id)
@@ -30,6 +45,10 @@ class JoiningUser(object):
     def join_group(self, groupInfo, auditor):
         # Beware of regressions 
         #   <https://projects.iopen.net/groupserver/ticket/303>
+        assert groupInfo.id in self.joinableGroups, \
+            '%s (%s) cannot join %s (%s)' % \
+            (self.userInfo.name, self.userInfo.id, 
+            groupInfo.name, groupInfo.id)
         self.join_member_group(member_id(groupInfo.id))
         auditor.info(JOIN_GROUP)
 
