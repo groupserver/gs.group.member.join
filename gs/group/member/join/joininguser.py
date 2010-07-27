@@ -45,10 +45,6 @@ class JoiningUser(object):
     def join_group(self, groupInfo, auditor):
         # Beware of regressions 
         #   <https://projects.iopen.net/groupserver/ticket/303>
-        assert groupInfo.id in self.joinableGroups, \
-            '%s (%s) cannot join %s (%s)' % \
-            (self.userInfo.name, self.userInfo.id, 
-            groupInfo.name, groupInfo.id)
         self.join_member_group(member_id(groupInfo.id))
         auditor.info(JOIN_GROUP)
 
