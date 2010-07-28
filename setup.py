@@ -7,12 +7,19 @@ version = get_version()
 
 setup(name='gs.group.member.join',
     version=version,
-    description="Allowing people to join GroupServer Groups",
+    description="The pages and code to join people to GroupServer groups",
     long_description=open("README.txt").read() + "\n" +
                     open(os.path.join("docs", "HISTORY.txt")).read(),
-    # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
-        "Programming Language :: Python",
+      "Development Status :: 4 - Beta",
+      "Environment :: Web Environment",
+      "Framework :: Zope2",
+      "Intended Audience :: Developers",
+      "License :: Other/Proprietary License",
+      "Natural Language :: English",
+      "Operating System :: POSIX :: Linux"
+      "Programming Language :: Python",
+      "Topic :: Software Development :: Libraries :: Python Modules",
     ],
     keywords='user, group, member, group member, join',
     author='Michael JasonSmith',
@@ -25,6 +32,8 @@ setup(name='gs.group.member.join',
     zip_safe=False,
     install_requires=[
         'setuptools',
+        'gs.profile.notify',
+        'gs.group.member.base',
         # -*- Extra requirements: -*-
     ],
     entry_points="""
