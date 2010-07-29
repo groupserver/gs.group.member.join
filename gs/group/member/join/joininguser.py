@@ -105,12 +105,12 @@ class JoiningUser(object):
                 'already moderated.' % \
                 (self.userInfo.id, groupInfo.name, groupInfo.id)
             moderatedIds.append(self.userInfo.id)
-            if mlist.hasProperty('moderated_members'):
-                groupList.manage_changeProperties(moderated_members=moderatedIds)
+            if mList.hasProperty('moderated_members'):
+                mList.manage_changeProperties(moderated_members=moderatedIds)
             else:
-                groupList.manage_addProperty('moderated_members', 
+                mList.manage_addProperty('moderated_members', 
                     moderatedIds, 'lines')
-            auditor.info(MODERATE)
+            auditor.info(MODERATED)
 
     def tell_admin(self, groupInfo):
         #  <https://projects.iopen.net/groupserver/ticket/410>

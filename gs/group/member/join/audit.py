@@ -128,7 +128,7 @@ class ModerateEvent(BasicAuditEvent):
                   siteInfo, groupInfo):
         """ Create a join event
         """
-        BasicAuditEvent.__init__(self, context, id,  JOIN, d, None,
+        BasicAuditEvent.__init__(self, context, id,  MODERATED, d, None,
           instanceUserInfo, siteInfo, groupInfo, None, None, 
           SUBSYSTEM)
           
