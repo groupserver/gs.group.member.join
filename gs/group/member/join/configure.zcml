@@ -14,5 +14,10 @@
     name="join.html"
     class=".join.JoinForm"
     permission="zope2.View"/>
+    
+  <utility 
+    factory=".audit.JoinAuditEventFactory"
+    name="gs.group.member.join"
+    permission="zope.Public" />
 
 </configure>

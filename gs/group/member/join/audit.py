@@ -5,8 +5,6 @@ from zope.component import createObject
 from zope.component.interfaces import IFactory
 from zope.interface import implements, implementedBy
 from Products.XWFCore.XWFUtils import munge_date
-from Products.CustomUserFolder.userinfo import userInfo_to_anchor
-from Products.CustomUserFolder.interfaces import IGSUserInfo
 from Products.GSAuditTrail import IAuditEvent, BasicAuditEvent, AuditQuery
 from Products.GSAuditTrail.utils import event_id_from_data
 
