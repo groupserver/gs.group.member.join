@@ -10,6 +10,7 @@ from gs.group.member.join.interfaces import IGSJoiningUser
 from Products.GSGroup.changebasicprivacy import radio_widget
 from Products.GSGroupMember.groupmembership import user_member_of_group
 from interfaces import IGSJoinGroup
+from Products.XWFCore.XWFUtils import get_the_actual_instance_from_zope
 
 class JoinForm(PageForm):
     label = u'Join'
@@ -22,12 +23,16 @@ class JoinForm(PageForm):
         self.__siteInfo = self.__groupInfo = self.__userInfo = None
         self.__mailingListInfo = None
         self.form_fields['delivery'].custom_widget = radio_widget
+
+    @property 
+    def ctx(self):
+        return get_the_actual_instance_from_zope(self.context)        
         
     @property
     def siteInfo(self):
         if self.__siteInfo == None:
             self.__siteInfo = createObject('groupserver.SiteInfo', 
-                                self.context.aq_self)
+                                self.ctx)
         assert self.__siteInfo
         return self.__siteInfo
 
@@ -35,7 +40,7 @@ class JoinForm(PageForm):
     def groupInfo(self):
         if self.__groupInfo == None:
             self.__groupInfo = createObject('groupserver.GroupInfo', 
-                                self.context.aq_self)
+                                self.ctx)
         assert self.__groupInfo
         return self.__groupInfo
 
@@ -43,14 +48,14 @@ class JoinForm(PageForm):
     def userInfo(self):
         if self.__userInfo == None:
             self.__userInfo = createObject('groupserver.LoggedInUser',
-                                  self.context.aq_self)
+                                  self.ctx)
         return self.__userInfo
 
     @property
     def mailingListInfo(self):
         if self.__mailingListInfo == None:
             self.__mailingListInfo = createObject(
-                'groupserver.MailingListInfo', self.context.aq_self)
+                'groupserver.MailingListInfo', self.ctx)
         return self.__mailingListInfo
         
     @property
