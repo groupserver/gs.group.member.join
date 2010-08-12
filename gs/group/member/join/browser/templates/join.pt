@@ -31,6 +31,9 @@
         <span tal:content="view/label"/> 
         <span class="group" tal:content="view/groupInfo/name"/>        
       </h1>
+      <p tal:condition="view/userInfo/anonymous">
+        Log in to join.
+      </p>
       <form tal:condition="view/canJoin"
         enctype="multipart/form-data"  method="post" action="."
         tal:attributes="action request/URL" id="join">
@@ -66,7 +69,7 @@
         </p>
       </div><!--is-member-->
       <div id="cannot-join" 
-        tal:condition="python:not(view.canJoin) and not(view.isMember)">
+        tal:condition="python:not(view.canJoin) and not(view.isMember) and not(view.userInfo.anonymous)">
         <p>
           You cannot join 
           <span class="group" tal:content="view/groupInfo/name"/>.

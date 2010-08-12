@@ -11,7 +11,7 @@ class JoiningUser(object):
         self.userInfo = userInfo
         self.context = userInfo.user
         self.__joinableGroups = None
-        
+
     @property
     def joinableGroups(self):
         if self.__joinableGroups == None:

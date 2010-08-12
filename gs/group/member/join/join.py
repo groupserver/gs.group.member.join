@@ -60,8 +60,9 @@ class JoinForm(PageForm):
         
     @property
     def canJoin(self):
-        retval = not(self.isMember) \
-          and self.mailingListInfo.get_property('subscribe', False)
+        retval = not(self.userInfo.anonymous) \
+                    and not(self.isMember) \
+                    and self.mailingListInfo.get_property('subscribe', False)
         return retval
     
     @property
