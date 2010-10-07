@@ -7,7 +7,7 @@ from zope.component import createObject
 from zope.formlib import form
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 from gs.group.member.join.interfaces import IGSJoiningUser
-from Products.GSGroup.changebasicprivacy import radio_widget
+from gs.content.form.radio import radio_widget
 from Products.GSGroupMember.groupmembership import user_member_of_group
 from interfaces import IGSJoinGroup
 from Products.XWFCore.XWFUtils import get_the_actual_instance_from_zope
