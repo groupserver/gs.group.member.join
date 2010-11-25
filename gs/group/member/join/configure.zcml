@@ -8,6 +8,11 @@
     for="Products.CustomUserFolder.interfaces.IGSUserInfo"
     permission="zope2.Public"
     factory=".joininguser.JoiningUser" />
+  <adapter provides=".interfaces.IGSJoiningUser"
+    for="Products.CustomUserFolder.interfaces.ICustomUser"
+    permission="zope2.Public"
+    factory="Products.CustomUserFolder.userinfo.GSUserInfo
+      .joininguser.JoiningUser" />
 
   <browser:page 
     for="Products.XWFChat.interfaces.IGSGroupFolder"
