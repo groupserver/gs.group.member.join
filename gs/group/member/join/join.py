@@ -1,49 +1,29 @@
 # coding=utf-8
-try:
-    from five.formlib.formbase import PageForm
-except ImportError:
-    from Products.Five.formlib.formbase import PageForm
 from zope.component import createObject
 from zope.formlib import form
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
+from gs.group.base.form import GroupForm
 from gs.group.member.join.interfaces import IGSJoiningUser
 from gs.content.form.radio import radio_widget
 from Products.GSGroupMember.groupmembership import user_member_of_group
 from interfaces import IGSJoinGroup
 from Products.XWFCore.XWFUtils import get_the_actual_instance_from_zope
 
-class JoinForm(PageForm):
+class JoinForm(GroupForm):
     label = u'Join'
     pageTemplateFileName = 'browser/templates/join.pt'
     template = ZopeTwoPageTemplateFile(pageTemplateFileName)
     form_fields = form.Fields(IGSJoinGroup, render_context=False)
 
     def __init__(self, context, request):
-        PageForm.__init__(self, context, request)
-        self.__siteInfo = self.__groupInfo = self.__userInfo = None
-        self.__mailingListInfo = None
+        GroupForm.__init__(self, context, request)
+        self.__userInfo = self.__mailingListInfo = None
         self.form_fields['delivery'].custom_widget = radio_widget
 
     @property 
     def ctx(self):
         return get_the_actual_instance_from_zope(self.context)        
         
-    @property
-    def siteInfo(self):
-        if self.__siteInfo == None:
-            self.__siteInfo = createObject('groupserver.SiteInfo', 
-                                self.ctx)
-        assert self.__siteInfo
-        return self.__siteInfo
-
-    @property
-    def groupInfo(self):
-        if self.__groupInfo == None:
-            self.__groupInfo = createObject('groupserver.GroupInfo', 
-                                self.ctx)
-        assert self.__groupInfo
-        return self.__groupInfo
-
     @property
     def userInfo(self):
         if self.__userInfo == None:
