@@ -19,9 +19,6 @@
         <span tal:content="view/label"/> 
         <span class="group" tal:content="view/groupInfo/name"/>        
       </h1>
-      <p tal:condition="view/userInfo/anonymous">
-        Log in to join.
-      </p>
       <form tal:condition="view/canJoin"
         enctype="multipart/form-data"  method="post" action="."
         tal:attributes="action request/URL" id="join">
@@ -47,20 +44,37 @@
           </tal:block>
         </div><!--buttons-->
       </form>
-      <div id="is-member" tal:condition="view/isMember">
-        <p>
-          You are a member of
-          <span class="group" tal:content="view/groupInfo/name"/>
-          and can participate by going to
-          <a href="#" tal:attributes="href view/groupInfo/url">the
-            group homepage.</a>
-        </p>
-      </div><!--is-member-->
-      <div id="cannot-join" 
-        tal:condition="python:not(view.canJoin) and not(view.isMember) and not(view.userInfo.anonymous)">
-        <p>
-          You cannot join 
-          <span class="group" tal:content="view/groupInfo/name"/>.
+      <div id="cannot-join"
+        class="ui-content ui-state-highlight ui-corner-all" 
+        tal:condition="not:view/canJoin">
+        <p style="margin:1.385em;">
+          <span id="login-instruction" 
+            tal:condition="view/userInfo/anonymous">
+            You must 
+            <a 
+              tal:attributes="href string:/login.html?came_from=${view/groupInfo/relativeURL}/join.html"
+              href="/login.html"><strong>login</strong></a> before you can join
+            <span class="group" tal:content="view/groupInfo/name"/>.
+          </span><!--login-instruction-->
+          <span class="verify-email"
+            tal:condition="python:not(view.userInfo.anonymous or view.hasEmail)">
+            You must <strong>verify your email address</strong> before 
+            you can join 
+            <span class="group" tal:content="view/groupInfo/name"/>.
+            <strong>Visit 
+              <a tal:attributes="href string:${view/userInfo/url}/emailsettings.html"
+                href="#">your email settings page</a></strong>
+            to verify your address, or add a new address.
+          </span><!--verify-email-->
+          <span id="is-member" tal:condition="view/isMember">
+            You are a <strong>member</strong> of 
+            <span class="group" tal:content="view/groupInfo/name"/>.
+            Visit 
+            <a href="#" 
+              tal:attributes="href view/groupInfo/relativeURL">the group
+              homepage</a>
+            to participate.
+          </span><!--is-member-->
         </p>
       </div><!--cannot-join-->
     </tal:block>

@@ -2,6 +2,7 @@
 from zope.component import createObject
 from zope.formlib import form
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
+from gs.profile.email.base.emailuser import EmailUser
 from gs.group.base.form import GroupForm
 from gs.group.member.join.interfaces import IGSJoiningUser
 from gs.content.form.radio import radio_widget
@@ -17,7 +18,7 @@ class JoinForm(GroupForm):
 
     def __init__(self, context, request):
         GroupForm.__init__(self, context, request)
-        self.__userInfo = self.__mailingListInfo = None
+        self.__userInfo = self.__mailingListInfo = self.__hasEmail = None
         self.form_fields['delivery'].custom_widget = radio_widget
 
     @property 
@@ -42,6 +43,7 @@ class JoinForm(GroupForm):
     def canJoin(self):
         retval = not(self.userInfo.anonymous) \
                     and not(self.isMember) \
+                    and self.hasEmail \
                     and self.mailingListInfo.get_property('subscribe', False)
         return retval
     
@@ -54,6 +56,13 @@ class JoinForm(GroupForm):
     @property
     def isMember(self):
         return user_member_of_group(self.userInfo, self.groupInfo)
+        
+    @property
+    def hasEmail(self):
+        if self.__hasEmail == None:
+            eu = EmailUser(self.context, self.userInfo)
+            self.__hasEmail = (len(eu.get_verified_addresses()) > 0)
+        return self.__hasEmail
         
     @form.action(label=u'Join', failure='handle_join_action_failure')
     def handle_invite(self, action, data):
