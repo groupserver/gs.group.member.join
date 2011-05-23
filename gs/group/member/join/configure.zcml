@@ -25,4 +25,13 @@
     name="gs.group.member.join"
     permission="zope.Public" />
 
+  <!--The Join link on the group homepage-->
+  <browser:viewlet name="gs-group-member-join-link"
+    manager="gs.group.home.interfaces.IGroupHomepageUsLinks"
+    template="browser/templates/join_link.pt"
+    class=".joinlink.JoinLinkViewlet"
+    permission="zope2.View"
+    weight="3"
+    title="Join" />
+
 </configure>
