@@ -1,5 +1,6 @@
 # coding=utf-8
 from zope.component import createObject
+from zope.cachedescriptors.property import Lazy
 from Products.XWFCore.XWFUtils import get_support_email
 from gs.profile.notify.interfaces import IGSNotifyUser
 from gs.group.member.base.utils import member_id, user_member_of_site,\
@@ -10,21 +11,18 @@ class JoiningUser(object):
     def __init__(self, userInfo):
         self.userInfo = userInfo
         self.context = userInfo.user
-        self.__joinableGroups = None
 
-    @property
+    @Lazy
     def joinableGroups(self):
-        if self.__joinableGroups == None:
-            groupsInfo = createObject('groupserver.GroupsInfo', 
-                            self.context)
-            u = self.userInfo.user
-            # TODO: --=mpj17=-- This is a silly way to do this. Really,
-            #   there should be a simple way of asking a group if it is
-            #   joinable by a user.
-            self.__joinableGroups = \
-                groupsInfo.get_joinable_group_ids_for_user(u)
-        assert type(self.__joinableGroups) == list
-        return self.__joinableGroups
+        groupsInfo = createObject('groupserver.GroupsInfo', 
+                        self.context)
+        u = self.userInfo.user
+        # TODO: --=mpj17=-- This is a silly way to do this. Really,
+        #   there should be a simple way of asking a group if it is
+        #   joinable by a user.
+        retval = groupsInfo.get_joinable_group_ids_for_user(u)
+        assert type(retval) == list
+        return retval
     
     def get_support_email(self, groupInfo):
         retval = get_support_email(self.context, groupInfo.siteInfo.id)
