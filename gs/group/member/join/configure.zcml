@@ -32,6 +32,19 @@
     class=".notifymessages.NotifyMemberMessageText"
     template="browser/templates/newmember-txt.pt"
     permission="zope2.View"/>
+  <!-- The New Member message, in HTML and plain-text -->    
+  <browser:page
+    for="Products.XWFChat.interfaces.IGSGroupFolder"
+    name="new-member-admin-msg.html"
+    class=".notifymessages.NotifyAdminMessage"
+    template="browser/templates/newmember-admin.pt"
+    permission="zope2.View"/>
+  <browser:page
+    for="Products.XWFChat.interfaces.IGSGroupFolder"
+    name="new-member-admin-msg.txt"
+    class=".notifymessages.NotifyAdminMessageText"
+    template="browser/templates/newmember-admin-txt.pt"
+    permission="zope2.View"/>
     
   <utility 
     factory=".audit.JoinAuditEventFactory"

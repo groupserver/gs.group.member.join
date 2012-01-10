@@ -48,7 +48,7 @@ class NotifyAdminMessage(GroupPage):
             (self.siteInfo.get_support_email(), sub, quote(msg.encode(UTF8)))
         return retval
         
-class NotifyMemberMessageText(NotifyMemberMessage):
+class NotifyAdminMessageText(NotifyMemberMessage):
     def __init__(self, context, request):
         NotifyMemberMessage.__init__(self, context, request)
         response = request.response

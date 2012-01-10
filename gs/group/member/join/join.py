@@ -10,7 +10,7 @@ from gs.content.form.radio import radio_widget
 from Products.GSGroupMember.groupmembership import user_member_of_group
 from Products.XWFCore.XWFUtils import get_the_actual_instance_from_zope
 from interfaces import IGSJoinGroup
-from notify import NotifyNewMember
+from notify import NotifyNewMember, NotifyAdmin
 
 class JoinForm(GroupForm):
     label = u'Join'
@@ -73,7 +73,11 @@ class JoinForm(GroupForm):
             m = 'You will not receive any email from this group.'
 
         notifier = NotifyNewMember(self.context, self.request)
-        notifier.notify(self.loggedInUser, self.groupInfo)
+        notifier.notify(self.loggedInUser)
+
+        notifier = NotifyAdmin(self.context, self.request)
+        for adminInfo in groupInfo.group_admins:
+            notifier.notify(adminInfo, self.loggedInUser)
 
         self.status = u'You have joined <a class="group" href="%s">%s</a>. %s' %\
           (self.groupInfo.url, self.groupInfo.name, m)

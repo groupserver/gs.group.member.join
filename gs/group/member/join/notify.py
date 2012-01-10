@@ -32,10 +32,23 @@ class NotifyNewMember(object):
         assert retval
         return retval
         
-    def notify(self, userInfo, groupInfo):
+    def notify(self, userInfo):
         subject = (u'Welcome to %s' % (self.groupInfo.name).encode(UTF8))
         text = self.textTemplate(userInfo=userInfo)
         html = self.htmlTemplate(userInfo=userInfo)
         ms = MessageSender(self.context, userInfo)
+        ms.send_message(subject, text, html)
+
+# And the equivilent class for telling the admin
+
+class NotifyAdmin(NotifyNewMember):
+    textTemplateName = 'new-member-admin-msg.txt'
+    htmlTemplateName = 'new-member-admin-msg.html'
+            
+    def notify(self, adminInfo, userInfo):
+        subject = (u'%s: New Member' % (self.groupInfo.name).encode(UTF8))
+        text = self.textTemplate(adminInfo=adminInfo, userInfo=userInfo)
+        html = self.htmlTemplate(adminInfo=adminInfo, userInfo=userInfo)
+        ms = MessageSender(self.context, adminInfo)
         ms.send_message(subject, text, html)
 
