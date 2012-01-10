@@ -7,8 +7,9 @@ from gs.group.base.form import GroupForm
 from gs.group.member.join.interfaces import IGSJoiningUser
 from gs.content.form.radio import radio_widget
 from Products.GSGroupMember.groupmembership import user_member_of_group
-from interfaces import IGSJoinGroup
 from Products.XWFCore.XWFUtils import get_the_actual_instance_from_zope
+from interfaces import IGSJoinGroup
+from notify import NotifyNewMember
 
 class JoinForm(GroupForm):
     label = u'Join'
@@ -70,7 +71,9 @@ class JoinForm(GroupForm):
         
         joiningUser = IGSJoiningUser(self.userInfo)
         joiningUser.silent_join(self.groupInfo)
-
+        notifier = NotifyNewMember(self.context, self.request)
+        notifier.notify(self.userInfo, self.groupInfo)
+        
         if data['delivery'] == 'email':
             # --=mpj17=-- The default is one email per post
             m = u'You will receive an email message every time '\
