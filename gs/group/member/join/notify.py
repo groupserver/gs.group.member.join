@@ -37,10 +37,8 @@ class NotifyNewMember(object):
         
     def notify(self, userInfo, groupInfo):
         subject = (u'Welcome to %s' % (self.groupInfo.name).encode(UTF8))
-        text = self.textTemplate(userInfo=userInfo, siteInfo=siteInfo, 
-                    groupInfo=groupInfo)
-        html = self.htmlTemplate(userInfo=userInfo, siteInfo=siteInfo, 
-                    groupInfo=groupInfo)
+        text = self.textTemplate(userInfo=userInfo)
+        html = self.htmlTemplate(userInfo=userInfo)
         ms = MessageSender(self.context, userInfo)
         ms.send_message(subject, text, html)
 
