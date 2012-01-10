@@ -1,7 +1,7 @@
 # coding=utf-8
+from zope.cachedescriptors.property import Lazy
 from zope.component import createObject
 from zope.event import notify
-from zope.cachedescriptors.property import Lazy
 from Products.XWFCore.XWFUtils import get_support_email
 from gs.profile.notify.interfaces import IGSNotifyUser
 from gs.group.member.base.utils import member_id, user_member_of_site,\
