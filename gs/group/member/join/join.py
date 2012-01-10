@@ -1,4 +1,5 @@
 # coding=utf-8
+from zope.cachedescriptors.property import Lazy
 from zope.component import createObject
 from zope.formlib import form
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
@@ -19,30 +20,20 @@ class JoinForm(GroupForm):
 
     def __init__(self, context, request):
         GroupForm.__init__(self, context, request)
-        self.__userInfo = self.__mailingListInfo = self.__hasEmail = None
         self.form_fields['delivery'].custom_widget = radio_widget
 
     @property 
     def ctx(self):
         return get_the_actual_instance_from_zope(self.context)        
         
-    @property
-    def userInfo(self):
-        if self.__userInfo == None:
-            self.__userInfo = createObject('groupserver.LoggedInUser',
-                                  self.ctx)
-        return self.__userInfo
-
-    @property
+    @Lazy
     def mailingListInfo(self):
-        if self.__mailingListInfo == None:
-            self.__mailingListInfo = createObject(
-                'groupserver.MailingListInfo', self.ctx)
-        return self.__mailingListInfo
+        retval = createObject('groupserver.MailingListInfo', self.ctx)
+        return retval
         
     @property
     def canJoin(self):
-        retval = not(self.userInfo.anonymous) \
+        retval = not(self.loggedInUser.anonymous) \
                     and not(self.isMember) \
                     and self.hasEmail \
                     and self.mailingListInfo.get_property('subscribe', False)
@@ -56,34 +47,33 @@ class JoinForm(GroupForm):
         
     @property
     def isMember(self):
-        return user_member_of_group(self.userInfo, self.groupInfo)
+        return user_member_of_group(self.loggedInUser, self.groupInfo)
         
-    @property
+    @Lazy
     def hasEmail(self):
-        if self.__hasEmail == None:
-            eu = EmailUser(self.context, self.userInfo)
-            self.__hasEmail = (len(eu.get_verified_addresses()) > 0)
-        return self.__hasEmail
+        eu = EmailUser(self.context, self.loggedInUser)
+        retval = (len(eu.get_verified_addresses()) > 0)
+        return retval
         
     @form.action(label=u'Join', failure='handle_join_action_failure')
     def handle_invite(self, action, data):
         assert self.canJoin
         
-        joiningUser = IGSJoiningUser(self.userInfo)
+        joiningUser = IGSJoiningUser(self.loggedInUser)
         joiningUser.silent_join(self.groupInfo)
-        notifier = NotifyNewMember(self.context, self.request)
-        notifier.notify(self.userInfo, self.groupInfo)
-        
         if data['delivery'] == 'email':
             # --=mpj17=-- The default is one email per post
             m = u'You will receive an email message every time '\
               u'someone posts to %s.' % self.groupInfo.name
         elif data['delivery'] == 'digest':
-            self.userInfo.user.set_enableDigestByKey(self.groupInfo.id)
+            self.loggedInUser.user.set_enableDigestByKey(self.groupInfo.id)
             m = u'You will receive a daily digest of topics.'
         elif data['delivery'] == 'web':
-            self.userInfo.user.set_disableDeliveryByKey(self.groupInfo.id)
+            self.loggedInUser.user.set_disableDeliveryByKey(self.groupInfo.id)
             m = 'You will not receive any email from this group.'
+
+        notifier = NotifyNewMember(self.context, self.request)
+        notifier.notify(self.loggedInUser, self.groupInfo)
 
         self.status = u'You have joined <a class="group" href="%s">%s</a>. %s' %\
           (self.groupInfo.url, self.groupInfo.name, m)
