@@ -23,13 +23,13 @@
   <browser:page
     for="Products.XWFChat.interfaces.IGSGroupFolder"
     name="new-member-msg.html"
-    class=".notify.NotifyMemberMessage"
+    class=".notifymessages.NotifyMemberMessage"
     template="browser/templates/newmember.pt"
     permission="zope2.View"/>
   <browser:page
     for="Products.XWFChat.interfaces.IGSGroupFolder"
     name="new-member-msg.txt"
-    class=".notify.NotifyMemberMessageText"
+    class=".notifymessages.NotifyMemberMessageText"
     template="browser/templates/newmember-txt.pt"
     permission="zope2.View"/>
     
