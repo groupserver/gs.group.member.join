@@ -69,7 +69,7 @@ class JoinForm(GroupForm):
         assert self.canJoin
         
         joiningUser = IGSJoiningUser(self.userInfo)
-        joiningUser.join(self.groupInfo)
+        joiningUser.silent_join(self.groupInfo)
 
         if data['delivery'] == 'email':
             # --=mpj17=-- The default is one email per post

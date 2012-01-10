@@ -1,0 +1,72 @@
+<html tal:define="userInfo options/userInfo | view/loggedInUserInfo;">
+  <head>
+    <title tal:content="view/siteInfo/name">Site</title>
+  </head>
+  <body style="font:13px Trebuchet,'Trebuchet MS',arial,helvetica,clean,sans-serif;line-height:1.385;color:black;background:white;">
+    <h1 style="width:100%;border-bottom:thick solid black;margin-bottom:0.692em;"><a href="#"
+      style="color:black;text-decoration:none;"
+      tal:attributes="href view/siteInfo/url" 
+      tal:content="view/siteInfo/name">Site</a></h1>
+    <h2 style="font-size:207.7%;margin:0 0 1em 0;">Welcome to
+      <span tal:content="view/groupInfo/name">This Group</span></h2>
+    <p style="margin: 1.385em 0 1.385em 0;">
+      Dear
+      <span tal:content="userInfo/name">New Member</span>,
+    </p>
+    <p style="margin: 1.385em 0 1.385em 0;">
+      Welcome to 
+      <span tal:content="view/groupInfo/name">This Group</span>.
+      Below is some information to help you get the most out of your
+      new group.
+    </p>
+    <ul style="margin: 1.385em 0 1.385em 0;">
+      <li>See who else is a <strong>member,</strong> view the
+        <strong>archives</strong>, and more by visiting the page for
+        <span tal:content="view/groupInfo/name">This Group</span> at
+        <a tal:attributes="href view/groupInfo/url"
+          href="#"><code tal:content="view/groupInfo/url">the url</code></a></li>
+      <li>To post a message using <strong>email</strong> send a message 
+        to 
+        <a tal:attributes="href string:mailto:${view/email}"
+          href="#"><code tal:content="view/email">some email address</code></a></li>
+      <li tal:define="leaveUrl string:${view/siteInfo/url}/groups/leave.html?groupId=${view/groupInfo/id}">You
+        can leave
+        <span tal:content="view/groupInfo/name">This Group</span> 
+        at any time by visiting 
+        <a tal:attributes="href leaveUrl"
+          href="#"><code tal:content="leaveUrl">this url</code></a>
+      </li>
+    </ul>
+    <p style="margin: 1.385em 0 1.385em 0;">
+      <a href="#"
+        tal:attributes="href string:${view/siteInfo/url}/p">Visit
+        <strong>your profile</strong></a>
+      to see what other groups you are in, and change your
+      <strong>email settings.</strong>
+    </p>
+    <!--Troubleshooting/return/warranty/damage information-->
+    <p style="margin: 1.385em 0 1.385em 0;">
+      If you have any problems, email us at
+      <a tal:attributes="href view/supportEmail"
+        href="#"><code tal:content="view/siteInfo/get_support_email">this address</code></a>
+    </p>
+    <!--Website address-->
+    <p style="margin: 1.385em 0 1.385em 0;">
+      Kind regards<br/>
+      <span style="padding:0 0 0 1.385em;">The 
+        <span tal:content="view/siteInfo/name">Site</span> 
+      Team</span>
+    </p>
+    <hr/>
+    <!--Terms and conditions-->
+    <p style="margin: 1.385em 0 1.385em 0;">
+      <a tal:attributes="href string:${view/siteInfo/url}/policies/privacy"
+        href="#">Privacy</a> | 
+      <a tal:attributes="href string:${view/siteInfo/url}/policies/aup"
+        href="#">Acceptable Use</a> | 
+      <a tal:attributes="href string:${view/siteInfo/url}/policies/tos"
+        href="#">Terms of Service</a>
+    </p>
+  </body>
+</html>
+

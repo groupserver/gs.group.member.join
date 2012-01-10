@@ -8,6 +8,8 @@ from Products.XWFChat.interfaces import IGSGroupFolder
 
 class IGSJoinGroupEvent(Interface):
     """ An event issued after someone has joined a group."""
+    context     = Attribute(u'The context of the Start a Group code') 
+    request     = Attribute(u'The request for the Start a Group code')
     groupInfo   = Attribute(u'The group that is being joined')
     memberInfo  = Attribute(u'The new group member')
 

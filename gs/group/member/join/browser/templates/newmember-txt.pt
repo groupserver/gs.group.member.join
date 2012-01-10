@@ -1,0 +1,37 @@
+<tal:block define="userInfo options/userInfo | view/loggedInUserInfo;">Dear <tal:block content="userInfo/name">New Member</tal:block>,
+
+Welcome to <tal:block content="view/groupInfo/name">This Group</tal:block>.
+
+Below is some information to help you get the most out of your new group.
+
+  * See who else is a member, view the archives, and more by visiting the
+    page for <tal:block content="view/groupInfo/name">This Group</tal:block> at
+    <tal:block content="view/groupInfo/url">the url</tal:block>
+
+  * To post a message using email send a message to 
+    <tal:block content="view/email">some email address</tal:block>
+
+  * You can leave <tal:block content="view/groupInfo/name">This Group</tal:block> by visiting 
+    <tal:block content="string:${view/siteInfo/url}/groups/leave.html?groupId=${view/groupInfo/id}">this url</tal:block>
+
+Visit your profile to see what other groups you are in, and change your
+email settings, at 
+  <tal:block content="string:${view/siteInfo/url}/p"></tal:block>
+
+If you have any problems, email us at
+  <tal:block content="view/siteInfo/get_support_email">this address</tal:block>
+
+Kind regards,
+  The <tal:block content="view/siteInfo/name">Site</tal:block> Team
+
+------------------------------------------------------------------------
+
+Privacy
+  <tal:block content="string:${view/siteInfo/url}/policies/privacy"/>
+
+Acceptable Use
+  <tal:block content="string:${view/siteInfo/url}/policies/aup"/>
+
+Terms of Service
+  <tal:block content="string:${view/siteInfo/url}/policies/tos"/>
+</tal:block>

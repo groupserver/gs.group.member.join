@@ -43,6 +43,13 @@ class JoiningUser(object):
         self.tell_admin(groupInfo)
         notify(GSJoinGroupEvent(groupInfo, self.userInfo))
         
+    def silent_join(self, groupInfo):
+        auditor = JoinAuditor(self.context, groupInfo, self.userInfo)
+        self.join_group(groupInfo, auditor)
+        self.join_site(groupInfo.siteInfo, auditor)
+        self.set_moderation(groupInfo, auditor)
+        notify(GSJoinGroupEvent(groupInfo, self.userInfo))
+        
     def join_group(self, groupInfo, auditor):
         # Beware of regressions 
         #   <https://projects.iopen.net/groupserver/ticket/303>
@@ -88,6 +95,8 @@ class JoiningUser(object):
         assert user_member_of_site(self.userInfo, siteInfo.siteObj)
         
     def set_moderation(self, groupInfo, auditor):
+        # TODO: Move to an event-handler. It can react to groups that
+        #       have a Moderated Group marker interface/
         # This is tricky:
         #     <https://projects.iopen.net/groupserver/ticket/235>
         mailingList = createObject('groupserver.MailingListInfo',
