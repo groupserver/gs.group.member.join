@@ -1,0 +1,31 @@
+<tal:block 
+  define="adminInfo options/adminInfo | view/loggedInUserInfo;
+    userInfo options/userInfo | view/loggedInUserInfo;">Dear <tal:block content="adminInfo/name">Admin</tal:block>,
+
+<tal:block content="userInfo/name">A new member</tal:block> has joined
+<tal:block content="view/groupInfo/name">this group</tal:block>.
+
+  * View the profile for <tal:block content="userInfo/name">the new member</tal:block> at
+    <tal:block content="string:${view/siteInfo/url}${userInfo/url}">URL</tal:block>
+  
+  * View the join and leave log for <tal:block content="view/groupInfo/name">this group</tal:block> at
+    <tal:block content="string:${view/groupInfo/url}/log.html">URL</tal:block>
+
+You are received this message because you are an administrator  of
+<tal:block content="view/groupInfo/name">This Group</tal:block>.
+
+Kind regards
+  The <tal:block content="view/siteInfo/name">Site</tal:block> Team
+
+------------------------------------------------------------------------
+
+Privacy
+  <tal:block content="string:${view/siteInfo/url}/policies/privacy"/>
+
+Acceptable Use
+  <tal:block content="string:${view/siteInfo/url}/policies/aup"/>
+
+Terms of Service
+  <tal:block content="string:${view/siteInfo/url}/policies/tos"/>
+</tal:block>
+

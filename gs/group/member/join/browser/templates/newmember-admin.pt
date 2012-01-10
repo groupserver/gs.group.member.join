@@ -20,15 +20,15 @@
     </p>
     <ul style="margin: 1.385em 0 1.385em 0;">
       <li tal:define="u string:${view/siteInfo/url}${userInfo/url}">
-        <strong>The profile</strong> for 
-        <span tal:content="userInfo/name">a new member</span> 
-        can be viewed at
-        <a tal:attributes="href u"
-          href="#"><code tal:content="u">a URL</code></a></li>
-      <li>View the join and leave <strong>log</strong> for
-        <span tal:content="view/groupInfo/name">this group</span> at
-        <a tal:attributes="href string:${view/groupInfo/url}/log.html"
-          href="#"><code tal:content="string:${view/groupInfo/url}/log.html">a URL</code></a></li>
+        View
+        <a href="#" tal:attributes="href u"><strong>the profile</strong> 
+          for  <span tal:content="userInfo/name">a new member</span>.</a>
+      </li>
+      <li>View 
+        <a tal:attributes="href string:${view/groupInfo/url}/log.html">the
+          join and leave <strong>log</strong></a> for
+        <span tal:content="view/groupInfo/name">this group</span>.
+      </li>
     </ul>
     <p style="margin: 1.385em 0 1.385em 0;">  
       You are received this message because you are an administrator 

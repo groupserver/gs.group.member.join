@@ -76,8 +76,8 @@ class JoinForm(GroupForm):
         notifier.notify(self.loggedInUser)
 
         notifier = NotifyAdmin(self.context, self.request)
-        #for adminInfo in self.groupInfo.group_admins:
-        #    notifier.notify(adminInfo, self.loggedInUser)
+        for adminInfo in self.groupInfo.group_admins:
+            notifier.notify(adminInfo, self.loggedInUser)
 
         self.status = u'You have joined <a class="group" href="%s">%s</a>. %s' %\
           (self.groupInfo.url, self.groupInfo.name, m)
