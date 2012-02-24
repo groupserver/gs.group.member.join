@@ -4,9 +4,9 @@ from zope.component import createObject
 from zope.event import notify
 from Products.XWFCore.XWFUtils import get_support_email
 from gs.profile.notify.interfaces import IGSNotifyUser
-from gs.group.member.base.utils import member_id, user_member_of_site,\
+from gs.group.member.base.utils import member_id, \
     user_division_admin_of_group
-from audit import JoinAuditor, JOIN_GROUP, JOIN_SITE, MODERATED
+from audit import JoinAuditor, JOIN_GROUP, MODERATED
 from event import GSJoinGroupEvent
 
 class JoiningUser(object):
@@ -38,17 +38,15 @@ class JoiningUser(object):
         #    <https://projects.iopen.net/groupserver/ticket/346>
         self.join_group(groupInfo, auditor)
         self.send_welcome(groupInfo)
-        self.join_site(groupInfo.siteInfo, auditor)
         self.set_moderation(groupInfo, auditor)
         self.tell_admin(groupInfo)
-        notify(GSJoinGroupEvent(groupInfo, self.userInfo))
+        notify(GSJoinGroupEvent(self.context, groupInfo, self.userInfo))
         
     def silent_join(self, groupInfo):
         auditor = JoinAuditor(self.context, groupInfo, self.userInfo)
         self.join_group(groupInfo, auditor)
-        self.join_site(groupInfo.siteInfo, auditor)
         self.set_moderation(groupInfo, auditor)
-        notify(GSJoinGroupEvent(groupInfo, self.userInfo))
+        notify(GSJoinGroupEvent(self.context, groupInfo, self.userInfo))
         
     def join_group(self, groupInfo, auditor):
         # Beware of regressions 
@@ -87,12 +85,6 @@ class JoiningUser(object):
                     }
         notifiedUser.send_notification('add_group', 
             member_id(groupInfo.id), n_dict)
-    
-    def join_site(self, siteInfo, auditor):
-        if not user_member_of_site(self.userInfo, siteInfo.siteObj):
-            self.join_member_group(member_id(siteInfo.id))
-            auditor.info(JOIN_SITE)
-        assert user_member_of_site(self.userInfo, siteInfo.siteObj)
         
     def set_moderation(self, groupInfo, auditor):
         # TODO: Move to an event-handler. It can react to groups that
