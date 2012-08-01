@@ -2,6 +2,7 @@
 from zope.component import createObject, getMultiAdapter
 from zope.cachedescriptors.property import Lazy
 from gs.profile.notify.sender import MessageSender
+from gs.profile.email.base.emailuser import EmailUser
 UTF8 = 'utf-8'
 
 class NotifyNewMember(object):
@@ -34,8 +35,9 @@ class NotifyNewMember(object):
         
     def notify(self, userInfo):
         subject = (u'Welcome to %s' % (self.groupInfo.name).encode(UTF8))
-        text = self.textTemplate(userInfo=userInfo)
-        html = self.htmlTemplate(userInfo=userInfo)
+        emailUser = EmailUser(userInfo.user, userInfo)
+        text = self.textTemplate(userInfo=userInfo, userEmail=emailUser)
+        html = self.htmlTemplate(userInfo=userInfo, userEmail=emailUser)
         ms = MessageSender(self.context, userInfo)
         ms.send_message(subject, text, html)
 
@@ -47,8 +49,11 @@ class NotifyAdmin(NotifyNewMember):
             
     def notify(self, adminInfo, userInfo):
         subject = (u'%s: New Member' % (self.groupInfo.name).encode(UTF8))
-        text = self.textTemplate(adminInfo=adminInfo, userInfo=userInfo)
-        html = self.htmlTemplate(adminInfo=adminInfo, userInfo=userInfo)
+        emailUser = EmailUser(userInfo.user, userInfo)
+        text = self.textTemplate(adminInfo=adminInfo, userInfo=userInfo,
+                                 userEmail=emailUser)
+        html = self.htmlTemplate(adminInfo=adminInfo, userInfo=userInfo,
+                                 userEmail=emailUser)
         ms = MessageSender(self.context, adminInfo)
         ms.send_message(subject, text, html)
 
