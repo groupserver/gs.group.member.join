@@ -1,6 +1,7 @@
 <tal:block 
   define="adminInfo options/adminInfo | view/loggedInUserInfo;
-    userInfo options/userInfo | view/loggedInUserInfo;">Dear <tal:block content="adminInfo/name">Admin</tal:block>,
+          userInfo options/userInfo | view/loggedInUserInfo;
+          userEmail options/userEmail | view/userEmailInfo">Dear <tal:block content="adminInfo/name">Admin</tal:block>,
 
 <tal:block content="userInfo/name">A new member</tal:block> has joined
 <tal:block content="view/groupInfo/name">this group</tal:block>.
