@@ -52,7 +52,8 @@
     permission="zope.Public" />
 
   <!--The Join link on the group homepage-->
-  <browser:viewlet name="gs-group-member-join-link"
+  <browser:viewlet 
+    name="gs-group-member-join-link"
     manager="gs.group.home.interfaces.IGroupHomepageUsLinks"
     template="browser/templates/join_link.pt"
     class=".joinlink.JoinLinkViewlet"
@@ -61,12 +62,13 @@
     title="Join" />
     
   <!--The Admin Tab -->
-  <browser:viewlet name="gs-group-join-view-message"
-    manager="gs.group.home.interfaces.IGroupHomepageAdminLinks"
+  <browser:viewlet 
+    name="gs-group-member-join-view-message"
+    manager="gs.group.member.base.interfaces.IGroupMemberAdminLinks"
     template="browser/templates/viewlinks.pt"
     class="gs.group.member.base.viewlet.GroupAdminViewlet"
     permission="zope2.Public"
-    weight="9"
-    title="Welcome" />
+    weight="100"
+    title="Welcome Message" />
 
 </configure>
