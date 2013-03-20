@@ -75,7 +75,7 @@ class JoiningUser(object):
                     'ptnCoachId': groupInfo.get_property('ptn_coach_id', ''),
                     'ptnCoach': ptnCoach.name,
                     'realLife': groupInfo.get_property('real_life_group', ''),
-                    'supportEmail': self.siteInfo.get_support_email()
+                    'supportEmail': groupInfo.siteInfo.get_support_email()
                     }
         notifiedUser.send_notification('add_group',
             member_id(groupInfo.id), n_dict)
@@ -118,7 +118,7 @@ class JoiningUser(object):
                 'groupUrl': groupInfo.url,
                 'siteName': groupInfo.siteInfo.name,
                 'canonical': groupInfo.siteInfo.url,
-                'supportEmail': self.siteInfo.get_support_email(),
+                'supportEmail': groupInfo.siteInfo.get_support_email(),
                 'memberId': self.userInfo.id,
                 'memberName': self.userInfo.name,
                 'memberUrl': self.userInfo.url,
