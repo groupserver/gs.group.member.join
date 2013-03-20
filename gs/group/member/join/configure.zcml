@@ -15,32 +15,32 @@
       .joininguser.JoiningUser" />
 
   <browser:page 
-    for="Products.XWFChat.interfaces.IGSGroupFolder"
+    for="gs.group.base.interfaces.IGSGroupMarker"
     name="join.html"
     class=".join.JoinForm"
     permission="zope2.View"/>
   <!-- The Group Welcome message, in HTML and plain-text -->    
   <browser:page
-    for="Products.XWFChat.interfaces.IGSGroupFolder"
+    for="gs.group.base.interfaces.IGSGroupMarker"
     name="new-member-msg.html"
     class=".notifymessages.NotifyMemberMessage"
     template="browser/templates/newmember.pt"
     permission="zope2.View"/>
   <browser:page
-    for="Products.XWFChat.interfaces.IGSGroupFolder"
+    for="gs.group.base.interfaces.IGSGroupMarker"
     name="new-member-msg.txt"
     class=".notifymessages.NotifyMemberMessageText"
     template="browser/templates/newmember-txt.pt"
     permission="zope2.View"/>
   <!-- The New Member message, in HTML and plain-text -->    
   <browser:page
-    for="Products.XWFChat.interfaces.IGSGroupFolder"
+    for="gs.group.base.interfaces.IGSGroupMarker"
     name="new-member-admin-msg.html"
     class=".notifymessages.NotifyAdminMessage"
     template="browser/templates/newmember-admin.pt"
     permission="zope2.View"/>
   <browser:page
-    for="Products.XWFChat.interfaces.IGSGroupFolder"
+    for="gs.group.base.interfaces.IGSGroupMarker"
     name="new-member-admin-msg.txt"
     class=".notifymessages.NotifyAdminMessageText"
     template="browser/templates/newmember-admin-txt.pt"
