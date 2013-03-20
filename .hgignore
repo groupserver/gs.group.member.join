@@ -4,3 +4,4 @@ syntax: glob
 *egg-info
 dist
 *orig
+*nja
