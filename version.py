@@ -1,7 +1,7 @@
-version='1.0'
+version='2.0'
 release=False
 
-#-------------------------------------------------------------------------------------#
+#-----------------------------------------------------------------------------#
 
 import commands
 import datetime
@@ -23,7 +23,7 @@ def parse_version_from_package():
                                          'PKG-INFO')
     except:
         pkginfo = ''
-    
+
     version_string = ''
     if os.path.exists(pkginfo):
         for line in file(pkginfo):
@@ -33,7 +33,7 @@ def parse_version_from_package():
             version_string = '%s-dev' % version
     else:
         version_string = version
-    
+
     return version_string
 
 def get_version():
@@ -43,7 +43,7 @@ def get_version():
         # convert date to UTC unix timestamp, using the date command because python
         # date libraries do not stabilise till about 2.6
         timestamp = int(execute_command('date -d"%s" --utc +%%s' % commitdate))
-    
+
         # finally we have something we can use!
         dt = datetime.datetime.utcfromtimestamp(timestamp)
         datestring = dt.strftime('%Y%m%d%H%M%S')
