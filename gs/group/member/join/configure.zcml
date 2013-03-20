@@ -64,9 +64,9 @@
   <!--The Admin Tab -->
   <browser:viewlet 
     name="gs-group-member-join-view-message"
-    manager="gs.group.member.base.interfaces.IGroupMemberAdminLinks"
+    manager="gs.group.member.info.interfaces.IGroupMemberAdminLinks"
     template="browser/templates/viewlinks.pt"
-    class="gs.group.member.base.viewlet.GroupAdminViewlet"
+    class="gs.group.member.viewlet.GroupAdminViewlet"
     permission="zope2.Public"
     weight="100"
     title="Welcome Message" />
