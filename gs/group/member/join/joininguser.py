@@ -2,9 +2,8 @@
 from zope.cachedescriptors.property import Lazy
 from zope.component import createObject
 from zope.event import notify
-from Products.XWFCore.XWFUtils import get_support_email
-from gs.profile.notify.interfaces import IGSNotifyUser
 from gs.group.member.base import member_id, user_division_admin_of_group
+from gs.profile.notify.interfaces import IGSNotifyUser
 from audit import JoinAuditor, JOIN_GROUP, MODERATED
 from event import GSJoinGroupEvent
 
@@ -24,11 +23,6 @@ class JoiningUser(object):
         #   joinable by a user.
         retval = groupsInfo.get_joinable_group_ids_for_user(u)
         assert type(retval) == list
-        return retval
-
-    def get_support_email(self, groupInfo):
-        retval = get_support_email(self.context, groupInfo.siteInfo.id)
-        assert retval
         return retval
 
     def join(self, groupInfo):
@@ -81,7 +75,7 @@ class JoiningUser(object):
                     'ptnCoachId': groupInfo.get_property('ptn_coach_id', ''),
                     'ptnCoach': ptnCoach.name,
                     'realLife': groupInfo.get_property('real_life_group', ''),
-                    'supportEmail': self.get_support_email(groupInfo)
+                    'supportEmail': self.siteInfo.get_support_email()
                     }
         notifiedUser.send_notification('add_group',
             member_id(groupInfo.id), n_dict)
@@ -124,7 +118,7 @@ class JoiningUser(object):
                 'groupUrl': groupInfo.url,
                 'siteName': groupInfo.siteInfo.name,
                 'canonical': groupInfo.siteInfo.url,
-                'supportEmail': self.get_support_email(groupInfo),
+                'supportEmail': self.siteInfo.get_support_email(),
                 'memberId': self.userInfo.id,
                 'memberName': self.userInfo.name,
                 'memberUrl': self.userInfo.url,

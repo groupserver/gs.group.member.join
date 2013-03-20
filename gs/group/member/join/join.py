@@ -3,14 +3,14 @@ from zope.cachedescriptors.property import Lazy
 from zope.component import createObject
 from zope.formlib import form
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
-from gs.profile.email.base.emailuser import EmailUser
-from gs.group.base.form import GroupForm
-from gs.group.member.join.interfaces import IGSJoiningUser
 from gs.content.form.radio import radio_widget
-from Products.GSGroupMember.groupmembership import user_member_of_group
+from gs.group.base.form import GroupForm
+from gs.group.member.base import user_member_of_group
+from gs.profile.email.base.emailuser import EmailUser
 from Products.XWFCore.XWFUtils import get_the_actual_instance_from_zope
-from interfaces import IGSJoinGroup
+from interfaces import IGSJoinGroup, IGSJoiningUser
 from notify import NotifyNewMember, NotifyAdmin
+
 
 class JoinForm(GroupForm):
     label = u'Join'
@@ -22,15 +22,15 @@ class JoinForm(GroupForm):
         GroupForm.__init__(self, context, request)
         self.form_fields['delivery'].custom_widget = radio_widget
 
-    @property 
+    @property
     def ctx(self):
-        return get_the_actual_instance_from_zope(self.context)        
-        
+        return get_the_actual_instance_from_zope(self.context)
+
     @Lazy
     def mailingListInfo(self):
         retval = createObject('groupserver.MailingListInfo', self.ctx)
         return retval
-        
+
     @property
     def canJoin(self):
         retval = not(self.loggedInUser.anonymous) \
@@ -38,27 +38,28 @@ class JoinForm(GroupForm):
                     and self.hasEmail \
                     and self.mailingListInfo.get_property('subscribe', False)
         return retval
-    
+
     @property
     def willPost(self):
-        postingMembers = self.mailingListInfo.get_property('posting_members', [])
+        postingMembers = self.mailingListInfo.get_property('posting_members',
+                                                            [])
         retval = not(bool(postingMembers))
         return retval
-        
+
     @property
     def isMember(self):
         return user_member_of_group(self.loggedInUser, self.groupInfo)
-        
+
     @Lazy
     def hasEmail(self):
         eu = EmailUser(self.context, self.loggedInUser)
         retval = (len(eu.get_verified_addresses()) > 0)
         return retval
-        
+
     @form.action(label=u'Join', failure='handle_join_action_failure')
     def handle_invite(self, action, data):
         assert self.canJoin
-        
+
         joiningUser = IGSJoiningUser(self.loggedInUser)
         joiningUser.silent_join(self.groupInfo)
         if data['delivery'] == 'email':
@@ -79,13 +80,12 @@ class JoinForm(GroupForm):
         for adminInfo in self.groupInfo.group_admins:
             notifier.notify(adminInfo, self.loggedInUser)
 
-        self.status = u'You have joined <a class="group" href="%s">%s</a>. %s' %\
-          (self.groupInfo.url, self.groupInfo.name, m)
+        msg = u'<p>You have joined <a class="group" href="%s">%s</a>. %s</p>'
+        self.status = msg % (self.groupInfo.relativeURL, self.groupInfo.name, m)
         assert type(self.status) == unicode
-        
+
     def handle_join_action_failure(self, action, data, errors):
         if len(errors) == 1:
             self.status = u'<p>There is an error:</p>'
         else:
             self.status = u'<p>There are errors:</p>'
-
