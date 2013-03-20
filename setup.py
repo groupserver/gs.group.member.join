@@ -32,12 +32,25 @@ setup(name='gs.group.member.join',
     zip_safe=False,
     install_requires=[
         'setuptools',
-        'gs.profile.notify',
+        'pytz',
+        'zope.cachedescriptors',
+        'zope.component',
+        'zope.event',
+        'zope.formlib',
+        'zope.interface',
+        'Zope2',
+        'gs.content.form',
+        'gs.group.base',
         'gs.group.member.base',
-        # -*- Extra requirements: -*-
+        'gs.group.member.viewlet',
+        'gs.profile.email.base',
+        'gs.profile.notify',
+        'Products.GSAuditTrail',
+        'Products.GSGroup',
+        'Products.GSProfile',
+        'Products.XWFCore',
     ],
     entry_points="""
     # -*- Entry points: -*-
     """,
 )
-
