@@ -13,6 +13,7 @@ class NotifyNewMember(object):
     def __init__(self, context, request):
         self.context = context
         self.request = request
+        self.oldContentType = self.request.response.getHeader('Content-Type')
 
     @Lazy
     def groupInfo(self):
@@ -41,6 +42,7 @@ class NotifyNewMember(object):
         html = self.htmlTemplate(userInfo=userInfo, userEmail=emailUser)
         ms = MessageSender(self.context, userInfo)
         ms.send_message(subject, text, html)
+        self.request.response.setHeader('Content-Type', self.oldContentType)
 
 
 # And the equivilent class for telling the admin
@@ -58,3 +60,4 @@ class NotifyAdmin(NotifyNewMember):
                                  userEmail=emailUser)
         ms = MessageSender(self.context, adminInfo)
         ms.send_message(subject, text, html)
+        self.request.response.setHeader('Content-Type', self.oldContentType)
