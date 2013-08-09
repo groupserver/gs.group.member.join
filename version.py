@@ -1,5 +1,6 @@
-version='2.0'
-release=False
+# -*- coding: utf-8 -*-
+version = '2.0'
+release = False
 
 #-----------------------------------------------------------------------------#
 
@@ -8,14 +9,17 @@ import datetime
 import os
 import glob
 
+
 class CommandError(Exception):
     pass
+
 
 def execute_command(commandstring):
     status, output = commands.getstatusoutput(commandstring)
     if status != 0:
         raise CommandError
     return output
+
 
 def parse_version_from_package():
     try:
@@ -36,12 +40,14 @@ def parse_version_from_package():
 
     return version_string
 
+
 def get_version():
     try:
         globalid = execute_command("hg identify -i")
-        commitdate = execute_command("hg log -r %s --template '{date|isodatesec}'" % globalid)
-        # convert date to UTC unix timestamp, using the date command because python
-        # date libraries do not stabilise till about 2.6
+        c = "hg log -r %s --template '{date|isodatesec}'" % globalid
+        commitdate = execute_command(c)
+        # convert date to UTC unix timestamp, using the date command because
+        # python date libraries do not stabilise till about 2.6
         timestamp = int(execute_command('date -d"%s" --utc +%%s' % commitdate))
 
         # finally we have something we can use!
@@ -50,12 +56,10 @@ def get_version():
 
         version_string = "%s-%s-%s" % (version, datestring, globalid)
 
-    except CommandError, IntegerError:
+    except (CommandError, ValueError, TypeError):
         version_string = parse_version_from_package()
 
     return version_string
 
 if __name__ == '__main__':
     print get_version()
-
-
