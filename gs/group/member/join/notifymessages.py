@@ -46,6 +46,9 @@ class NotifyAdminMessage(GroupPage):
     def userEmailInfo(self):
         # possibly this should be called something like testUserEmailInfo,
         # because it is really only used in the test case
+        #
+        # wpb: Not true. E-Democracy uses userEmailInfo to allow forum managers
+        # to contact/introduct new members.
         userInfo = self.loggedInUserInfo
         emailUser = EmailUser(userInfo.user, userInfo)
         return emailUser
