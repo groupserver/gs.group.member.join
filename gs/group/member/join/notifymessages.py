@@ -1,12 +1,26 @@
-# coding=utf-8
+# -*- coding: utf-8 -*-
+##############################################################################
+#
+# Copyright © 2013 OnlineGroups.net and Contributors.
+# All Rights Reserved.
+#
+# This software is subject to the provisions of the Zope Public License,
+# Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
+# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
+# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
+# FOR A PARTICULAR PURPOSE.
+#
+##############################################################################
 from urllib import quote
 from zope.cachedescriptors.property import Lazy
-from gs.group.base.page import GroupPage
+from gs.content.email.base import GroupEmail
 from Products.GSGroup.interfaces import IGSMailingListInfo
 from gs.profile.email.base.emailuser import EmailUser
 UTF8 = 'utf-8'
 
-class NotifyMemberMessage(GroupPage):
+
+class NotifyMemberMessage(GroupEmail):
     @Lazy
     def userEmailInfo(self):
         # possibly this should be called something like testUserEmailInfo,
@@ -14,13 +28,13 @@ class NotifyMemberMessage(GroupPage):
         userInfo = self.loggedInUserInfo
         emailUser = EmailUser(userInfo.user, userInfo)
         return emailUser
-        
+
     @Lazy
     def email(self):
         l = IGSMailingListInfo(self.groupInfo.groupObj)
         retval = l.get_property('mailto')
         return retval
-    
+
     @Lazy
     def supportEmail(self):
         msg = u'Hi!\n\nI am a member of the group %s\n    %s\nand...' % \
@@ -29,7 +43,8 @@ class NotifyMemberMessage(GroupPage):
         retval = 'mailto:%s?Subject=%s&body=%s' % \
             (self.siteInfo.get_support_email(), sub, quote(msg.encode(UTF8)))
         return retval
-        
+
+
 class NotifyMemberMessageText(NotifyMemberMessage):
     def __init__(self, context, request):
         NotifyMemberMessage.__init__(self, context, request)
@@ -41,7 +56,8 @@ class NotifyMemberMessageText(NotifyMemberMessage):
 
 # And the equivilent message that is sent to the administrators.
 
-class NotifyAdminMessage(GroupPage):
+
+class NotifyAdminMessage(GroupEmail):
     @Lazy
     def userEmailInfo(self):
         # possibly this should be called something like testUserEmailInfo,
@@ -58,16 +74,17 @@ class NotifyAdminMessage(GroupPage):
         l = IGSMailingListInfo(self.groupInfo.groupObj)
         retval = l.get_property('mailto')
         return retval
-    
+
     @Lazy
     def supportEmail(self):
-        msg = u'Hi!\n\nI am an administrator of the group %s\n    %s\nand...' % \
-            (self.groupInfo.name, self.groupInfo.url)
+        m = u'Hi!\n\nI am an administrator of the group {0}\n    {1}\nand...'
+        msg = m.format(self.groupInfo.name, self.groupInfo.url)
         sub = quote('New Member')
         retval = 'mailto:%s?Subject=%s&body=%s' % \
             (self.siteInfo.get_support_email(), sub, quote(msg.encode(UTF8)))
         return retval
-        
+
+
 class NotifyAdminMessageText(NotifyMemberMessage):
     def __init__(self, context, request):
         NotifyMemberMessage.__init__(self, context, request)
@@ -76,4 +93,3 @@ class NotifyAdminMessageText(NotifyMemberMessage):
         filename = 'new-member-%s.txt' % self.groupInfo.name
         response.setHeader('Content-Disposition',
                             'inline; filename="%s"' % filename)
-

@@ -1,57 +1,50 @@
-<html tal:define="adminInfo options/adminInfo | view/loggedInUserInfo;
-  userInfo options/userInfo | view/loggedInUserInfo;">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="context/@@groupserver_email_layout/page">
   <head>
     <title tal:content="view/siteInfo/name">Site</title>
   </head>
-  <body style="font:13px Trebuchet,'Trebuchet MS',arial,helvetica,clean,sans-serif;line-height:1.385;color:black;background:white;">
-    <h1 style="width:100%;border-bottom:thick solid black;margin-bottom:0.692em;"><a href="#"
-      style="color:black;text-decoration:none;"
-      tal:attributes="href view/siteInfo/url" 
-      tal:content="view/siteInfo/name">Site</a></h1>
-    <h2 style="font-size:207.7%;margin:0 0 1em 0;">New Member of
+  <body>
+    <div metal:fill-slot="body"
+         tal:define="adminInfo options/adminInfo | view/loggedInUserInfo;
+                     userInfo options/userInfo | view/loggedInUserInfo;">
+      <h2>New Member of
       <span tal:content="view/groupInfo/name">This Group</span></h2>
-    <p style="margin: 1.385em 0 1.385em 0;">
-      Dear
-      <span tal:content="adminInfo/name">Admin</span>,
-    </p>
-    <p style="margin: 1.385em 0 1.385em 0;">
-      <span tal:content="userInfo/name">a new member</span> has joined
-      <span tal:content="view/groupInfo/name">this group</span>.
-    </p>
-    <ul style="margin: 1.385em 0 1.385em 0;">
-      <li tal:define="u string:${view/siteInfo/url}${userInfo/url}">
-        View
-        <a href="#" tal:attributes="href u"><strong>the profile</strong> 
+      <p>
+        Dear
+        <span tal:content="adminInfo/name">Admin</span>,
+      </p>
+      <p>
+        <span tal:content="userInfo/name">a new member</span> has joined
+        <a href="#" tal:attributes="href view/groupInfo/url"
+           tal:content="view/groupInfo/name">this group</a>.
+      </p>
+      <ul>
+        <li tal:define="u string:${view/siteInfo/url}${userInfo/url}">
+          View
+          <a href="#" tal:attributes="href u"><strong>the profile</strong> 
           for  <span tal:content="userInfo/name">a new member</span>.</a>
-      </li>
-      <li>View 
-        <a tal:attributes="href string:${view/groupInfo/url}/log.html">the
-          join and leave <strong>log</strong></a> for
+        </li>
+        <li>View 
+        <a tal:attributes="href string:${view/groupInfo/url}/members.html"><strong>the
+        membership</strong></a> of
         <span tal:content="view/groupInfo/name">this group</span>.
-      </li>
-    </ul>
-    <p style="margin: 1.385em 0 1.385em 0;">  
-      You are received this message because you are an administrator 
-      of
-      <span tal:content="view/groupInfo/name">This Group</span>.
-    </p>
-    <!--Website address-->
-    <p style="margin: 1.385em 0 1.385em 0;">
-      Kind regards<br/>
-      <span style="padding:0 0 0 1.385em;">The 
+        </li>
+      </ul>
+      <p>
+        You are received this message because you are an administrator 
+        of
+        <span tal:content="view/groupInfo/name">This Group</span>.
+      </p>
+      <!--Website address-->
+      <p>
+        Kind regards<br/>
+        <span>The 
         <span tal:content="view/siteInfo/name">Site</span> 
-      Team</span>
-    </p>
-    <hr/>
-    <!--Terms and conditions-->
-    <p style="margin: 1.385em 0 1.385em 0;">
-      <a tal:attributes="href string:${view/siteInfo/url}/policies/privacy"
-        href="#">Privacy</a> | 
-      <a tal:attributes="href string:${view/siteInfo/url}/policies/aup"
-        href="#">Acceptable Use</a> | 
-      <a tal:attributes="href string:${view/siteInfo/url}/policies/tos"
-        href="#">Terms of Service</a>
-    </p>
+        Team</span>
+      </p>
+    </div>
   </body>
 </html>
 
