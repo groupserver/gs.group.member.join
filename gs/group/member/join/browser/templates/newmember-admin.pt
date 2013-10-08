@@ -3,7 +3,9 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       metal:use-macro="context/@@groupserver_email_layout/page">
   <head>
-    <title tal:content="view/siteInfo/name">Site</title>
+    <title metal:fill-slot="title">New member:
+        <span tal:replace="view/groupInfo/name">This group</span>:
+        <span tal:replace="view/siteInfo/name">This site</span></title>
   </head>
   <body>
     <div metal:fill-slot="body"
