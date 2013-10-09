@@ -11,7 +11,7 @@
     <div metal:fill-slot="body"
          tal:define="adminInfo options/adminInfo | view/loggedInUserInfo;
                      userInfo options/userInfo | view/loggedInUserInfo;">
-      <h2>New Member of
+      <h2>New member of
       <span tal:content="view/groupInfo/name">This Group</span></h2>
       <p>
         Dear
@@ -34,14 +34,13 @@
         <span tal:content="view/groupInfo/name">this group</span>.
         </li>
       </ul>
-      <p>
-        You are received this message because you are an administrator 
-        of
-        <span tal:content="view/groupInfo/name">This Group</span>.
+      <p class="muted">
+        (You received this message because you are an administrator of
+        <span tal:content="view/groupInfo/name">This Group</span>.)
       </p>
       <!--Website address-->
-      <p>
-        Kind regards<br/>
+      <p class="closing">
+        Kind regards,<br/>
         <span>The 
         <span tal:content="view/siteInfo/name">Site</span> 
         Team</span>

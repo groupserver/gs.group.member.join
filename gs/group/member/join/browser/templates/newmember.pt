@@ -60,21 +60,11 @@
            href="#"><code tal:content="view/siteInfo/get_support_email">this address</code></a>
       </p>
       <!--Website address-->
-      <p>
-        Kind regards<br/>
+      <p class="closing">
+        Kind regards,<br/>
         <span>The 
         <span tal:content="view/siteInfo/name">Site</span> 
         Team</span>
-      </p>
-      <hr/>
-      <!--Terms and conditions-->
-      <p>
-        <a tal:attributes="href string:${view/siteInfo/url}/policies/privacy"
-           href="#">Privacy</a> | 
-        <a tal:attributes="href string:${view/siteInfo/url}/policies/aup"
-           href="#">Acceptable Use</a> | 
-        <a tal:attributes="href string:${view/siteInfo/url}/policies/tos"
-           href="#">Terms of Service</a>
       </p>
     </div>
   </body>
