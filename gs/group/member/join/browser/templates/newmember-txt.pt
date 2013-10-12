@@ -1,4 +1,5 @@
-<tal:block define="userInfo options/userInfo | view/loggedInUserInfo;">Dear <tal:block content="userInfo/name">New Member</tal:block>,
+<tal:block xmlns:tal="http://xml.zope.org/namespaces/tal"
+           define="userInfo options/userInfo | view/loggedInUserInfo;">Dear <tal:block content="userInfo/name">New Member</tal:block>,
 
 Welcome to <tal:block content="view/groupInfo/name">This Group</tal:block>.
 
