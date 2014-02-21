@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-# Copyright © 2013 OnlineGroups.net and Contributors.
+# Copyright © 2013, 2014 OnlineGroups.net and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -12,9 +12,10 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
+from __future__ import unicode_literals
 from urllib import quote
 from zope.cachedescriptors.property import Lazy
-from gs.content.email.base import GroupEmail
+from gs.content.email.base import GroupEmail, TextMixin
 from Products.GSGroup.interfaces import IGSMailingListInfo
 from gs.profile.email.base.emailuser import EmailUser
 UTF8 = 'utf-8'
@@ -37,7 +38,7 @@ class NotifyMemberMessage(GroupEmail):
 
     @Lazy
     def supportEmail(self):
-        msg = u'Hi!\n\nI am a member of the group %s\n    %s\nand...' % \
+        msg = 'Hi!\n\nI am a member of the group %s\n    %s\nand...' % \
             (self.groupInfo.name, self.groupInfo.url)
         sub = quote('Group Welcome')
         retval = 'mailto:%s?Subject=%s&body=%s' % \
@@ -45,14 +46,11 @@ class NotifyMemberMessage(GroupEmail):
         return retval
 
 
-class NotifyMemberMessageText(NotifyMemberMessage):
+class NotifyMemberMessageText(NotifyMemberMessage, TextMixin):
     def __init__(self, context, request):
         NotifyMemberMessage.__init__(self, context, request)
-        response = request.response
-        response.setHeader("Content-Type", 'text/plain; charset=UTF-8')
-        filename = 'welcome-to-%s.txt' % self.groupInfo.name
-        response.setHeader('Content-Disposition',
-                            'inline; filename="%s"' % filename)
+        filename = 'welcome-to-%s.txt' % self.groupInfo.id
+        self.set_header(filename)
 
 # And the equivilent message that is sent to the administrators.
 
@@ -77,7 +75,7 @@ class NotifyAdminMessage(GroupEmail):
 
     @Lazy
     def supportEmail(self):
-        m = u'Hi!\n\nI am an administrator of the group {0}\n    {1}\nand...'
+        m = 'Hi!\n\nI am an administrator of the group {0}\n    {1}\nand...'
         msg = m.format(self.groupInfo.name, self.groupInfo.url)
         sub = quote('New Member')
         retval = 'mailto:%s?Subject=%s&body=%s' % \
@@ -85,11 +83,8 @@ class NotifyAdminMessage(GroupEmail):
         return retval
 
 
-class NotifyAdminMessageText(NotifyMemberMessage):
+class NotifyAdminMessageText(NotifyMemberMessage, TextMixin):
     def __init__(self, context, request):
         NotifyMemberMessage.__init__(self, context, request)
-        response = request.response
-        response.setHeader("Content-Type", 'text/plain; charset=UTF-8')
-        filename = 'new-member-%s.txt' % self.groupInfo.name
-        response.setHeader('Content-Disposition',
-                            'inline; filename="%s"' % filename)
+        filename = 'new-member-%s.txt' % self.groupInfo.id
+        self.set_header(filename)

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-# Copyright © 2013 OnlineGroups.net and Contributors.
+# Copyright © 2013, 2014 OnlineGroups.net and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -12,8 +12,10 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
+from __future__ import unicode_literals
 from zope.component import createObject, getMultiAdapter
 from zope.cachedescriptors.property import Lazy
+from gs.core import to_ascii
 from gs.profile.notify.sender import MessageSender
 from gs.profile.email.base.emailuser import EmailUser
 UTF8 = 'utf-8'
@@ -26,7 +28,8 @@ class NotifyNewMember(object):
     def __init__(self, context, request):
         self.context = context
         self.request = request
-        self.oldContentType = self.request.response.getHeader('Content-Type')
+        h = self.request.response.getHeader('Content-Type')
+        self.oldContentType = to_ascii(h)
 
     @Lazy
     def groupInfo(self):
@@ -49,13 +52,14 @@ class NotifyNewMember(object):
         return retval
 
     def notify(self, userInfo):
-        subject = (u'Welcome to %s' % (self.groupInfo.name).encode(UTF8))
+        subject = ('Welcome to %s' % (self.groupInfo.name).encode(UTF8))
         emailUser = EmailUser(userInfo.user, userInfo)
         text = self.textTemplate(userInfo=userInfo, userEmail=emailUser)
         html = self.htmlTemplate(userInfo=userInfo, userEmail=emailUser)
         ms = MessageSender(self.context, userInfo)
         ms.send_message(subject, text, html)
-        self.request.response.setHeader('Content-Type', self.oldContentType)
+        self.request.response.setHeader(to_ascii('Content-Type'),
+                                        to_ascii(self.oldContentType))
 
 
 # And the equivilent class for telling the admin
@@ -65,7 +69,7 @@ class NotifyAdmin(NotifyNewMember):
     htmlTemplateName = 'new-member-admin-msg.html'
 
     def notify(self, adminInfo, userInfo):
-        subject = (u'%s: New Member' % (self.groupInfo.name).encode(UTF8))
+        subject = ('%s: New Member' % (self.groupInfo.name).encode(UTF8))
         emailUser = EmailUser(userInfo.user, userInfo)
         text = self.textTemplate(adminInfo=adminInfo, userInfo=userInfo,
                                  userEmail=emailUser)
@@ -73,4 +77,5 @@ class NotifyAdmin(NotifyNewMember):
                                  userEmail=emailUser)
         ms = MessageSender(self.context, adminInfo)
         ms.send_message(subject, text, html)
-        self.request.response.setHeader('Content-Type', self.oldContentType)
+        self.request.response.setHeader(to_ascii('Content-Type'),
+                                        self.oldContentType)
