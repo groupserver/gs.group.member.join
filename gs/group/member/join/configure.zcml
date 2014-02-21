@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- Copyright © 2013 OnlineGroups.net and Contributors. -->
+<!-- All Rights Reserved. -->
+
+<!-- This software is subject to the provisions of the Zope Public -->
+<!-- License, Version 2.1 (ZPL).  A copy of the ZPL should accompany this -->
+<!-- distribution. -->
+
+<!-- THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED -->
+<!-- WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED -->
+<!-- WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND -->
+<!-- FITNESS FOR A PARTICULAR PURPOSE. -->
 <configure xmlns="http://namespaces.zope.org/zope"
            xmlns:browser="http://namespaces.zope.org/browser"
            i18n_domain="groupserver">
 
-  <include package="zope.viewlet" file="meta.zcml" />  
-  
+  <include package="zope.viewlet" file="meta.zcml" />
+
   <adapter provides=".interfaces.IGSJoiningUser"
     for="Products.CustomUserFolder.interfaces.IGSUserInfo"
     permission="zope2.Public"
@@ -15,12 +26,12 @@
     factory="Products.CustomUserFolder.userinfo.GSUserInfo
       .joininguser.JoiningUser" />
 
-  <browser:page 
+  <browser:page
     for="gs.group.base.interfaces.IGSGroupMarker"
     name="join.html"
     class=".join.JoinForm"
     permission="zope2.View"/>
-  <!-- The Group Welcome message, in HTML and plain-text -->    
+  <!-- The Group Welcome message, in HTML and plain-text -->
   <browser:page
     for="gs.group.base.interfaces.IGSGroupMarker"
     name="new-member-msg.html"
@@ -33,7 +44,7 @@
     class=".notifymessages.NotifyMemberMessageText"
     template="browser/templates/newmember-txt.pt"
     permission="zope2.View"/>
-  <!-- The New Member message, in HTML and plain-text -->    
+  <!-- The New Member message, in HTML and plain-text -->
   <browser:page
     for="gs.group.base.interfaces.IGSGroupMarker"
     name="new-member-admin-msg.html"
@@ -46,14 +57,14 @@
     class=".notifymessages.NotifyAdminMessageText"
     template="browser/templates/newmember-admin-txt.pt"
     permission="zope2.View"/>
-    
-  <utility 
+
+  <utility
     factory=".audit.JoinAuditEventFactory"
     name="gs.group.member.join"
     permission="zope.Public" />
 
   <!--The Admin Tab -->
-  <browser:viewlet 
+  <browser:viewlet
     name="gs-group-member-join-view-message"
     manager="gs.group.member.info.interfaces.IGroupMemberAdminLinks"
     template="browser/templates/viewlinks.pt"
