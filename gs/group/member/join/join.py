@@ -12,7 +12,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
 from zope.cachedescriptors.property import Lazy
 from zope.component import createObject
 from zope.formlib import form
@@ -27,7 +27,7 @@ from .notify import NotifyNewMember, NotifyAdmin
 
 
 class JoinForm(GroupForm):
-    label = u'Join'
+    label = 'Join'
     pageTemplateFileName = 'browser/templates/join.pt'
     template = ZopeTwoPageTemplateFile(pageTemplateFileName)
     form_fields = form.Fields(IGSJoinGroup, render_context=False)
@@ -70,7 +70,7 @@ class JoinForm(GroupForm):
         retval = (len(eu.get_verified_addresses()) > 0)
         return retval
 
-    @form.action(label=u'Join', failure='handle_join_action_failure')
+    @form.action(label='Join', failure='handle_join_action_failure')
     def handle_invite(self, action, data):
         assert self.canJoin
 
@@ -78,11 +78,11 @@ class JoinForm(GroupForm):
         joiningUser.silent_join(self.groupInfo)
         if data['delivery'] == 'email':
             # --=mpj17=-- The default is one email per post
-            m = u'You will receive an email message every time '\
-              u'someone posts to %s.' % self.groupInfo.name
+            m = 'You will receive an email message every time '\
+              'someone posts to %s.' % self.groupInfo.name
         elif data['delivery'] == 'digest':
             self.loggedInUser.user.set_enableDigestByKey(self.groupInfo.id)
-            m = u'You will receive a daily digest of topics.'
+            m = 'You will receive a daily digest of topics.'
         elif data['delivery'] == 'web':
             self.loggedInUser.user.set_disableDeliveryByKey(self.groupInfo.id)
             m = 'You will not receive any email from this group.'
@@ -94,12 +94,11 @@ class JoinForm(GroupForm):
         for adminInfo in self.groupInfo.group_admins:
             notifier.notify(adminInfo, self.loggedInUser)
 
-        msg = u'<p>You have joined <a class="group" href="%s">%s</a>. %s</p>'
+        msg = '<p>You have joined <a class="group" href="%s">%s</a>. %s</p>'
         self.status = msg % (self.groupInfo.relativeURL, self.groupInfo.name, m)
-        assert type(self.status) == unicode
 
     def handle_join_action_failure(self, action, data, errors):
         if len(errors) == 1:
-            self.status = u'<p>There is an error:</p>'
+            self.status = '<p>There is an error:</p>'
         else:
-            self.status = u'<p>There are errors:</p>'
+            self.status = '<p>There are errors:</p>'
