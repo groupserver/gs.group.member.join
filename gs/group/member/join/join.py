@@ -17,7 +17,7 @@ from zope.cachedescriptors.property import Lazy
 from zope.component import createObject
 from zope.formlib import form
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
-from gs.content.form.radio import radio_widget
+from gs.content.form.base import radio_widget
 from gs.group.base.form import GroupForm
 from gs.group.member.base import user_member_of_group
 from gs.profile.email.base.emailuser import EmailUser
