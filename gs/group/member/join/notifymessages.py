@@ -12,7 +12,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
 from urllib import quote
 from zope.cachedescriptors.property import Lazy
 from gs.content.email.base import GroupEmail, TextMixin
@@ -38,19 +38,22 @@ class NotifyMemberMessage(GroupEmail):
 
     @Lazy
     def supportEmail(self):
-        msg = 'Hi!\n\nI am a member of the group %s\n    %s\nand...' % \
-            (self.groupInfo.name, self.groupInfo.url)
-        sub = quote('Group Welcome')
+        subject = quote('Group Welcome')
+        m = 'Hello,\n\nI received a Welcome message for the group '\
+            '{group.name}\n    {group.url}\nand...'
+        msg = m.format(group=self.groupInfo)
+        body = quote(msg.encode(UTF8))
         retval = 'mailto:%s?Subject=%s&body=%s' % \
-            (self.siteInfo.get_support_email(), sub, quote(msg.encode(UTF8)))
+            (self.siteInfo.get_support_email(), subject, body)
         return retval
 
 
 class NotifyMemberMessageText(NotifyMemberMessage, TextMixin):
     def __init__(self, context, request):
-        NotifyMemberMessage.__init__(self, context, request)
+        super(NotifyMemberMessageText, self).__init__(context, request)
         filename = 'welcome-to-%s.txt' % self.groupInfo.id
         self.set_header(filename)
+
 
 # And the equivilent message that is sent to the administrators.
 
@@ -75,16 +78,41 @@ class NotifyAdminMessage(GroupEmail):
 
     @Lazy
     def supportEmail(self):
-        m = 'Hi!\n\nI am an administrator of the group {0}\n    {1}\nand...'
-        msg = m.format(self.groupInfo.name, self.groupInfo.url)
-        sub = quote('New Member')
+        subject = quote('New Member')
+        m = 'Hello,\n\nI am an administrator of the group '\
+            '{group.name}\n    {group.url}\nand...'
+        msg = m.format(group=self.groupInfo)
+        body = quote(msg.encode(UTF8))
         retval = 'mailto:%s?Subject=%s&body=%s' % \
-            (self.siteInfo.get_support_email(), sub, quote(msg.encode(UTF8)))
+            (self.siteInfo.get_support_email(), sub, body)
         return retval
 
 
 class NotifyAdminMessageText(NotifyMemberMessage, TextMixin):
     def __init__(self, context, request):
-        NotifyMemberMessage.__init__(self, context, request)
+        super(NotifyAdminMessageText, self).__init__(context, request)
         filename = 'new-member-%s.txt' % self.groupInfo.id
+        self.set_header(filename)
+
+
+# And the Subscription Conform message
+
+
+class ConfirmSubscription(GroupEmail):
+
+    @Lazy
+    def supportEmail(self):
+        subject = quote('Confirm subscription')
+        m = 'Hello,\n\nI received an email asking me to confirm '\
+            'my subscription to\n{group.name}\n    {group.url}\nand...'
+        msg = m.format(group=self.groupInfo)
+        body = quote(msg.encode(UTF8))
+        retval = 'mailto:%s?Subject=%s&body=%s' % \
+            (self.siteInfo.get_support_email(), subject, body)
+        return retval
+
+class ConfirmSubscriptionText(ConfirmSubscription, TextMixin):
+    def __init__(self, context, request):
+        super(ConfirmSubscriptionText, self).__init__(context, request)
+        filename = 'confirm-%s.txt' % self.groupInfo.id
         self.set_header(filename)

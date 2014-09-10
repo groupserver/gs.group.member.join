@@ -58,6 +58,20 @@
     template="browser/templates/newmember-admin-txt.pt"
     permission="zope2.View"/>
 
+  <browser:page
+    for="gs.group.base.interfaces.IGSGroupMarker"
+    name="gs-group-member-join-confirm.html"
+    class=".notifymessages.ConfirmSubscription"
+    template="browser/templates/confirm-subscribe.pt"
+    permission="zope2.View"/>
+  <browser:page
+    for="gs.group.base.interfaces.IGSGroupMarker"
+    name="gs-group-member-join-confirm.txt"
+    class=".notifymessages.ConfirmSubscriptionText"
+    template="browser/templates/confirm-subscribe-txt.pt"
+    permission="zope2.View"/>
+
+  <!--The audit factory-->
   <utility
     factory=".audit.JoinAuditEventFactory"
     name="gs.group.member.join"
