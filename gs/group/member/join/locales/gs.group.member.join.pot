@@ -14,10 +14,63 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: gs.group.member.join\n"
 
-#. Default: "Join"
-msgid "Join"
+#: gs.group.member.join:/join.py:41
+#. Default: "Join ${groupName}"
+msgid "join-group"
 msgstr ""
 
-#. Default: "Join this group"
-msgid "Join ${groupName}"
+#: gs.group.member.join:/join.py:79
+#. Default: "Join"
+msgid "join"
+msgstr ""
+
+#: gs.group.member.join:/notify.py:57
+#. Default: "Welcome to ${groupName}"
+msgid "welcome-subject"
+msgstr ""
+
+#: gs.group.member.join:/notifymessages.py:41
+#. Default: "Group welcome"
+msgid "support-message-group-welcome-subject"
+msgstr ""
+
+#: gs.group.member.join:/notifymessages.py:43
+#. Default: ""
+#.  "Hello,\n"
+#.  "\n"
+#.  "I received a Welcome message for the group ${groupName}\n"
+#.  "    ${groupUrl}\n"
+#.  "and..."
+msgid "support-message-group-welcome-body"
+msgstr ""
+
+#: gs.group.member.join:/notifymessages.py:80
+#. Default: "New member"
+msgid "support-message-new-member-subject"
+msgstr ""
+
+#: gs.group.member.join:/notifymessages.py:81
+#. Default: ""
+#.  "Hello,\n"
+#.  "\n"
+#.  "I am an administrator of the group ${groupName} \n"
+#.  "    ${groupUrl}\n"
+#.  "and..."
+msgid "support-message-new-member-body"
+msgstr ""
+
+#: gs.group.member.join:/notifymessages.py:105
+#. Default: "Confirm subscription"
+msgid "support-message-confirm-subscription-subject"
+msgstr ""
+
+#: gs.group.member.join:/notifymessages.py:107
+#. Default: ""
+#.  "Hello,\n"
+#.  "\n"
+#.  "I received an email asking me to confirm my subscription to\n"
+#.  "${groupName}\n"
+#.  "    ${groupUrl}\n"
+#.  "and..."
+msgid "support-message-confirm-subscription-body"
 msgstr ""

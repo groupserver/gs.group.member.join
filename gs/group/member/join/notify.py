@@ -18,6 +18,7 @@ from zope.cachedescriptors.property import Lazy
 from gs.core import to_ascii
 from gs.profile.notify.sender import MessageSender
 from gs.profile.email.base.emailuser import EmailUser
+from . import GSMessageFactory as _
 UTF8 = 'utf-8'
 
 
@@ -53,7 +54,8 @@ class NotifyNewMember(object):
         return retval
 
     def notify(self, userInfo):
-        subject = ('Welcome to %s' % (self.groupInfo.name).encode(UTF8))
+        subject = _('welcome-subject', 'Welcome to ${groupName}',
+                    mapping={'groupName': self.groupInfo.name})
         emailUser = EmailUser(userInfo.user, userInfo)
         text = self.textTemplate(userInfo=userInfo, userEmail=emailUser)
         html = self.htmlTemplate(userInfo=userInfo, userEmail=emailUser)

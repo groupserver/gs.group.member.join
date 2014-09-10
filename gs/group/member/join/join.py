@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ############################################################################
 #
-# Copyright © 2013 OnlineGroups.net and Contributors.
+# Copyright © 2013, 2014 OnlineGroups.net and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -38,7 +38,7 @@ class JoinForm(GroupForm):
 
     @Lazy
     def label(self):
-        retval = _('Join ${groupName}',
+        retval = _('join-group', 'Join ${groupName}',
                    mapping={'groupName': self.groupInfo.name})
         return retval
 
@@ -76,7 +76,8 @@ class JoinForm(GroupForm):
         retval = (len(eu.get_verified_addresses()) > 0)
         return retval
 
-    @form.action(label='Join', failure='handle_join_action_failure')
+    @form.action(label=_('join', 'Join'),
+                 failure='handle_join_action_failure')
     def handle_invite(self, action, data):
         assert self.canJoin
 

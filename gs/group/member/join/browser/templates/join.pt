@@ -6,7 +6,7 @@
       metal:use-macro="context/@@groupserver_layout/page">
   <head>
     <title metal:fill-slot="title">
-      <tal:block i18n:translate="join">Join</tal:block>"
+      <tal:block i18n:translate="join">Join</tal:block>:
       <tal:block
         content="string:${view/groupInfo/name}: ${view/siteInfo/get_name}"/>
     </title>
@@ -23,8 +23,12 @@
       define="errors view/errors; status view/status; widgets view/widgets"
       metal:fill-slot="messages">&#160;</tal:block>
     <ul metal:fill-slot="breadcrumb">
-      <li><a tal:attributes="title string:${view/siteInfo/name} Homepage"
-             href="/" title="Home">&#8962;</a></li>
+      <li>
+        <a href="/" class="icon-alone">
+          <span aria-hidden="true" data-icon="&#x2302;"></span>
+          <span class="screen-reader-text">Site home page</span>
+        </a>
+      </li>
       <li>
         <a class="group"
            tal:attributes="href string:${view/groupInfo/relativeURL}/">
@@ -40,16 +44,13 @@
       <form tal:condition="view/canJoin"
         enctype="multipart/form-data"  method="post" action="."
         tal:attributes="action request/URL" id="join">
-        <p id="introduction">
-          Joining
-          <span class="group" tal:content="view/groupInfo/name"/>
-          will allow you to <strong>receive email</strong>
-          from the group<tal:block condition="view/willPost">, and
-          <strong>post</strong> to the group</tal:block>.
+        <p id="gs-group-member-join-intro"
+           i18n:translate="gs-group-member-join-intro">
           To join
-          <span class="group" tal:content="view/groupInfo/name"/>,
+          <strong class="group" i18n:name="groupName"
+                tal:content="view/groupInfo/name">this group</strong>
           set how frequently you want to receive messages below, and
-          click <samp class="button">Join</samp>.
+          click the <samp class="button">Join</samp> button.
         </p>
         <tal:block define="widgets view/widgets">
           <tal:block replace="structure provider:groupserver.FormWidgets"/>
@@ -102,15 +103,5 @@
       - then process the data as if it had been a response to an
       - invitation.
       -->
-    <tal:block metal:fill-slot="javascript">
-      <script type="text/javascript"
-        src="/++resource++popup_help-20071218.js">&#160;</script>
-      <script type="text/javascript">
-        jQuery.noConflict()
-        jQuery(document).ready( function () {
-            GSPopupFormHelp.init('#join');
-        });
-      </script>
-    </tal:block>
   </body>
 </html>

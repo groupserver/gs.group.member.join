@@ -1,6 +1,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="gs.group.member.join"
       metal:use-macro="context/@@groupserver_email_layout/page">
   <head>
     <title metal:fill-slot="title">New member:
@@ -36,7 +38,10 @@
       </ul>
       <p class="muted">
         (You received this message because you are an administrator of
-        <span tal:content="view/groupInfo/name">This Group</span>.)
+        <span tal:content="view/groupInfo/name">This Group</span>.
+        If you have any queries email us at
+        <a tal:attributes="href view/supportEmail"
+           href="#"><code tal:content="view/siteInfo/get_support_email">this address</code></a>.)
       </p>
       <!--Website address-->
       <p class="closing">

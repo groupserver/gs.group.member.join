@@ -13,12 +13,12 @@
 #
 ############################################################################
 from __future__ import absolute_import, unicode_literals
-from urllib import quote
 from zope.cachedescriptors.property import Lazy
+import zope.i18n
 from gs.content.email.base import GroupEmail, TextMixin
 from Products.GSGroup.interfaces import IGSMailingListInfo
 from gs.profile.email.base.emailuser import EmailUser
-UTF8 = 'utf-8'
+from . import GSMessageFactory as _
 
 
 class NotifyMemberMessage(GroupEmail):
@@ -38,13 +38,17 @@ class NotifyMemberMessage(GroupEmail):
 
     @Lazy
     def supportEmail(self):
-        subject = quote('Group Welcome')
-        m = 'Hello,\n\nI received a Welcome message for the group '\
-            '{group.name}\n    {group.url}\nand...'
-        msg = m.format(group=self.groupInfo)
-        body = quote(msg.encode(UTF8))
-        retval = 'mailto:%s?Subject=%s&body=%s' % \
-            (self.siteInfo.get_support_email(), subject, body)
+        subject = _('support-message-group-welcome-subject',
+                    'Group welcome')
+        translatedSubject = zope.i18n.translate(subject)
+        body = _('support-message-group-welcome-body',
+                 'Hello,\n\nI received a Welcome message for the group '
+                 '${groupName}\n    ${groupUrl}\nand...',
+                 mapping={'groupName': self.groupInfo.name,
+                          'groupUrl': self.groupInfo.url})
+        translatedBody = zope.i18n.translate(body)
+        retval = self.mailto(self.siteInfo.get_support_email(),
+                             translatedSubject, translatedBody)
         return retval
 
 
@@ -75,13 +79,16 @@ class NotifyAdminMessage(GroupEmail):
 
     @Lazy
     def supportEmail(self):
-        subject = quote('New Member')
-        m = 'Hello,\n\nI am an administrator of the group '\
-            '{group.name}\n    {group.url}\nand...'
-        msg = m.format(group=self.groupInfo)
-        body = quote(msg.encode(UTF8))
-        retval = 'mailto:%s?Subject=%s&body=%s' % \
-            (self.siteInfo.get_support_email(), subject, body)
+        subject = _('support-message-new-member-subject', 'New member')
+        translatedSubject = zope.i18n.translate(subject)
+        body = _('support-message-new-member-body',
+                 'Hello,\n\nI am an administrator of the group '
+                 '${groupName} \n    ${groupUrl}\nand...',
+                 mapping={'groupName': self.groupInfo.name,
+                          'groupUrl': self.groupInfo.url})
+        translatedBody = zope.i18n.translate(body)
+        retval = self.mailto(self.siteInfo.get_support_email(),
+                             translatedSubject, translatedBody)
         return retval
 
 
@@ -96,16 +103,20 @@ class NotifyAdminMessageText(NotifyMemberMessage, TextMixin):
 
 
 class ConfirmSubscription(GroupEmail):
-
     @Lazy
     def supportEmail(self):
-        subject = quote('Confirm subscription')
-        m = 'Hello,\n\nI received an email asking me to confirm '\
-            'my subscription to\n{group.name}\n    {group.url}\nand...'
-        msg = m.format(group=self.groupInfo)
-        body = quote(msg.encode(UTF8))
-        retval = 'mailto:%s?Subject=%s&body=%s' % \
-            (self.siteInfo.get_support_email(), subject, body)
+        subject = _('support-message-confirm-subscription-subject',
+                    'Confirm subscription')
+        translatedSubject = zope.i18n.translate(subject)
+        body = _('support-message-confirm-subscription-body',
+                 'Hello,\n\nI received an email asking me to confirm '
+                 'my subscription to\n${groupName}\n    '
+                 '${groupUrl}\nand...',
+                 mapping={'groupName': self.groupInfo.name,
+                          'groupUrl': self.groupInfo.url})
+        translatedBody = zope.i18n.translate(body)
+        retval = self.mailto(self.siteInfo.get_support_email(),
+                             translatedSubject, translatedBody)
         return retval
 
 
