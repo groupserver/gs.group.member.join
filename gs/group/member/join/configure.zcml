@@ -12,9 +12,10 @@
 <!-- FITNESS FOR A PARTICULAR PURPOSE. -->
 <configure xmlns="http://namespaces.zope.org/zope"
            xmlns:browser="http://namespaces.zope.org/browser"
-           i18n_domain="groupserver">
+           xmlns:i18n="http://namespaces.zope.org/i18n">
 
   <include package="zope.viewlet" file="meta.zcml" />
+  <i18n:registerTranslations directory="locales" />
 
   <adapter provides=".interfaces.IGSJoiningUser"
     for="Products.CustomUserFolder.interfaces.IGSUserInfo"
