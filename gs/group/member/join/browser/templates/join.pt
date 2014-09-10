@@ -23,7 +23,7 @@
       <li><a tal:attributes="title string:${view/siteInfo/name} Homepage"
              href="/" title="Home">&#8962;</a></li>
       <li>
-        <a class="group" 
+        <a class="group"
            tal:attributes="href string:${view/groupInfo/relativeURL}/">
           <strong
             tal:content="view/groupInfo/name">This group</strong></a>
@@ -34,19 +34,19 @@
     <tal:block metal:fill-slot="body">
       <!--=mpj17= Check GS join permission -->
       <h1>
-        <span tal:content="view/label"/> 
-        <span class="group" tal:content="view/groupInfo/name"/>        
+        <span tal:content="view/label"/>
+        <span class="group" tal:content="view/groupInfo/name"/>
       </h1>
       <form tal:condition="view/canJoin"
         enctype="multipart/form-data"  method="post" action="."
         tal:attributes="action request/URL" id="join">
         <p id="introduction">
-          Joining 
+          Joining
           <span class="group" tal:content="view/groupInfo/name"/>
-          will allow you to <strong>receive email</strong> 
+          will allow you to <strong>receive email</strong>
           from the group<tal:block condition="view/willPost">, and
           <strong>post</strong> to the group</tal:block>.
-          To join 
+          To join
           <span class="group" tal:content="view/groupInfo/name"/>,
           set how frequently you want to receive messages below, and
           click <samp class="button">Join</samp>.
@@ -63,32 +63,32 @@
         </div><!--buttons-->
       </form>
       <div id="cannot-join"
-        class="ui-content ui-state-highlight ui-corner-all" 
+        class="ui-content ui-state-highlight ui-corner-all"
         tal:condition="not:view/canJoin">
         <p style="margin:1.385em;">
-          <span id="login-instruction" 
+          <span id="login-instruction"
             tal:condition="view/loggedInUser/anonymous">
-            You must 
-            <a 
+            You must
+            <a
               tal:attributes="href string:/login.html?came_from=${view/groupInfo/relativeURL}/join.html"
               href="/login.html"><strong>login</strong></a> before you can join
             <span class="group" tal:content="view/groupInfo/name"/>.
           </span><!--login-instruction-->
           <span class="verify-email"
             tal:condition="python:not(view.loggedInUser.anonymous or view.hasEmail)">
-            You must <strong>verify your email address</strong> before 
-            you can join 
+            You must <strong>verify your email address</strong> before
+            you can join
             <span class="group" tal:content="view/groupInfo/name"/>.
-            <strong>Visit 
+            <strong>Visit
               <a tal:attributes="href string:${view/loggedInUser/url}/emailsettings.html"
                 href="#">your email settings page</a></strong>
             to verify your address, or add a new address.
           </span><!--verify-email-->
           <span id="is-member" tal:condition="view/isMember">
-            You are a <strong>member</strong> of 
+            You are a <strong>member</strong> of
             <span class="group" tal:content="view/groupInfo/name"/>.
-            Visit 
-            <a href="#" 
+            Visit
+            <a href="#"
               tal:attributes="href view/groupInfo/relativeURL">the group
               homepage</a>
             to participate.
@@ -98,7 +98,7 @@
     </tal:block>
     <!--=mpj17= I do not handle the corner-case where a person
       - has been invited to join a group, but goes to the join page.
-      - The best solution will be to present the join page, and 
+      - The best solution will be to present the join page, and
       - then process the data as if it had been a response to an
       - invitation.
       -->
@@ -114,4 +114,3 @@
     </tal:block>
   </body>
 </html>
-
