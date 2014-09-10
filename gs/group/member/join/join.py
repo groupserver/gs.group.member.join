@@ -22,19 +22,25 @@ from gs.group.base.form import GroupForm
 from gs.group.member.base import user_member_of_group
 from gs.profile.email.base.emailuser import EmailUser
 from Products.XWFCore.XWFUtils import get_the_actual_instance_from_zope
+from . import GSMessageFactory as _
 from .interfaces import IGSJoinGroup, IGSJoiningUser
 from .notify import NotifyNewMember, NotifyAdmin
 
 
 class JoinForm(GroupForm):
-    label = 'Join'
     pageTemplateFileName = 'browser/templates/join.pt'
     template = ZopeTwoPageTemplateFile(pageTemplateFileName)
     form_fields = form.Fields(IGSJoinGroup, render_context=False)
 
     def __init__(self, context, request):
-        GroupForm.__init__(self, context, request)
+        super(JoinForm, self).__init__(context, request)
         self.form_fields['delivery'].custom_widget = radio_widget
+
+    @Lazy
+    def label(self):
+        retval = _('Join ${groupName}', 
+                   mapping={'groupName': self.groupInfo.name})
+        return retval
 
     @property
     def ctx(self):

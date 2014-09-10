@@ -1,11 +1,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:tal="http://xml.zope.org/namespaces/tal"
-  xmlns:metal="http://xml.zope.org/namespaces/metal"
-  metal:use-macro="context/@@groupserver_layout/page">
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="gs.group.member.join"
+      metal:use-macro="context/@@groupserver_layout/page">
   <head>
-    <title metal:fill-slot="title"
-           tal:content="string:${view/label}: ${view/groupInfo/name}: ${view/siteInfo/get_name}">
-      Join
+    <title metal:fill-slot="title">
+      <tal:block i18n:translate="join">Join</tal:block>"
+      <tal:block
+        content="string:${view/groupInfo/name}: ${view/siteInfo/get_name}"/>
     </title>
     <tal:block metal:fill-slot="metadata">
       <link rel="up" href="#"
@@ -28,15 +31,12 @@
           <strong
             tal:content="view/groupInfo/name">This group</strong></a>
       </li>
-      <li tal:content="view/label">Join</li>
+      <li i18n:translate="join">Join</li>
     </ul>
 
     <tal:block metal:fill-slot="body">
       <!--=mpj17= Check GS join permission -->
-      <h1>
-        <span tal:content="view/label"/>
-        <span class="group" tal:content="view/groupInfo/name"/>
-      </h1>
+      <h1 tal:content="view/label">Join this group</h1>
       <form tal:condition="view/canJoin"
         enctype="multipart/form-data"  method="post" action="."
         tal:attributes="action request/URL" id="join">
