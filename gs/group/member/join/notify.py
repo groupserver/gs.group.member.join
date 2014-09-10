@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-##############################################################################
+############################################################################
 #
 # Copyright © 2013, 2014 OnlineGroups.net and Contributors.
 # All Rights Reserved.
@@ -11,7 +11,7 @@
 # WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
 # FOR A PARTICULAR PURPOSE.
 #
-##############################################################################
+############################################################################
 from __future__ import unicode_literals
 from zope.component import createObject, getMultiAdapter
 from zope.cachedescriptors.property import Lazy
@@ -34,20 +34,21 @@ class NotifyNewMember(object):
     @Lazy
     def groupInfo(self):
         retval = createObject('groupserver.GroupInfo', self.context)
-        assert retval, 'Could not create the GroupInfo from %s' % self.context
+        assert retval, 'Could not create the GroupInfo from %s' % \
+            self.context
         return retval
 
     @Lazy
     def textTemplate(self):
         retval = getMultiAdapter((self.context, self.request),
-                    name=self.textTemplateName)
+                                 name=self.textTemplateName)
         assert retval
         return retval
 
     @Lazy
     def htmlTemplate(self):
         retval = getMultiAdapter((self.context, self.request),
-                    name=self.htmlTemplateName)
+                                 name=self.htmlTemplateName)
         assert retval
         return retval
 

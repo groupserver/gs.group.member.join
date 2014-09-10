@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-##############################################################################
+############################################################################
 #
 # Copyright © 2013, 2014 OnlineGroups.net and Contributors.
 # All Rights Reserved.
@@ -11,7 +11,7 @@
 # WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
 # FOR A PARTICULAR PURPOSE.
 #
-##############################################################################
+############################################################################
 from __future__ import absolute_import, unicode_literals
 from urllib import quote
 from zope.cachedescriptors.property import Lazy
@@ -61,11 +61,8 @@ class NotifyMemberMessageText(NotifyMemberMessage, TextMixin):
 class NotifyAdminMessage(GroupEmail):
     @Lazy
     def userEmailInfo(self):
-        # possibly this should be called something like testUserEmailInfo,
-        # because it is really only used in the test case
-        #
-        # wpb: Not true. E-Democracy uses userEmailInfo to allow forum managers
-        # to contact/introduct new members.
+        # Used by some (E-Democracy.org) to allow group administrators to
+        # contact or introduce new members.
         userInfo = self.loggedInUserInfo
         emailUser = EmailUser(userInfo.user, userInfo)
         return emailUser
@@ -84,7 +81,7 @@ class NotifyAdminMessage(GroupEmail):
         msg = m.format(group=self.groupInfo)
         body = quote(msg.encode(UTF8))
         retval = 'mailto:%s?Subject=%s&body=%s' % \
-            (self.siteInfo.get_support_email(), sub, body)
+            (self.siteInfo.get_support_email(), subject, body)
         return retval
 
 
@@ -110,6 +107,7 @@ class ConfirmSubscription(GroupEmail):
         retval = 'mailto:%s?Subject=%s&body=%s' % \
             (self.siteInfo.get_support_email(), subject, body)
         return retval
+
 
 class ConfirmSubscriptionText(ConfirmSubscription, TextMixin):
     def __init__(self, context, request):

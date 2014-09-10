@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-##############################################################################
+############################################################################
 #
 # Copyright © 2013 OnlineGroups.net and Contributors.
 # All Rights Reserved.
@@ -11,7 +11,7 @@
 # WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
 # FOR A PARTICULAR PURPOSE.
 #
-##############################################################################
+############################################################################
 from __future__ import absolute_import, unicode_literals
 from zope.cachedescriptors.property import Lazy
 from zope.component import createObject
@@ -38,7 +38,7 @@ class JoinForm(GroupForm):
 
     @Lazy
     def label(self):
-        retval = _('Join ${groupName}', 
+        retval = _('Join ${groupName}',
                    mapping={'groupName': self.groupInfo.name})
         return retval
 
@@ -53,16 +53,16 @@ class JoinForm(GroupForm):
 
     @property
     def canJoin(self):
-        retval = not(self.loggedInUser.anonymous) \
-                    and not(self.isMember) \
-                    and self.hasEmail \
-                    and self.mailingListInfo.get_property('subscribe', False)
+        retval = (not(self.loggedInUser.anonymous)
+                  and not(self.isMember)
+                  and self.hasEmail
+                  and self.mailingListInfo.get_property('subscribe', False))
         return retval
 
     @property
     def willPost(self):
-        postingMembers = self.mailingListInfo.get_property('posting_members',
-                                                            [])
+        postingMembers = self.mailingListInfo.get_property(
+            'posting_members', [])
         retval = not(bool(postingMembers))
         return retval
 
@@ -85,12 +85,13 @@ class JoinForm(GroupForm):
         if data['delivery'] == 'email':
             # --=mpj17=-- The default is one email per post
             m = 'You will receive an email message every time '\
-              'someone posts to %s.' % self.groupInfo.name
+                'someone posts to %s.' % self.groupInfo.name
         elif data['delivery'] == 'digest':
             self.loggedInUser.user.set_enableDigestByKey(self.groupInfo.id)
             m = 'You will receive a daily digest of topics.'
         elif data['delivery'] == 'web':
-            self.loggedInUser.user.set_disableDeliveryByKey(self.groupInfo.id)
+            self.loggedInUser.user.set_disableDeliveryByKey(
+                self.groupInfo.id)
             m = 'You will not receive any email from this group.'
 
         notifier = NotifyNewMember(self.context, self.request)
@@ -101,7 +102,8 @@ class JoinForm(GroupForm):
             notifier.notify(adminInfo, self.loggedInUser)
 
         msg = '<p>You have joined <a class="group" href="%s">%s</a>. %s</p>'
-        self.status = msg % (self.groupInfo.relativeURL, self.groupInfo.name, m)
+        self.status = msg % (self.groupInfo.relativeURL,
+                             self.groupInfo.name, m)
 
     def handle_join_action_failure(self, action, data, errors):
         if len(errors) == 1:
