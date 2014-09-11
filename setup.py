@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-##############################################################################
+############################################################################
 #
 # Copyright © 2013, 2014 OnlineGroups.net and Contributors.
 # All Rights Reserved.
@@ -11,7 +11,7 @@
 # WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
 # FOR A PARTICULAR PURPOSE.
 #
-##############################################################################
+############################################################################
 from setuptools import setup, find_packages
 import codecs
 import os
@@ -19,13 +19,14 @@ from version import get_version
 
 with codecs.open('README.rst', encoding='utf-8') as f:
     long_description = f.read()
-with codecs.open(os.path.join("docs", "HISTORY.txt"), 
+with codecs.open(os.path.join("docs", "HISTORY.rst"),
                  encoding='utf-8') as f:
     long_description += '\n' + f.read()
 
 version = get_version()
 
-setup(name='gs.group.member.join',
+setup(
+    name='gs.group.member.join',
     version=version,
     description="The pages and code to join people to GroupServer groups",
     long_description=long_description,
@@ -34,6 +35,7 @@ setup(name='gs.group.member.join',
         "Intended Audience :: Developers",
         'License :: OSI Approved :: Zope Public License',
         "Natural Language :: English",
+        "Natural Language :: French",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Programming Language :: Python :: 2",
@@ -60,6 +62,8 @@ setup(name='gs.group.member.join',
         'zope.event',
         'zope.formlib',
         'zope.interface',
+        'zope.i18n',
+        'zope.i18nmessageid',
         'zope.tal',
         'zope.tales',
         'zope.viewlet',
@@ -79,7 +83,6 @@ setup(name='gs.group.member.join',
         'Products.GSProfile',
         'Products.XWFCore',
     ],
-    entry_points="""
-    # -*- Entry points: -*-
+    entry_points="""# -*- Entry points: -*-
     """,
 )
