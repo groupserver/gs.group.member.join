@@ -23,8 +23,8 @@ from gs.group.member.base import user_member_of_group
 from gs.profile.email.base.emailuser import EmailUser
 from Products.XWFCore.XWFUtils import get_the_actual_instance_from_zope
 from . import GSMessageFactory as _
-from .interfaces import IGSJoinGroup, IGSJoiningUser
-from .notify import NotifyNewMember, NotifyAdmin
+from .interfaces import IGSJoinGroup
+from .utils import join
 
 
 class JoinForm(GroupForm):
@@ -78,11 +78,9 @@ class JoinForm(GroupForm):
 
     @form.action(label=_('join', 'Join'),
                  failure='handle_join_action_failure')
-    def handle_invite(self, action, data):
+    def handle_join(self, action, data):
         assert self.canJoin
 
-        joiningUser = IGSJoiningUser(self.loggedInUser)
-        joiningUser.silent_join(self.groupInfo)
         if data['delivery'] == 'email':
             # --=mpj17=-- The default is one email per post
             m = 'You will receive an email message every time '\
@@ -95,12 +93,7 @@ class JoinForm(GroupForm):
                 self.groupInfo.id)
             m = 'You will not receive any email from this group.'
 
-        notifier = NotifyNewMember(self.context, self.request)
-        notifier.notify(self.loggedInUser)
-
-        notifier = NotifyAdmin(self.context, self.request)
-        for adminInfo in self.groupInfo.group_admins:
-            notifier.notify(adminInfo, self.loggedInUser)
+        join(self.context, self.request, self.loggedInUser, self.groupInfo)
 
         msg = '<p>You have joined <a class="group" href="%s">%s</a>. %s</p>'
         self.status = msg % (self.groupInfo.relativeURL,
