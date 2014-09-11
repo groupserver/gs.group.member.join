@@ -13,24 +13,18 @@
 #
 ############################################################################
 from __future__ import unicode_literals
-from zope.component import createObject, getMultiAdapter
+from zope.component import createObject
 from zope.cachedescriptors.property import Lazy
-from gs.core import to_ascii
-from gs.profile.notify.sender import MessageSender
+from zope.i18n import translate
+from gs.profile.notify import MessageSender, NotifierABC
 from gs.profile.email.base.emailuser import EmailUser
 from . import GSMessageFactory as _
 UTF8 = 'utf-8'
 
 
-class NotifyNewMember(object):
+class NotifyNewMember(NotifierABC):
     textTemplateName = 'new-member-msg.txt'
     htmlTemplateName = 'new-member-msg.html'
-
-    def __init__(self, context, request):
-        self.context = context
-        self.request = request
-        h = self.request.response.getHeader('Content-Type')
-        self.oldContentType = to_ascii(h if h else 'text/html')
 
     @Lazy
     def groupInfo(self):
@@ -39,30 +33,16 @@ class NotifyNewMember(object):
             self.context
         return retval
 
-    @Lazy
-    def textTemplate(self):
-        retval = getMultiAdapter((self.context, self.request),
-                                 name=self.textTemplateName)
-        assert retval
-        return retval
-
-    @Lazy
-    def htmlTemplate(self):
-        retval = getMultiAdapter((self.context, self.request),
-                                 name=self.htmlTemplateName)
-        assert retval
-        return retval
-
     def notify(self, userInfo):
         subject = _('welcome-subject', 'Welcome to ${groupName}',
                     mapping={'groupName': self.groupInfo.name})
+        translatedSubject = translate(subject)
         emailUser = EmailUser(userInfo.user, userInfo)
         text = self.textTemplate(userInfo=userInfo, userEmail=emailUser)
         html = self.htmlTemplate(userInfo=userInfo, userEmail=emailUser)
         ms = MessageSender(self.context, userInfo)
-        ms.send_message(subject, text, html)
-        self.request.response.setHeader(to_ascii('Content-Type'),
-                                        to_ascii(self.oldContentType))
+        ms.send_message(translatedSubject, text, html)
+        self.reset_content_type()
 
 
 # And the equivilent class for telling the admin
@@ -80,5 +60,26 @@ class NotifyAdmin(NotifyNewMember):
                                  userEmail=emailUser)
         ms = MessageSender(self.context, adminInfo)
         ms.send_message(subject, text, html)
-        self.request.response.setHeader(to_ascii('Content-Type'),
-                                        self.oldContentType)
+        self.reset_content_type()
+
+
+# The email asking someone to confirm they want to be in a group.
+
+
+class ConfirmationNotifier(NotifyNewMember):
+    textTemplateName = 'gs-group-member-join-confirm.txt'
+    htmlTemplateName = 'gs-group-member-join-confirm.html'
+
+    def notify(self, userInfo, confirmationId):
+        subject = _('confirm-subject',
+                    'Confirm you want to join ${groupName} (action '
+                    'required) ID-${confirmationId}',
+                    mapping={'groupName': self.groupInfo.name,
+                             'confirmationId': confirmationId})
+        translatedSubject = translate(subject)
+        emailUser = EmailUser(userInfo.user, userInfo)
+        text = self.textTemplate(userInfo=userInfo, userEmail=emailUser)
+        html = self.htmlTemplate(userInfo=userInfo, userEmail=emailUser)
+        ms = MessageSender(self.context, userInfo)
+        ms.send_message(translatedSubject, text, html)
+        self.reset_content_type()
