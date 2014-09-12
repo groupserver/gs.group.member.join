@@ -16,6 +16,7 @@ from __future__ import absolute_import, unicode_literals
 from email.utils import parseaddr
 from logging import getLogger
 log = getLogger('gs.group.member.join.listcommand')
+import shlex
 from zope.component import createObject
 from zope.cachedescriptors.property import Lazy
 from gs.core import to_id
@@ -117,22 +118,41 @@ class ConfirmCommand(CommandABC):
     def process(self, email, request):
         'Process the subscription confirmation'
         addr = self.get_addr(email)
-        idComponents = [idc for idc in self.get_command_components(email)
+        # Use shlex.split rather than self.get_command_components because
+        # it is important that we are case-preserving.
+        idComponents = [idc for idc in shlex.split(email['Subject'])
                         if idc[:3] == 'ID-']
         if idComponents:
-            confirmationId = idComponents[0].split('-')[0]
+            confirmationId = idComponents[0].split('-')[1]
             confirmationInfo = self.query.get_confirmation(addr,
                                                            confirmationId)
             if confirmationInfo and (confirmationInfo['email'] == addr):
-                userInfo = createObject('groupserver.UserFromId',
-                                        self.group,
+                # Because the email comes into Support we may be on a
+                # totally different site. Get the correct site as the
+                # context.
+                siteRoot = self.group.site_root()
+                site = getattr(siteRoot.Content, confirmationInfo['siteId'])
+                # Get the user and group with the right context.
+                userInfo = createObject('groupserver.UserFromId', site,
                                         confirmationInfo['userId'])
-                groupInfo = createObject('groupserver.GroupInfo',
-                                         self.group)
-                join(self.group, request, userInfo, groupInfo)
+                groupInfo = createObject('groupserver.GroupInfo', site,
+                                         confirmationInfo['groupId'])
+                join(groupInfo.groupObj, request, userInfo, groupInfo)
                 self.query.clear_confirmations(userInfo.id, groupInfo.id)
                 retval = CommandResult.commandStop
-            else:
+            elif not confirmationInfo:
+                m = 'No confirmation information found in command from '\
+                    '<{addr}>: {subject}'
+                msg = m.format(addr=addr, subject=email['Subject'])
+                log.info(msg)
+                retval = CommandResult.notACommand
+            else:  # confirmationInfo['email'] != addr
+                m = 'Email address <{addr}> does not match that in the '\
+                    'confirmation info <{confirmationAddr}>: {subject}'
+                msg = m.format(addr=addr,
+                               confirmationAddr=confirmationInfo['email'],
+                               subject=email['Subject'])
+                log.info(msg)
                 retval = CommandResult.notACommand
         else:
             m = 'No confirmation ID found in command from <{addr}>: '\
