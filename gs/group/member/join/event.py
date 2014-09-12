@@ -20,13 +20,19 @@ from zope.interface import Attribute, implementer
 
 
 class IGSJoinGroupEvent(IObjectEvent):
-    """ An event issued after someone has joined a group."""
+    '''The event raised when someone joins a group.
+
+:cvar groupInfo: Information about the group that was joined.
+:type groupInfo: :class:`Products.GSGroup.interface.IGSGroupInfo`
+:cvar userInfo: Information about the new member of the grop
+:type userInfo: :class:`Products.CustomUser.interfaces.IGSUserInfo`'''
     groupInfo = Attribute('The group that is being joined')
     memberInfo = Attribute('The new group member')
 
 
 @implementer(IGSJoinGroupEvent)
 class GSJoinGroupEvent(ObjectEvent):
+    '''The concrete implementation of :class:`IGSJoinGroupEvent`'''
     def __init__(self, context, groupInfo, memberInfo):
         super(GSJoinGroupEvent, self).__init__(context)
         self.groupInfo = groupInfo

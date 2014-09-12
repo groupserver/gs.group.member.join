@@ -17,6 +17,7 @@ from .notify import NotifyNewMember, NotifyAdmin
 
 
 def join(context, request, userInfo, groupInfo):
+    '''Join someone to a group. '''
     joiningUser = IGSJoiningUser(userInfo)
     joiningUser.silent_join(groupInfo)
     notifier = NotifyNewMember(context, request)

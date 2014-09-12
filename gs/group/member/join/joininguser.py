@@ -25,12 +25,18 @@ from .event import GSJoinGroupEvent
 
 
 class JoiningUser(object):
+    '''An adapter for a :class:`IGSUserInfo` to create a user that can join
+groups.
+
+:param userInfo: The user that will join the groups:
+:type userInfo: :class:`Products.CustomUser.interfaces.IGSUserInfo`'''
     def __init__(self, userInfo):
         self.userInfo = userInfo
         self.context = userInfo.user
 
     @Lazy
     def joinableGroups(self):
+        'The list of groups that can be joined by a user.'
         groupsInfo = createObject('groupserver.GroupsInfo',
                                   self.context)
         u = self.userInfo.user
@@ -53,6 +59,21 @@ class JoiningUser(object):
         notify(GSJoinGroupEvent(self.context, groupInfo, self.userInfo))
 
     def silent_join(self, groupInfo):
+        '''Join a group, without sending any notifications out.
+
+:param groupInfo: The group to join.
+:type groupInfo: :class:`Products.GSGroup.interface.IGSGroupInfo`
+
+The user will become a **member** of the group, and the new member will be
+added to the list of **moderated** members if necessary. Notifications
+should be sent by the user-interfaces that start the joining.
+
+In addition an event that implements the
+:class:`gs.group.member.join.event.IGSJoinGroupEvent` interface will be
+raised at the end of joining. Code that wish to **extend** joining should
+listen for that event.
+
+:TODO: Move moderation out of this product.'''
         auditor = JoinAuditor(self.context, groupInfo, self.userInfo)
         self.join_group(groupInfo, auditor)
         self.set_moderation(groupInfo, auditor)
