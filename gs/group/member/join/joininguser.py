@@ -1,11 +1,27 @@
-# coding=utf-8
+# -*- coding: utf-8 -*-
+############################################################################
+#
+# Copyright © 2010, 2011, 2012, 2013, 2014 OnlineGroups.net and
+# Contributors.
+#
+# All Rights Reserved.
+#
+# This software is subject to the provisions of the Zope Public License,
+# Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
+# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
+# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
+# FOR A PARTICULAR PURPOSE.
+#
+############################################################################
+from __future__ import absolute_import, unicode_literals
 from zope.cachedescriptors.property import Lazy
 from zope.component import createObject
 from zope.event import notify
 from gs.group.member.base import member_id, user_division_admin_of_group
 from gs.profile.notify.interfaces import IGSNotifyUser
-from audit import JoinAuditor, JOIN_GROUP, MODERATED
-from event import GSJoinGroupEvent
+from .audit import JoinAuditor, JOIN_GROUP, MODERATED
+from .event import GSJoinGroupEvent
 
 
 class JoiningUser(object):
@@ -16,7 +32,7 @@ class JoiningUser(object):
     @Lazy
     def joinableGroups(self):
         groupsInfo = createObject('groupserver.GroupsInfo',
-                        self.context)
+                                  self.context)
         u = self.userInfo.user
         # TODO: --=mpj17=-- This is a silly way to do this. Really,
         #   there should be a simple way of asking a group if it is
@@ -61,24 +77,23 @@ class JoiningUser(object):
         # TODO: <https://projects.iopen.net/groupserver/ticket/414>
         notifiedUser = IGSNotifyUser(self.userInfo)
         mailingList = createObject('groupserver.MailingListInfo',
-                        self.context, groupInfo.id)
+                                   self.context, groupInfo.id)
         ptnCoachId = groupInfo.get_property('ptn_coach_id', '')
         ptnCoach = createObject('groupserver.UserFromId',
-                        self.context, ptnCoachId)
+                                self.context, ptnCoachId)
         n_dict = {
-                    'groupId': groupInfo.id,
-                    'groupName': groupInfo.name,
-                    'siteId': groupInfo.siteInfo.id,
-                    'siteName': groupInfo.siteInfo.name,
-                    'canonical': groupInfo.siteInfo.url,
-                    'grp_email': mailingList.get_property('mailto'),
-                    'ptnCoachId': groupInfo.get_property('ptn_coach_id', ''),
-                    'ptnCoach': ptnCoach.name,
-                    'realLife': groupInfo.get_property('real_life_group', ''),
-                    'supportEmail': groupInfo.siteInfo.get_support_email()
-                    }
+            'groupId': groupInfo.id,
+            'groupName': groupInfo.name,
+            'siteId': groupInfo.siteInfo.id,
+            'siteName': groupInfo.siteInfo.name,
+            'canonical': groupInfo.siteInfo.url,
+            'grp_email': mailingList.get_property('mailto'),
+            'ptnCoachId': groupInfo.get_property('ptn_coach_id', ''),
+            'ptnCoach': ptnCoach.name,
+            'realLife': groupInfo.get_property('real_life_group', ''),
+            'supportEmail': groupInfo.siteInfo.get_support_email(), }
         notifiedUser.send_notification('add_group',
-            member_id(groupInfo.id), n_dict)
+                                       member_id(groupInfo.id), n_dict)
 
     def set_moderation(self, groupInfo, auditor):
         # TODO: Move to an event-handler. It can react to groups that
@@ -86,12 +101,12 @@ class JoiningUser(object):
         # This is tricky:
         #     <https://projects.iopen.net/groupserver/ticket/235>
         mailingList = createObject('groupserver.MailingListInfo',
-                        self.context, groupInfo.id)
+                                   self.context, groupInfo.id)
         isDivisionAdmin = user_division_admin_of_group(self.userInfo,
-                            groupInfo)
+                                                       groupInfo)
         if (mailingList.is_moderated and
-            not(isDivisionAdmin) and
-            mailingList.is_moderate_new):
+           not(isDivisionAdmin) and
+           mailingList.is_moderate_new):
             # TODO: Rip this code out into a utility that can be called
             #   by manage members
             mList = mailingList.mlist
@@ -102,10 +117,11 @@ class JoiningUser(object):
                 (self.userInfo.id, groupInfo.name, groupInfo.id)
             moderatedIds.append(self.userInfo.id)
             if mList.hasProperty('moderated_members'):
-                mList.manage_changeProperties(moderated_members=moderatedIds)
+                mList.manage_changeProperties(
+                    moderated_members=moderatedIds)
             else:
-                mList.manage_addProperty('moderated_members',
-                    moderatedIds, 'lines')
+                mList.manage_addProperty('moderated_members', moderatedIds,
+                                         'lines')
             auditor.info(MODERATED)
 
     def tell_admin(self, groupInfo):
@@ -126,4 +142,4 @@ class JoiningUser(object):
                 'joining_group': groupInfo.groupObj,
             }
             notifiedUser.send_notification('join_group_admin', groupInfo.id,
-                                            n_dict)
+                                           n_dict)
