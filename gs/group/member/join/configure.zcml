@@ -17,11 +17,13 @@
   <include package="zope.viewlet" file="meta.zcml" />
   <i18n:registerTranslations directory="locales" />
 
-  <adapter provides=".interfaces.IGSJoiningUser"
+  <adapter
+    provides=".interfaces.IGSJoiningUser"
     for="Products.CustomUserFolder.interfaces.IGSUserInfo"
     permission="zope2.Public"
     factory=".joininguser.JoiningUser" />
-  <adapter provides=".interfaces.IGSJoiningUser"
+  <adapter
+    provides=".interfaces.IGSJoiningUser"
     for="Products.CustomUserFolder.interfaces.ICustomUser"
     permission="zope2.Public"
     factory="Products.CustomUserFolder.userinfo.GSUserInfo
@@ -59,6 +61,13 @@
     template="browser/templates/newmember-admin-txt.pt"
     permission="zope2.View"/>
 
+  <!-- The subscribe command -->
+  <adapter
+    name="subscribe"
+    for="gs.group.base.interfaces.IGSGroupMarker"
+    provides="gs.group.list.command.interfaces.IEmailCommand"
+    factory=".listcommand.SubscribeCommand" />
+  <!-- The confirm subscription notification -->
   <browser:page
     for="gs.group.base.interfaces.IGSGroupMarker"
     name="gs-group-member-join-confirm.html"
@@ -71,6 +80,12 @@
     class=".notifymessages.ConfirmSubscriptionText"
     template="browser/templates/confirm-subscribe-txt.pt"
     permission="zope2.View"/>
+  <!-- The confirm command -->
+  <adapter
+    name="confirm"
+    for="gs.group.base.interfaces.IGSGroupMarker"
+    provides="gs.group.list.command.interfaces.IEmailCommand"
+    factory=".listcommand.ConfirmCommand" />
 
   <!--The audit factory-->
   <utility
