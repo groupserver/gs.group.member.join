@@ -23,15 +23,38 @@ from gs.group.list.command.result import CommandResult
 from gs.group.list.command.tests.faux import FauxGroup
 
 
+class FauxSiteInfo(object):
+    name = 'An Example Site'
+    id = 'example'
+
+
 class FauxGroupInfo(object):
     name = 'An Example Group'
     id = 'example_group'
+    siteInfo = FauxSiteInfo()
+
+
+class FauxUserInfo(object):
+    name = 'An Example user'
+    id = 'exampleuser'
 
 
 class TestSubscribeCommand(TestCase):
+    subscribeSubject = 'Subscribe'
+
     def setUp(self):
         self.fauxGroup = FauxGroup()
         self.fauxGroupInfo = FauxGroupInfo()
+
+    @staticmethod
+    def get_email(subject):
+        retval = Parser().parsestr(
+            'From: <member@example.com>\n'
+            'To: <group@example.com>\n'
+            'Subject: {0}\n'
+            '\n'
+            'Body would go here\n'.format(subject))
+        return retval
 
     def test_generate_confirmation_id(self):
         'Test the generation of the confirmation ID'
@@ -45,6 +68,24 @@ class TestSubscribeCommand(TestCase):
         self.assertEqual(6, len(r1))
         self.assertEqual(6, len(r2))
         self.assertNotEqual(r1, r2)
+
+    def test_subscribe_member(self):
+        'Are subscribe requests from existing users ignored?'
+        with patch.object(SubscribeCommand,
+                          'get_userInfo') as mockGetUserInfo:
+            mockGetUserInfo.return_value = FauxUserInfo()
+            with patch.object(SubscribeCommand, 'groupInfo') as mockGI:
+                with patch(
+                    'gs.group.member.join.listcommand.user_member_of_group'
+                ) as mockUserMemberOfGroup:
+                    mockGI.return_value = FauxGroupInfo()
+                    mockUserMemberOfGroup.return_value = True
+
+                    c = SubscribeCommand(self.fauxGroup)
+                    e = self.get_email(self.subscribeSubject)
+                    r = c.process(e, None)
+
+        self.assertEqual(CommandResult.notACommand, r)
 
 
 class TestConfirmCommand(TestCase):
@@ -115,7 +156,7 @@ class TestConfirmCommand(TestCase):
 
     @patch.object(ConfirmCommand, 'query')
     def test_info_found_join(self, mockQuery):
-        'Is join called if the address matches'
+        'Is ConfirmCommand.join called if the address matches?'
         mockQuery.get_confirmation.return_value = {
             'email': 'member@example.com',
         }
