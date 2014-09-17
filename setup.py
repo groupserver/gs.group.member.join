@@ -85,6 +85,9 @@ setup(
         'Products.GSProfile',
         'Products.XWFCore',
     ],
+    extras_require={'docs': ['Sphinx', ], },
+    test_suite="gs.group.member.join.tests.test_all",
+    tests_require=['mock', ],
     entry_points="""# -*- Entry points: -*-
     """,
 )
