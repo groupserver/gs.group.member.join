@@ -37,11 +37,6 @@ class SubscribeCommand(CommandABC):
         retval = createObject('groupserver.GroupInfo', self.group)
         return retval
 
-    @staticmethod
-    def get_addr(email):
-        retval = parseaddr(email['From'])[1]
-        return retval
-
     @Lazy
     def query(self):
         retval = ConfirmationQuery()
@@ -59,7 +54,7 @@ class SubscribeCommand(CommandABC):
 
     def process(self, email, request):
         'Process the email command ``subscribe``'
-        addr = self.get_addr(email)
+        addr = parseaddr(email['From'])[1]
         userInfo = self.get_userInfo(addr)
         groupVisibility = GroupVisibility(self.groupInfo)
         if userInfo and user_member_of_group(userInfo, self.group):
@@ -125,27 +120,33 @@ class SubscribeCommand(CommandABC):
 class ConfirmCommand(CommandABC):
     'The ``confirm subscription`` command.'
 
-    @staticmethod
-    def get_addr(email):
-        retval = parseaddr(email['From'])[1]
-        return retval
-
     @Lazy
     def query(self):
         retval = ConfirmationQuery()
         return retval
 
-    def process(self, email, request):
-        'Process the subscription confirmation'
-        addr = self.get_addr(email)
+    @staticmethod
+    def get_confirmation_id(email):
+        '''Get the confirmation ID from the subject line of the email
+
+:param email.message.Message email: The email to process.
+:returns: The confirmation-identifier from the ``Subject`` if present,
+          ``None`` otherwise.
+:rtype: str'''
         # Use shlex.split rather than self.get_command_components because
         # it is important that we are case-preserving.
         idComponents = [idc for idc in shlex.split(email['Subject'])
                         if idc[:3] == 'ID-']
-        if idComponents:
-            confirmationId = idComponents[0].split('-')[1]
-            confirmationInfo = self.query.get_confirmation(addr,
-                                                           confirmationId)
+        retval = idComponents[0].split('-')[1] if idComponents else None
+        return retval
+
+    def process(self, email, request):
+        'Process the subscription confirmation'
+        addr = parseaddr(email['From'])[1]
+        confirmationId = self.get_confirmation_id(email)
+        if confirmationId:
+            confirmationInfo = self.query.get_confirmation(
+                addr, confirmationId)
             if confirmationInfo and (confirmationInfo['email'] == addr):
                 self.join(confirmationInfo, request)
                 retval = CommandResult.commandStop
@@ -186,5 +187,6 @@ class ConfirmCommand(CommandABC):
                                 confirmationInfo['userId'])
         groupInfo = createObject('groupserver.GroupInfo', site,
                                  confirmationInfo['groupId'])
+        # Member check?
         join(groupInfo.groupObj, request, userInfo, groupInfo)
         self.query.clear_confirmations(userInfo.id, groupInfo.id)
