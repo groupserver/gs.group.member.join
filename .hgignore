@@ -6,3 +6,5 @@ dist
 *orig
 *nja
 *.mo
+.tox/*
+docs/_build/*
