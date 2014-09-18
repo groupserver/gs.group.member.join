@@ -54,6 +54,19 @@ class SubscribeCommand(CommandABC):
 
     def process(self, email, request):
         'Process the email command ``subscribe``'
+        # TODO: --=mpj17=-- Take my own advice and do this *mess* with
+        # adapters.
+        #
+        # The first is a modification of GroupVisibility: get it to present
+        # an interface depending on the visibility of the group. Get that?
+        # It adapts a IGroupFolder to one of four subclasses of
+        # IGroupVisibility: public, public to site member, private, or
+        # secret.
+        #
+        # The next four take each of the subclasses of IGroupVisiblity
+        # and provide a joiner for that.
+        #
+        # **Then** I can test this all sanely.
         addr = parseaddr(email['From'])[1]
         userInfo = self.get_userInfo(addr)
         groupVisibility = GroupVisibility(self.groupInfo)

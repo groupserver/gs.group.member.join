@@ -73,11 +73,11 @@ class TestSubscribeCommand(TestCase):
         'Are subscribe requests from existing users ignored?'
         with patch.object(SubscribeCommand,
                           'get_userInfo') as mockGetUserInfo:
-            mockGetUserInfo.return_value = FauxUserInfo()
             with patch.object(SubscribeCommand, 'groupInfo') as mockGI:
                 with patch(
                     'gs.group.member.join.listcommand.user_member_of_group'
                 ) as mockUserMemberOfGroup:
+                    mockGetUserInfo.return_value = FauxUserInfo()
                     mockGI.return_value = FauxGroupInfo()
                     mockUserMemberOfGroup.return_value = True
 
@@ -86,6 +86,9 @@ class TestSubscribeCommand(TestCase):
                     r = c.process(e, None)
 
         self.assertEqual(CommandResult.notACommand, r)
+
+    # FIXME: Pathetically inadequate testing. The code needs to be
+    # refactored. See the SubscribeCommand.process() method for how.
 
 
 class TestConfirmCommand(TestCase):
