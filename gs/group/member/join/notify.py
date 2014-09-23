@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-##############################################################################
+############################################################################
 #
 # Copyright © 2013, 2014 OnlineGroups.net and Contributors.
 # All Rights Reserved.
@@ -11,14 +11,13 @@
 # WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
 # FOR A PARTICULAR PURPOSE.
 #
-##############################################################################
+############################################################################
 from __future__ import unicode_literals
 from zope.component import createObject, getMultiAdapter
 from zope.cachedescriptors.property import Lazy
 from gs.core import to_ascii
 from gs.profile.notify.sender import MessageSender
 from gs.profile.email.base.emailuser import EmailUser
-UTF8 = 'utf-8'
 
 
 class NotifyNewMember(object):
@@ -34,25 +33,26 @@ class NotifyNewMember(object):
     @Lazy
     def groupInfo(self):
         retval = createObject('groupserver.GroupInfo', self.context)
-        assert retval, 'Could not create the GroupInfo from %s' % self.context
+        assert retval, 'Could not create the GroupInfo from %s' % \
+            self.context
         return retval
 
     @Lazy
     def textTemplate(self):
         retval = getMultiAdapter((self.context, self.request),
-                    name=self.textTemplateName)
+                                 name=self.textTemplateName)
         assert retval
         return retval
 
     @Lazy
     def htmlTemplate(self):
         retval = getMultiAdapter((self.context, self.request),
-                    name=self.htmlTemplateName)
+                                 name=self.htmlTemplateName)
         assert retval
         return retval
 
     def notify(self, userInfo):
-        subject = ('Welcome to %s' % (self.groupInfo.name).encode(UTF8))
+        subject = 'Welcome to {0}'.format(self.groupInfo.name)
         emailUser = EmailUser(userInfo.user, userInfo)
         text = self.textTemplate(userInfo=userInfo, userEmail=emailUser)
         html = self.htmlTemplate(userInfo=userInfo, userEmail=emailUser)
@@ -69,7 +69,7 @@ class NotifyAdmin(NotifyNewMember):
     htmlTemplateName = 'new-member-admin-msg.html'
 
     def notify(self, adminInfo, userInfo):
-        subject = ('%s: New Member' % (self.groupInfo.name).encode(UTF8))
+        subject = '{0}: New Member'.format(self.groupInfo.name)
         emailUser = EmailUser(userInfo.user, userInfo)
         text = self.textTemplate(adminInfo=adminInfo, userInfo=userInfo,
                                  userEmail=emailUser)
