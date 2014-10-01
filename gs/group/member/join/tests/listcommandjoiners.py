@@ -118,6 +118,7 @@ class SuccessJoinerTest(TestCase):
 
     @patch('gs.group.member.join.listcommandjoiners.user_member_of_group')
     def test_public(self, umog):
+        'Test a person with an existing profile joining a group'
         umog.return_value = False
         u = FauxUserInfo()
         email = self.get_email()
@@ -125,3 +126,75 @@ class SuccessJoinerTest(TestCase):
             j = PublicJoiner(FauxVisibility())
             j.join(u, email, None)
         sc.assert_called_once_with(email, 'person@example.com', u, None)
+
+    @patch('gs.group.member.join.listcommandjoiners.user_member_of_group')
+    def test_public_new(self, umog):
+        'Test a person without an existing profile joining a group'
+        umog.return_value = False
+        email = self.get_email()
+        u = FauxUserInfo()
+        with patch.object(PublicJoiner, 'send_confirmation') as sc:
+            with patch.object(PublicJoiner, 'create_user') as cu:
+                cu.return_value = u
+                j = PublicJoiner(FauxVisibility())
+                j.join(None, email, None)
+        sc.assert_called_once_with(email, 'person@example.com', u, None)
+        cu.assert_called_once_with('<person@example.com>')
+
+
+class SendConfirmationTest(TestCase):
+
+    @staticmethod
+    def get_email(subject='Join'):
+        retval = Parser().parsestr(
+            'From: <person@example.com>\n'
+            'To: <group@lists.example.com>\n'
+            'Subject: {0}\n'
+            '\n'
+            'Body would go here\n'.format(subject))
+        return retval
+
+    def test_best_fn_no_name(self):
+        'Test that we extract the name from the email address'
+        j = PublicJoiner(FauxVisibility())
+        f = 'From: <person@example.com>'
+        r = j.get_best_fn(f)
+        self.assertEqual('person', r)
+
+    def test_best_fn_name(self):
+        'Test we extract the name from the From header'
+        j = PublicJoiner(FauxVisibility())
+        f = 'From: A Person <person@example.com>'
+        r = j.get_best_fn(f)
+        self.assertEqual('A Person', r)
+
+    def test_generate_confirmation_id(self):
+        'Test the generation of the confirmation ID'
+        j = PublicJoiner(FauxVisibility())
+        r1 = j.generate_confirmation_id('This is not an email')
+        r2 = j.generate_confirmation_id('This is not a pipe')
+        r3 = j.generate_confirmation_id(self.get_email())
+
+        self.assertEqual(6, len(r1))
+        self.assertEqual(6, len(r2))
+        self.assertEqual(6, len(r3))
+        self.assertNotEqual(r1, r2)
+        self.assertNotEqual(r1, r3)
+        self.assertNotEqual(r2, r3)
+
+    @patch.object(PublicJoiner, 'generate_confirmation_id')
+    def test_send_confirmation(self, gci):
+        gci.return_value = 'a0b1c2'
+        e = self.get_email()
+        u = FauxUserInfo()
+        v = FauxVisibility()
+        n = 'gs.group.member.join.listcommandjoiners.ConfirmationNotifier'
+        with patch(n) as cn:
+            with patch.object(PublicJoiner, 'query') as q:
+                j = PublicJoiner(v)
+                j.send_confirmation(e, 'person@example.com', u, None)
+        gci.assert_called_once_with(e)
+        q.add_confirmation.assert_called_once_with(
+            'person@example.com',  'a0b1c2', u.id, v.groupInfo.id,
+            v.groupInfo.siteInfo.id)
+        cn.assert_called_once_with('This is not a folder', None)

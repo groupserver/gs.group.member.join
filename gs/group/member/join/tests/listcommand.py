@@ -40,19 +40,6 @@ class TestSubscribeCommand(TestCase):
             'Body would go here\n'.format(subject))
         return retval
 
-    def _test_generate_confirmation_id(self):
-        'Test the generation of the confirmation ID'
-        c = SubscribeCommand(self.fauxGroup)
-        with patch.object(gs.group.member.join.listcommand,
-                          'createObject') as MockedCreateObject:
-            MockedCreateObject.return_value = self.fauxGroupInfo
-            r1 = c.generate_confirmation_id('This is not an email')
-            r2 = c.generate_confirmation_id('This is not a pipe')
-
-        self.assertEqual(6, len(r1))
-        self.assertEqual(6, len(r2))
-        self.assertNotEqual(r1, r2)
-
 
 class TestConfirmCommand(TestCase):
     confirmSubject = 'Confirm some text ID-1a2b3c'

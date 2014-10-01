@@ -64,15 +64,21 @@ class PublicJoiner(Joiner):
             addr, confirmationId, userInfo.id, self.groupInfo.id,
             self.groupInfo.siteInfo.id)
         # Send the notification
-        notifier = ConfirmationNotifier(self.group, request)
+        notifier = ConfirmationNotifier(self.groupInfo.groupObj, request)
         notifier.notify(userInfo, confirmationId)
+
+    @staticmethod
+    def get_best_fn(fromHeader):
+        emailLHS, addr = parseaddr(fromHeader)
+        retval = emailLHS if emailLHS else addr.split('@')[0]
+        return retval
 
     def create_user(self, fromHeader):
         'Create a user from the From header, setting the ``fn``.'
-        emailLHS, addr = parseaddr(fromHeader)
+        addr = parseaddr(fromHeader)[1]
         group = self.groupInfo.groupObj
         user = create_user_from_email(group, addr)
-        fn = emailLHS if emailLHS else addr.split('@')[0]
+        fn = self.get_best_fn(fromHeader)
         user.manage_changeProperty('fn', fn)
         retval = createObject('groupserver.UserFromId',
                               group, user.id)

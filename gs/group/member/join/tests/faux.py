@@ -11,6 +11,7 @@ class FauxGroupInfo(object):
     id = 'example_group'
     url = 'https://lists.example.com/groups/example_group'
     siteInfo = FauxSiteInfo()
+    groupObj = 'This is not a folder'
 
 
 class FauxUserInfo(object):
