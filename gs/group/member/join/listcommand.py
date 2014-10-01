@@ -19,12 +19,11 @@ log = getLogger('gs.group.member.join.listcommand')
 import shlex
 from zope.component import createObject
 from zope.cachedescriptors.property import Lazy
-from gs.core import to_id
 from gs.group.list.command import CommandResult, CommandABC
-from gs.group.member.base import (user_member_of_group, user_member_of_site)
+from gs.group.member.base import user_member_of_group
 from gs.group.privacy.visibility import GroupVisibility
-from Products.GSProfile.utils import create_user_from_email
-from .notify import (ConfirmationNotifier, NotifyCannotJoin)
+from .listcommandjoiners import CannotJoin
+from .notify import NotifyCannotJoin
 from .queries import ConfirmationQuery
 from .utils import join
 
@@ -35,11 +34,6 @@ class SubscribeCommand(CommandABC):
     @Lazy
     def groupInfo(self):
         retval = createObject('groupserver.GroupInfo', self.group)
-        return retval
-
-    @Lazy
-    def query(self):
-        retval = ConfirmationQuery()
         return retval
 
     def get_userInfo(self, addr):
@@ -54,19 +48,6 @@ class SubscribeCommand(CommandABC):
 
     def process(self, email, request):
         'Process the email command ``subscribe``'
-        # TODO: --=mpj17=-- Take my own advice and do this *mess* with
-        # adapters.
-        #
-        # The first is a modification of GroupVisibility: get it to present
-        # an interface depending on the visibility of the group. Get that?
-        # It adapts a IGroupFolder to one of four subclasses of
-        # IGroupVisibility: public, public to site member, private, or
-        # secret.
-        #
-        # The next four take each of the subclasses of IGroupVisiblity
-        # and provide a joiner for that.
-        #
-        # **Then** I can test this all sanely.
         addr = parseaddr(email['From'])[1]
         userInfo = self.get_userInfo(addr)
         groupVisibility = GroupVisibility(self.groupInfo)
@@ -80,53 +61,15 @@ class SubscribeCommand(CommandABC):
                            site=self.groupInfo.siteInfo)
             log.info(msg)
             retval = CommandResult.notACommand
-        elif groupVisibility.isPublic:
-            # The group is public, so the person making the request can
-            # join.
-            if not userInfo:
-                userInfo = self.create_user(email['From'])
-            self.send_confirmation(email, addr, userInfo, request)
-            retval = CommandResult.commandStop
-        elif (userInfo and not(user_member_of_group(userInfo, self.group))
-              and groupVisibility.isPublicToSite
-              and user_member_of_site(userInfo, self.groupInfo.siteInfo)):
-            # The group is public to *site* *members* and the person sending
-            # the request is a site member
-            self.send_confirmation(email, addr, userInfo, request)
-            retval = CommandResult.commandStop
         else:
-            # TODO: Send a Cannot Join notification
-            groupsFolder = self.group.groupObj.aq_parent
-            notifier = NotifyCannotJoin(groupsFolder, request)
-            notifier.notify(addr, self.groupInfo)
+            joiner = IJoiner(groupVisibility)
+            try:
+                joiner.join(userInfo, email, request)
+            except CannotJoin as cj:
+                groupsFolder = self.group.groupObj.aq_parent
+                notifier = NotifyCannotJoin(groupsFolder, request)
+                notifier.notify(cj, addr, self.groupInfo)
             retval = CommandResult.commandStop
-        return retval
-
-    def send_confirmation(self, email, addr, userInfo, request):
-        # Generate the confirmation ID
-        confirmationId = self.generate_confirmation_id(email)
-        self.query.add_confirmation(
-            addr, confirmationId, userInfo.id, self.groupInfo.id,
-            self.groupInfo.siteInfo.id)
-        # Send the notification
-        notifier = ConfirmationNotifier(self.group, request)
-        notifier.notify(userInfo, confirmationId)
-
-    def create_user(self, fromHeader):
-        'Create a user from the From header, setting the ``fn``.'
-        emailLHS, addr = parseaddr(fromHeader)
-        user = create_user_from_email(self.group, addr)
-        fn = emailLHS if emailLHS else addr.split('@')[0]
-        user.manage_changeProperty('fn', fn)
-        retval = createObject('groupserver.UserFromId',
-                              self.group, user.id)
-        assert retval, 'Could not create a user info '\
-                       'from {0}'.format(fromHeader)
-        return retval
-
-    def generate_confirmation_id(self, email):
-        id22 = to_id(str(email) + self.groupInfo.name + self.groupInfo.id)
-        retval = id22[:6]
         return retval
 
 

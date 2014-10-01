@@ -16,7 +16,9 @@ from __future__ import absolute_import, unicode_literals
 from unittest import TestSuite, main as unittest_main
 from gs.group.member.join.tests.listcommand import (
     TestSubscribeCommand, TestConfirmCommand)
-testCases = (TestSubscribeCommand, TestConfirmCommand)
+from gs.group.member.join.tests.listcommandjoiners import (
+    FailJoinerTest)
+testCases = (TestSubscribeCommand, TestConfirmCommand, FailJoinerTest)
 
 
 def load_tests(loader, tests, pattern):
