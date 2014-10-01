@@ -17,8 +17,9 @@ from unittest import TestSuite, main as unittest_main
 from gs.group.member.join.tests.listcommand import (
     TestSubscribeCommand, TestConfirmCommand)
 from gs.group.member.join.tests.listcommandjoiners import (
-    FailJoinerTest)
-testCases = (TestSubscribeCommand, TestConfirmCommand, FailJoinerTest)
+    FailJoinerTest, SuccessJoinerTest)
+testCases = (TestSubscribeCommand, TestConfirmCommand, FailJoinerTest,
+             SuccessJoinerTest)
 
 
 def load_tests(loader, tests, pattern):
