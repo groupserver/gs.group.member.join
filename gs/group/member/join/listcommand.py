@@ -20,9 +20,9 @@ import shlex
 from zope.component import createObject
 from zope.cachedescriptors.property import Lazy
 from gs.group.list.command import CommandResult, CommandABC
-from gs.group.member.base import user_member_of_group
 from gs.group.privacy.visibility import GroupVisibility
-from .listcommandjoiners import CannotJoin
+from .interfaces import IJoiner
+from .listcommandjoiners import CannotJoin, GroupMember
 from .notify import NotifyCannotJoin
 from .queries import ConfirmationQuery
 from .utils import join
@@ -51,8 +51,16 @@ class SubscribeCommand(CommandABC):
         addr = parseaddr(email['From'])[1]
         userInfo = self.get_userInfo(addr)
         groupVisibility = GroupVisibility(self.groupInfo)
-        if userInfo and user_member_of_group(userInfo, self.group):
-            # We are dealing with an existing user.
+        joiner = IJoiner(groupVisibility)
+        try:
+            joiner.join(userInfo, email, request)
+            retval = CommandResult.commandStop
+        except CannotJoin as cj:
+            groupsFolder = self.group.groupObj.aq_parent
+            notifier = NotifyCannotJoin(groupsFolder, request)
+            notifier.notify(cj, addr, self.groupInfo)
+            retval = CommandResult.commandStop
+        except GroupMember:
             m = 'Ignorning the "subscribe" command from {user.name} '\
                 '({user.id}) <{addr}> because the person is already a '\
                 'member of {group.name} ({group.id}) on {site.name} '\
@@ -61,15 +69,6 @@ class SubscribeCommand(CommandABC):
                            site=self.groupInfo.siteInfo)
             log.info(msg)
             retval = CommandResult.notACommand
-        else:
-            joiner = IJoiner(groupVisibility)
-            try:
-                joiner.join(userInfo, email, request)
-            except CannotJoin as cj:
-                groupsFolder = self.group.groupObj.aq_parent
-                notifier = NotifyCannotJoin(groupsFolder, request)
-                notifier.notify(cj, addr, self.groupInfo)
-            retval = CommandResult.commandStop
         return retval
 
 

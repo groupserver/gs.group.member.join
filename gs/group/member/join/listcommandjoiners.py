@@ -18,7 +18,7 @@ from email.utils import parseaddr
 from zope.cachedescriptors.property import Lazy
 from zope.component import createObject
 from gs.core import to_id
-from gs.group.member.base import user_member_of_site
+from gs.group.member.base import user_member_of_site, user_member_of_group
 from Products.GSProfile.utils import create_user_from_email
 from . import GSMessageFactory as _
 from .notify import ConfirmationNotifier
@@ -27,6 +27,10 @@ from .queries import ConfirmationQuery
 
 class CannotJoin(Exception):
     '''Raised when a person cannot join the group'''
+
+
+class GroupMember(Exception):
+    '''Raised when a group member tries to join the group.'''
 
 
 class Joiner(object):
@@ -47,6 +51,8 @@ class PublicJoiner(Joiner):
         return retval
 
     def join(self, userInfo, email, request):
+        if userInfo and user_member_of_group(userInfo, self.groupInfo):
+            raise GroupMember()
         ui = userInfo if userInfo else self.create_user(email['From'])
         addr = parseaddr(email['From'])[1]
         self.send_confirmation(email, addr, ui, request)
@@ -95,6 +101,8 @@ class PublicToSiteMemberJoiner(PublicJoiner):
                     mapping={'siteName': siteInfo.name,
                              'groupName': self.groupInfo.name})
             raise CannotJoin(msg)
+        elif user_member_of_group(userInfo, self.groupInfo):
+            raise GroupMember()
         addr = parseaddr(email['From'])[1]
         self.send_confirmation(email, addr, userInfo, request)
 
