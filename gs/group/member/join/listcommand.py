@@ -56,7 +56,7 @@ class SubscribeCommand(CommandABC):
             joiner.join(userInfo, email, request)
             retval = CommandResult.commandStop
         except CannotJoin as cj:
-            groupsFolder = self.group.groupObj.aq_parent
+            groupsFolder = self.groupInfo.groupObj.aq_parent
             notifier = NotifyCannotJoin(groupsFolder, request)
             notifier.notify(cj, addr, self.groupInfo)
             retval = CommandResult.commandStop

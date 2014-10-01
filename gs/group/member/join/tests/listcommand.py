@@ -13,32 +13,65 @@
 #
 ############################################################################
 from __future__ import absolute_import, unicode_literals
-from email.parser import Parser
 from mock import patch
 from unittest import TestCase
-from gs.group.member.join.listcommand import (
-    SubscribeCommand, ConfirmCommand)
+from gs.group.member.join.listcommand import (ConfirmCommand,
+                                              SubscribeCommand)
 import gs.group.member.join.listcommand  # lint:ok
 from gs.group.list.command.result import CommandResult
-from .faux import FauxGroup, FauxGroupInfo, FauxUserInfo
+from .faux import (FauxGroup, FauxGroupInfo, FauxUserInfo, faux_email)
 
 
 class TestSubscribeCommand(TestCase):
-    subscribeSubject = 'Subscribe'
 
-    def setUp(self):
-        self.fauxGroup = FauxGroup()
-        self.fauxGroupInfo = FauxGroupInfo()
+    @patch.object(SubscribeCommand, 'groupInfo')
+    def test_member(self, gi):
+        'Test a member sending a "join" command'
+        gi.return_value = FauxGroupInfo()
+        with patch.object(SubscribeCommand, 'get_userInfo') as g_ui:
+            u = FauxUserInfo()
+            g_ui.return_value = u
+            with patch('gs.group.member.join.listcommand.IJoiner') as j:
+                joinInstance = j.return_value
+                joinInstance.join.side_effect =\
+                    gs.group.member.join.listcommand.GroupMember
+                sc = SubscribeCommand(FauxGroup)
+                e = faux_email()
+                r = sc.process(e, None)
+        joinInstance.join.assert_called_once_with(u, e, None)
+        self.assertEqual(CommandResult.notACommand, r)
 
-    @staticmethod
-    def get_email(subject):
-        retval = Parser().parsestr(
-            'From: <member@example.com>\n'
-            'To: <group@example.com>\n'
-            'Subject: {0}\n'
-            '\n'
-            'Body would go here\n'.format(subject))
-        return retval
+    @patch.object(SubscribeCommand, 'groupInfo')
+    def test_cannot(self, gi):
+        'Test sending a "join" command to a group that cannot be joined'
+        gi.return_value = FauxGroupInfo()
+        with patch.object(SubscribeCommand, 'get_userInfo') as g_ui:
+            u = FauxUserInfo()
+            g_ui.return_value = u
+            with patch('gs.group.member.join.listcommand.IJoiner') as j:
+                joinInstance = j.return_value
+                joinInstance.join.side_effect =\
+                    gs.group.member.join.listcommand.CannotJoin
+                n = 'gs.group.member.join.listcommand.NotifyCannotJoin'
+                with patch(n):
+                    sc = SubscribeCommand(FauxGroup)
+                    e = faux_email()
+                    r = sc.process(e, None)
+        joinInstance.join.assert_called_once_with(u, e, None)
+        self.assertEqual(CommandResult.commandStop, r)
+
+    @patch.object(SubscribeCommand, 'groupInfo')
+    def test_join(self, gi):
+        'Test sending a "join" command'
+        gi.return_value = FauxGroupInfo()
+        with patch.object(SubscribeCommand, 'get_userInfo') as g_ui:
+            u = FauxUserInfo()
+            g_ui.return_value = u
+            with patch('gs.group.member.join.listcommand.IJoiner'):
+                sc = SubscribeCommand(FauxGroup)
+                e = faux_email()
+                r = sc.process(e, None)
+        self.assertEqual(CommandResult.commandStop, r)
 
 
 class TestConfirmCommand(TestCase):
@@ -48,20 +81,10 @@ class TestConfirmCommand(TestCase):
     def setUp(self):
         self.fauxGroup = FauxGroup()
 
-    @staticmethod
-    def get_email(subject):
-        retval = Parser().parsestr(
-            'From: <member@example.com>\n'
-            'To: <group@example.com>\n'
-            'Subject: {0}\n'
-            '\n'
-            'Body would go here\n'.format(subject))
-        return retval
-
     def test_get_confirmation_id_true(self):
         'Can the confirmation ID be extracted from the subject?'
         c = ConfirmCommand(self.fauxGroup)
-        e = self.get_email(self.confirmSubject)
+        e = faux_email(self.confirmSubject)
         r = c.get_confirmation_id(e)
 
         self.assertEqual('1a2b3c', r)
@@ -69,7 +92,7 @@ class TestConfirmCommand(TestCase):
     def test_get_confirmation_id_false(self):
         'Is None returned when ther e is no ID in the subject?'
         c = ConfirmCommand(self.fauxGroup)
-        e = self.get_email(self.confirmNoIdSubject)
+        e = faux_email(self.confirmNoIdSubject)
         r = c.get_confirmation_id(e)
 
         self.assertIs(None, r)
@@ -77,7 +100,7 @@ class TestConfirmCommand(TestCase):
     def test_not_id(self):
         'Is an email without an ID seen as not a command?'
         c = ConfirmCommand(self.fauxGroup)
-        e = self.get_email(self.confirmNoIdSubject)
+        e = faux_email(self.confirmNoIdSubject)
         r = c.process(e, None)
         self.assertEqual(CommandResult.notACommand, r)
 
@@ -85,7 +108,7 @@ class TestConfirmCommand(TestCase):
     def test_no_info_found(self, mockQuery):
         'Is a stop called if there is no confirmation info found?'
         mockQuery.get_confirmation.return_value = None
-        e = self.get_email(self.confirmSubject)
+        e = faux_email(self.confirmSubject)
         c = ConfirmCommand(self.fauxGroup)
         r = c.process(e, None)
 
@@ -97,7 +120,7 @@ class TestConfirmCommand(TestCase):
         mockQuery.get_confirmation.return_value = {
             'email': 'missmatch',
         }
-        e = self.get_email(self.confirmSubject)
+        e = faux_email(self.confirmSubject)
         with patch('gs.group.member.join.listcommand.log') as patchedLog:
             c = ConfirmCommand(self.fauxGroup)
             patchedLog.info.return_value = None
@@ -113,7 +136,7 @@ class TestConfirmCommand(TestCase):
         mockQuery.get_confirmation.return_value = {
             'email': 'member@example.com',
         }
-        e = self.get_email(self.confirmSubject)
+        e = faux_email(self.confirmSubject)
         with patch.object(ConfirmCommand, 'join') as patchedJoin:
             c = ConfirmCommand(self.fauxGroup)
             r = c.process(e, None)
