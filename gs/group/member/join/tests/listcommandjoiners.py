@@ -13,11 +13,12 @@
 #
 ############################################################################
 from __future__ import absolute_import, unicode_literals
+from email.parser import Parser
 from mock import patch
 from unittest import TestCase
 from gs.group.member.join.listcommandjoiners import (
     OddJoiner, SecretJoiner, PrivateJoiner, PublicToSiteMemberJoiner,
-    CannotJoin)
+    CannotJoin, GroupMember)
 import gs.group.member.join.listcommandjoiners  # lint:ok
 from .faux import FauxVisibility, FauxUserInfo
 
@@ -50,11 +51,22 @@ class FailJoinerTest(TestCase):
 
 class SuccessJoinerTest(TestCase):
     '''Test the joiners that can succeed'''
+
+    @staticmethod
+    def get_email(subject='Join'):
+        retval = Parser().parsestr(
+            'From: <person@example.com>\n'
+            'To: <group@lists.example.com>\n'
+            'Subject: {0}\n'
+            '\n'
+            'Body would go here\n'.format(subject))
+        return retval
+
     def test_ptsm_join_anon(self):
         'Ensure Anonymous cannot join a Public To Site Member site'
         j = PublicToSiteMemberJoiner(FauxVisibility())
         with self.assertRaises(CannotJoin) as e:
-            j.join(None, 'person@example.com', None)
+            j.join(None, self.get_email(), None)
         self.assertIn('public-site-group-cannot-join', str(e.exception))
 
     @patch('gs.group.member.join.listcommandjoiners.user_member_of_site')
@@ -64,5 +76,33 @@ class SuccessJoinerTest(TestCase):
         u = FauxUserInfo()
         umos.return_value = False
         with self.assertRaises(CannotJoin) as e:
-            j.join(u, 'person@example.com', None)
+            j.join(u, self.get_email(), None)
         self.assertIn('public-site-group-cannot-join', str(e.exception))
+
+    @patch('gs.group.member.join.listcommandjoiners.user_member_of_site')
+    def test_ptsm_join_group_member(self, umos):
+        'Ensure that group members can join a group'
+        j = PublicToSiteMemberJoiner(FauxVisibility())
+        u = FauxUserInfo()
+        umos.return_value = True
+        n = 'gs.group.member.join.listcommandjoiners.user_member_of_group'
+        with patch(n) as umog:
+            umog.return_value = True
+            with self.assertRaises(GroupMember):
+                j.join(u, self.get_email(), None)
+
+    @patch('gs.group.member.join.listcommandjoiners.user_member_of_site')
+    def test_ptsm_join(self, umos):
+        'Ensure that group members can join a group'
+        u = FauxUserInfo()
+        umos.return_value = True
+        email = self.get_email()
+        with patch.object(PublicToSiteMemberJoiner,
+                          'send_confirmation') as sc:
+            j = PublicToSiteMemberJoiner(FauxVisibility())
+            n = 'gs.group.member.join.listcommandjoiners.'\
+                'user_member_of_group'
+            with patch(n) as umog:
+                umog.return_value = False
+                j.join(u, email, None)
+        sc.assert_called_once_with(email, 'person@example.com', u, None)

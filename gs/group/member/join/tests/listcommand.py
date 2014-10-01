@@ -53,27 +53,6 @@ class TestSubscribeCommand(TestCase):
         self.assertEqual(6, len(r2))
         self.assertNotEqual(r1, r2)
 
-    def test_subscribe_member(self):
-        'Are subscribe requests from existing users ignored?'
-        with patch.object(SubscribeCommand,
-                          'get_userInfo') as mockGetUserInfo:
-            with patch.object(SubscribeCommand, 'groupInfo') as mockGI:
-                with patch(
-                    'gs.group.member.join.listcommand.user_member_of_group'
-                ) as mockUserMemberOfGroup:
-                    mockGetUserInfo.return_value = FauxUserInfo()
-                    mockGI.return_value = FauxGroupInfo()
-                    mockUserMemberOfGroup.return_value = True
-
-                    c = SubscribeCommand(self.fauxGroup)
-                    e = self.get_email(self.subscribeSubject)
-                    r = c.process(e, None)
-
-        self.assertEqual(CommandResult.notACommand, r)
-
-    # FIXME: Pathetically inadequate testing. The code needs to be
-    # refactored. See the SubscribeCommand.process() method for how.
-
 
 class TestConfirmCommand(TestCase):
     confirmSubject = 'Confirm some text ID-1a2b3c'
