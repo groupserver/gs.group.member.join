@@ -4,7 +4,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gs.group.mmember.join 2.0.2\n"
-"POT-Creation-Date: 2014-09-10 08:30+0000\n"
+"POT-Creation-Date: 2014-10-01 17:07+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -14,63 +17,94 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: gs.group.member.join\n"
 
-#: gs.group.member.join:/join.py:41
-#. Default: "Join ${groupName}"
-msgid "join-group"
+#. Default: "Confirm you want to join ${groupName} (action required) ID-${confirmationId}"
+#: ./notify.py:72
+msgid "confirm-subject"
 msgstr ""
 
-#: gs.group.member.join:/join.py:79
+#. Default: "Already joined ${groupName}"
+#: ./notify.py:116
+msgid "confirmed-subject"
+msgstr ""
+
+#. Default: "To join ${groupName} set how frequently you want to receive messages below, and click the <samp class=\"button\">Join</samp> button."
+#: ./browser/templates/join.pt:50
+msgid "gs-group-member-join-intro"
+msgstr ""
+
 #. Default: "Join"
+#: ./browser/templates/join.pt:9
+#: ./join.py:79
 msgid "join"
 msgstr ""
 
-#: gs.group.member.join:/notify.py:57
-#. Default: "Welcome to ${groupName}"
-msgid "welcome-subject"
+#. Default: "Join ${groupName}"
+#: ./join.py:41
+msgid "join-group"
 msgstr ""
 
-#: gs.group.member.join:/notifymessages.py:41
-#. Default: "Group welcome"
-msgid "support-message-group-welcome-subject"
+#. Default: "${userName} has joined ${groupName}"
+#: ./notify.py:49
+msgid "new-member-subject"
 msgstr ""
 
-#: gs.group.member.join:/notifymessages.py:43
-#. Default: ""
-#.  "Hello,\n"
-#.  "\n"
-#.  "I received a Welcome message for the group ${groupName}\n"
-#.  "    ${groupUrl}\n"
-#.  "and..."
-msgid "support-message-group-welcome-body"
+#. Default: "People cannot join ${groupName}"
+#: ./listcommandjoiners.py:122
+msgid "odd-group-cannot-join"
 msgstr ""
 
-#: gs.group.member.join:/notifymessages.py:80
-#. Default: "New member"
-msgid "support-message-new-member-subject"
+#. Default: "Visit the page for ${groupName} to request membership: ${groupUrl}"
+#: ./listcommandjoiners.py:104
+msgid "private-group-cannot-join"
 msgstr ""
 
-#: gs.group.member.join:/notifymessages.py:81
-#. Default: ""
-#.  "Hello,\n"
-#.  "\n"
-#.  "I am an administrator of the group ${groupName} \n"
-#.  "    ${groupUrl}\n"
-#.  "and..."
-msgid "support-message-new-member-body"
+#. Default: "Only members of ${siteName} can join ${groupName}"
+#: ./listcommandjoiners.py:93
+msgid "public-site-group-cannot-join"
 msgstr ""
 
-#: gs.group.member.join:/notifymessages.py:105
+#. Default: "Cannot join ${groupName}"
+#: ./notify.py:94
+msgid "refuse-subject"
+msgstr ""
+
+#. Default: "Only people that have been invited can join ${groupName}"
+#: ./listcommandjoiners.py:114
+msgid "secret-group-cannot-join"
+msgstr ""
+
+#. Default: "Hello,\n\nI received an email asking me to confirm my subscription to\n${groupName}\n    ${groupUrl}\nand..."
+#: ./notifymessages.py:111
+msgid "support-message-confirm-subscription-body"
+msgstr ""
+
 #. Default: "Confirm subscription"
+#: ./notifymessages.py:108
 msgid "support-message-confirm-subscription-subject"
 msgstr ""
 
-#: gs.group.member.join:/notifymessages.py:107
-#. Default: ""
-#.  "Hello,\n"
-#.  "\n"
-#.  "I received an email asking me to confirm my subscription to\n"
-#.  "${groupName}\n"
-#.  "    ${groupUrl}\n"
-#.  "and..."
-msgid "support-message-confirm-subscription-body"
+#. Default: "Hello,\n\nI received a Welcome message for the group ${groupName}\n    ${groupUrl}\nand..."
+#: ./notifymessages.py:44
+msgid "support-message-group-welcome-body"
 msgstr ""
+
+#. Default: "Group welcome"
+#: ./notifymessages.py:41
+msgid "support-message-group-welcome-subject"
+msgstr ""
+
+#. Default: "Hello,\n\nI am an administrator of the group ${groupName} \n    ${groupUrl}\nand..."
+#: ./notifymessages.py:84
+msgid "support-message-new-member-body"
+msgstr ""
+
+#. Default: "New member"
+#: ./notifymessages.py:82
+msgid "support-message-new-member-subject"
+msgstr ""
+
+#. Default: "Welcome to ${groupName}"
+#: ./notify.py:31
+msgid "welcome-subject"
+msgstr ""
+

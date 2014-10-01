@@ -16,14 +16,11 @@ from __future__ import absolute_import, unicode_literals
 from abc import ABCMeta, abstractmethod
 from email.utils import parseaddr
 from zope.cachedescriptors.property import Lazy
-from zope.component import createObject, adapter
-from zope.interface import implementer
+from zope.component import createObject
 from gs.core import to_id
 from gs.group.member.base import user_member_of_site
-from gs.group.privacy.interfaces import (IPublic, IPublicToSiteMember,
-                                         IPrivate, ISecret, IOdd)
 from Products.GSProfile.utils import create_user_from_email
-from .interfaces import IJoiner
+from . import GSMessageFactory as _
 from .notify import ConfirmationNotifier
 from .queries import ConfirmationQuery
 
@@ -43,8 +40,6 @@ class Joiner(object):
         '''Join the person to the group.'''
 
 
-@adapter(IPublic)
-@implementer(IJoiner)
 class PublicJoiner(Joiner):
     @Lazy
     def query(self):
@@ -85,8 +80,6 @@ class PublicJoiner(Joiner):
         return retval
 
 
-@adapter(IPublicToSiteMember)
-@implementer(IJoiner)
 class PublicToSiteMemberJoiner(PublicJoiner):
     @Lazy
     def query(self):
@@ -97,35 +90,35 @@ class PublicToSiteMemberJoiner(PublicJoiner):
         siteInfo = self.groupInfo.siteInfo
         if ((not userInfo) or (not user_member_of_site(userInfo,
                                                        siteInfo))):
-            m = 'Only members of {0} can join {1}'
-            msg = m.format(siteInfo.name, self.groupInfo.name)
+            msg = _('public-site-group-cannot-join',
+                    'Only members of ${siteName} can join ${groupName}',
+                    mapping={'siteName': siteInfo.name,
+                             'groupName': self.groupInfo.name})
             raise CannotJoin(msg)
         addr = parseaddr(email['From'])[1]
         self.send_confirmation(email, addr, userInfo, request)
 
 
-@adapter(IPrivate)
-@implementer(IJoiner)
 class PrivateJoiner(Joiner):
     def join(self, userInfo, email, request):
-        m = 'Visit the page for {0} to request membership: {1}'
-        msg = m.format(self.groupInfo.name, self.groupInfo.url)
+        msg = _('private-group-cannot-join',
+                'Visit the page for ${groupName} to request membership: '
+                '${groupUrl}',
+                mapping={'groupName': self.groupInfo.name,
+                         'groupUrl': self.groupInfo.url})
         raise CannotJoin(msg)
 
 
-@adapter(ISecret)
-@implementer(IJoiner)
 class SecretJoiner(Joiner):
     def join(self, userInfo, email, request):
-        m = 'Only people that have been invited can join {0}'
-        msg = m.format(self.groupInfo.name, self.groupInfo.url)
+        msg = _('secret-group-cannot-join',
+                'Only people that have been invited can join ${groupName}',
+                mapping={'groupName': self.groupInfo.name})
         raise CannotJoin(msg)
 
 
-@adapter(IOdd)
-@implementer(IJoiner)
 class OddJoiner(Joiner):
     def join(self, userInfo, email, request):
-        m = 'People cannot join {0}'
-        msg = m.format(self.groupInfo.name, self.groupInfo.url)
+        msg = _('odd-group-cannot-join', 'People cannot join ${groupName}',
+                mapping={'groupName': self.groupInfo.name})
         raise CannotJoin(msg)
