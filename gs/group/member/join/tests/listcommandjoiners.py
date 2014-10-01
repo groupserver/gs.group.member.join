@@ -18,7 +18,7 @@ from mock import patch
 from unittest import TestCase
 from gs.group.member.join.listcommandjoiners import (
     OddJoiner, SecretJoiner, PrivateJoiner, PublicToSiteMemberJoiner,
-    CannotJoin, GroupMember)
+    PublicJoiner, CannotJoin, GroupMember)
 import gs.group.member.join.listcommandjoiners  # lint:ok
 from .faux import FauxVisibility, FauxUserInfo
 
@@ -105,4 +105,23 @@ class SuccessJoinerTest(TestCase):
             with patch(n) as umog:
                 umog.return_value = False
                 j.join(u, email, None)
+        sc.assert_called_once_with(email, 'person@example.com', u, None)
+
+    @patch('gs.group.member.join.listcommandjoiners.user_member_of_group')
+    def test_public_member(self, umog):
+        umog.return_value = True
+        u = FauxUserInfo()
+        email = self.get_email()
+        j = PublicJoiner(FauxVisibility())
+        with self.assertRaises(GroupMember):
+            j.join(u, email, None)
+
+    @patch('gs.group.member.join.listcommandjoiners.user_member_of_group')
+    def test_public(self, umog):
+        umog.return_value = False
+        u = FauxUserInfo()
+        email = self.get_email()
+        with patch.object(PublicJoiner, 'send_confirmation') as sc:
+            j = PublicJoiner(FauxVisibility())
+            j.join(u, email, None)
         sc.assert_called_once_with(email, 'person@example.com', u, None)
