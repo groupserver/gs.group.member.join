@@ -68,7 +68,7 @@ class ConfirmationNotifier(GroupNotifierABC):
     textTemplateName = 'gs-group-member-join-confirm.txt'
     htmlTemplateName = 'gs-group-member-join-confirm.html'
 
-    def notify(self, userInfo, confirmationId):
+    def notify(self, userInfo, toAddr, confirmationId):
         subject = _('confirm-subject',
                     'Confirm you want to join ${groupName} (action '
                     'required) ID-${confirmationId}',
@@ -79,7 +79,9 @@ class ConfirmationNotifier(GroupNotifierABC):
         text = self.textTemplate(userInfo=userInfo, userEmail=emailUser)
         html = self.htmlTemplate(userInfo=userInfo, userEmail=emailUser)
         ms = MessageSender(self.context, userInfo)
-        ms.send_message(translatedSubject, text, html)
+        # We have to explicitly state the address because it has not
+        # (necessarially) been verified yet.
+        ms.send_message(translatedSubject, text, html, toAddresses=[toAddr])
         self.reset_content_type()
 
 

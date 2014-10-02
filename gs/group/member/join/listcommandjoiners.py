@@ -65,7 +65,7 @@ class PublicJoiner(Joiner):
             self.groupInfo.siteInfo.id)
         # Send the notification
         notifier = ConfirmationNotifier(self.groupInfo.groupObj, request)
-        notifier.notify(userInfo, confirmationId)
+        notifier.notify(userInfo, addr, confirmationId)
 
     @staticmethod
     def get_best_fn(fromHeader):
@@ -79,7 +79,7 @@ class PublicJoiner(Joiner):
         group = self.groupInfo.groupObj
         user = create_user_from_email(group, addr)
         fn = self.get_best_fn(fromHeader)
-        user.manage_changeProperty('fn', fn)
+        user.manage_changeProperties(fn=fn)
         retval = createObject('groupserver.UserFromId',
                               group, user.id)
         assert retval, 'Could not create a user info '\
