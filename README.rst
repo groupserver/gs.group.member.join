@@ -105,10 +105,35 @@ Usually a loop is used to send the email to every administrator::
   for adminInfo in self.groupInfo.group_admins:
       notifier.notify(adminInfo, self.loggedInUser)
 
+Subscribe email-command
+========================
+
+The logic behind the *Subscribe* email command is difficult
+because it can be sent to a group of any privacy.
+
+* If an existing group member sends a *Subscribe* email to a
+  group then it is treated as an ordinary email.
+
+* If a person with a profile, who is not a group member, sends a
+  *Subscribe* email to a public group then a *Confirm*
+  notification is sent.
+
+* If a person without a profile sends a *Subscribe* email to a
+  public group then
+
+  + A profile is created, and
+  + A *Confirm* notification is sent.
+
+* If a person with a profile, who is not a group member but is a
+  site member, sends a *Subscribe* email to a **public to
+  site-members** group then a *Confirm* notification is sent.
+
+* In all other cases a *Cannot join* notification is sent.
+
 Resources
 =========
 
-- Code repository: https://source.iopen.net/groupserver/gs.group.member.join
+- Code repository: https://github/groupserver/gs.group.member.join
 - Questions and comments to http://groupserver.org/groups/development
 - Report bugs at https://redmine.iopen.net/projects/groupserver
 
