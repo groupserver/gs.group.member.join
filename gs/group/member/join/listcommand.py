@@ -27,7 +27,9 @@ from gs.profile.email.verify import EmailVerificationUser
 from .audit import (JoinAuditor, CONFIRM)
 from .interfaces import IJoiner
 from .listcommandjoiners import CannotJoin, GroupMember
-from .notify import NotifyCannotJoin
+from .notify import (
+    NotifyCannotJoin, NotifyAlreadyAMember, NotifyCannotConfirmAddress,
+    NotifyCannotConfirmId)
 from .queries import ConfirmationQuery
 from .utils import join
 
@@ -104,34 +106,46 @@ class ConfirmCommand(CommandABC):
         addr = parseaddr(email['From'])[1]
         confirmationId = self.get_confirmation_id(email)
         if confirmationId:
-            confirmationInfo = self.query.get_confirmation(
-                addr, confirmationId)
-            if confirmationInfo and (confirmationInfo['email'] == addr):
-                try:
-                    self.join(confirmationInfo, request)
-                except GroupMember:
-                    # TODO: Already a member notification
-                    pass
-                retval = CommandResult.commandStop
-            elif not confirmationInfo:
+            ci = self.query.get_confirmation(addr, confirmationId)
+            if ci:
+                confirmationInfo = Confirmation(**ci)
+                if (confirmationInfo.email == addr):
+                    try:
+                        self.join(confirmationInfo, request)
+                    except GroupMember:
+                        notifier = NotifyAlreadyAMember(
+                            confirmationInfo.site, request)
+                        notifier.notify(confirmationInfo.userInfo,
+                                        confirmationInfo.groupInfo)
+                    retval = CommandResult.commandStop
+                else:  # confirmationInfo.email != addr
+                    m = 'Email address <{addr}> does not match that in '\
+                        'the confirmation info <{confirmationAddr}>: '\
+                        '{subject}'
+                    msg = m.format(
+                        addr=addr, confirmationAddr=confirmationInfo.email,
+                        subject=email['Subject'])
+                    log.info(msg)
+                    notifier = NotifyCannotConfirmAddress(
+                        confirmationInfo.site, request)
+                    notifier.notify(confirmationInfo.userInfo,
+                                    confirmationInfo.groupInfo,
+                                    addr, confirmationInfo.email)
+                    retval = CommandResult.commandStop
+            else:  # confirmationId and (not ci)
                 # Found an "ID-" in the confirmation-email, but no matching
                 # confirmation ID in the database.
                 m = 'No confirmation information found in command from '\
                     '<{addr}>: {subject}'
                 msg = m.format(addr=addr, subject=email['Subject'])
                 log.info(msg)
-                # TODO: Cannot confirm notification
+                notifier = NotifyCannotConfirmId(
+                    confirmationInfo.site, request)
+                notifier.notify(confirmationInfo.userInfo,
+                                confirmationInfo.groupInfo,
+                                addr, confirmationId)
                 retval = CommandResult.commandStop
-            else:  # confirmationInfo['email'] != addr
-                m = 'Email address <{addr}> does not match that in the '\
-                    'confirmation info <{confirmationAddr}>: {subject}'
-                msg = m.format(addr=addr,
-                               confirmationAddr=confirmationInfo['email'],
-                               subject=email['Subject'])
-                log.info(msg)
-                # TODO: Cannot confirm notification
-                retval = CommandResult.commandStop
-        else:
+        else:  # not confirmationId
             # Assume it is a normal email.
             m = 'No confirmation ID found in command from <{addr}>: '\
                 '{subject}'
@@ -139,6 +153,9 @@ class ConfirmCommand(CommandABC):
             log.info(msg)
             retval = CommandResult.notACommand
         return retval
+
+    def get_groupInfo_siteInfo(self, confirmationInfo):
+        'Get the groupInfo and siteInfo from the confirmationInfo'
 
     def verify_address(self, userInfo, addr):
         # TODO: Now the Add code and this code does this. Cut 'n' paste
@@ -152,23 +169,42 @@ class ConfirmCommand(CommandABC):
             evu.verify_email(verificationId)
 
     def join(self, confirmationInfo, request):
+        if user_member_of_group(confirmationInfo.userInfo,
+                                confirmationInfo.groupInfo):
+            raise GroupMember('Already a member of the group')
+
+        auditor = JoinAuditor(
+            confirmationInfo.site, confirmationInfo.groupInfo,
+            confirmationInfo.userInfo)
+        auditor.info(CONFIRM)
+
+        self.verify_address(confirmationInfo.userInfo,
+                            confirmationInfo.email)
+
+        join(confirmationInfo.groupInfo.groupObj, request,
+             confirmationInfo.userInfo, confirmationInfo.groupInfo)
+        self.query.clear_confirmations(confirmationInfo.userInfo.id,
+                                       confirmationInfo.groupInfo.id)
+
+
+class Confirmation(object):
+
+    def __init__(self, context, email, confirmationId, userId, groupId,
+                 siteId):
+        self.context = context
+        self.email = email
+        self.confirmationId = confirmationId
+        self.userId = userId
+        self.groupId = groupId
+        self.siteId = siteId
+
         # Because the email comes into Support we may be on a totally
         # different site. Get the correct site as the context.
         siteRoot = self.group.site_root()
-        site = getattr(siteRoot.Content, confirmationInfo['siteId'])
+        self.site = getattr(siteRoot.Content, siteId)
+        self.siteInfo = createObject('groupserver.SiteInfo', self.site)
         # Get the user and group with the right context.
-        userInfo = createObject('groupserver.UserFromId', site,
-                                confirmationInfo['userId'])
-        groupInfo = createObject('groupserver.GroupInfo', site,
-                                 confirmationInfo['groupId'])
-
-        if user_member_of_group(userInfo, groupInfo):
-            raise GroupMember('Already a member of the group')
-
-        auditor = JoinAuditor(site, groupInfo, userInfo)
-        auditor.info(CONFIRM)
-
-        self.verify_address(userInfo, confirmationInfo['email'])
-
-        join(groupInfo.groupObj, request, userInfo, groupInfo)
-        self.query.clear_confirmations(userInfo.id, groupInfo.id)
+        self.userInfo = createObject('groupserver.UserFromId', self.site,
+                                     userId)
+        self.groupInfo = createObject('groupserver.GroupInfo', self.site,
+                                      groupId)
