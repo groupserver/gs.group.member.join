@@ -144,3 +144,5 @@ class TestConfirmCommand(TestCase):
                 mockQuery.get_confirmation.return_value, None)
 
         self.assertEqual(CommandResult.commandStop, r)
+
+    # TODO Test a member joining

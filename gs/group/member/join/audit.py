@@ -31,6 +31,9 @@ UNKNOWN = '0'  # Unknown is always "0"
 JOIN_GROUP = '1'
 JOIN_SITE = '2'
 MODERATED = '3'
+SUBSCRIBE = '4'
+CONFIRM = '5'
+CANNOT_JOIN = '6'
 
 
 @implementer(IFactory)
@@ -55,6 +58,10 @@ class JoinAuditEventFactory(object):
         elif code == MODERATED:
             event = ModerateEvent(context, event_id, date,
                                   instanceUserInfo, siteInfo, groupInfo)
+        elif code == CONFIRM:
+            event = ConfirmEvent(
+                context, event_id, date, instanceUserInfo, siteInfo,
+                groupInfo, instanceDatum)
         else:
             event = BasicAuditEvent(context, event_id, UNKNOWN, date,
                                     userInfo, instanceUserInfo, siteInfo,
@@ -148,6 +155,35 @@ class ModerateEvent(BasicAuditEvent):
             self.code
         retval = '<span class="%s">Being set to moderated %s</span>' %\
             (cssClass, self.groupInfo.name)
+
+        retval = '%s (%s)' % (retval, munge_date(self.context, self.date))
+        return retval
+
+
+@implementer(IAuditEvent)
+class ConfirmEvent(BasicAuditEvent):
+    ''' An audit-trail event representing a person sending in an email
+    cornfirming the request to join a group.'''
+    def __init__(self, context, eventId, d, instanceUserInfo, siteInfo,
+                 groupInfo, email):
+        super(ConfirmEvent, self).__init__(
+            context, eventId,  CONFIRM, d, None, instanceUserInfo,
+            siteInfo, groupInfo, email, None, SUBSYSTEM)
+
+    def __unicode__(self):
+        r = '{user.name} ({user.id}) sent an email confirming that he or '\
+            'she wants to join {group.name} ({group.id}) on {site.name} '\
+            '({site.id}) using the email address <{email}>.'
+        retval = r.format(user=self.instanceUserInfo, group=self.groupInfo,
+                          site=self.siteInfo, email=self.instanceDatum)
+        return retval
+
+    @property
+    def xhtml(self):
+        cssClass = 'audit-event groupserver-group-member-join-%s' %\
+            self.code
+        retval = '<span class="%s">Confirmed the request to join '\
+            '%s</span>' % (cssClass, self.groupInfo.name)
 
         retval = '%s (%s)' % (retval, munge_date(self.context, self.date))
         return retval

@@ -20,7 +20,11 @@ import shlex
 from zope.component import createObject
 from zope.cachedescriptors.property import Lazy
 from gs.group.list.command import CommandResult, CommandABC
+from gs.group.member.base import user_member_of_group
 from gs.group.privacy.visibility import GroupVisibility
+from gs.profile.email.base import EmailUser
+from gs.profile.email.verify import EmailVerificationUser
+from .audit import (JoinAuditor, CONFIRM)
 from .interfaces import IJoiner
 from .listcommandjoiners import CannotJoin, GroupMember
 from .notify import NotifyCannotJoin
@@ -103,7 +107,11 @@ class ConfirmCommand(CommandABC):
             confirmationInfo = self.query.get_confirmation(
                 addr, confirmationId)
             if confirmationInfo and (confirmationInfo['email'] == addr):
-                self.join(confirmationInfo, request)
+                try:
+                    self.join(confirmationInfo, request)
+                except GroupMember:
+                    # TODO: Already a member notification
+                    pass
                 retval = CommandResult.commandStop
             elif not confirmationInfo:
                 # Found an "ID-" in the confirmation-email, but no matching
@@ -112,7 +120,7 @@ class ConfirmCommand(CommandABC):
                     '<{addr}>: {subject}'
                 msg = m.format(addr=addr, subject=email['Subject'])
                 log.info(msg)
-                # TODO: notification
+                # TODO: Cannot confirm notification
                 retval = CommandResult.commandStop
             else:  # confirmationInfo['email'] != addr
                 m = 'Email address <{addr}> does not match that in the '\
@@ -121,7 +129,7 @@ class ConfirmCommand(CommandABC):
                                confirmationAddr=confirmationInfo['email'],
                                subject=email['Subject'])
                 log.info(msg)
-                # TODO: notification
+                # TODO: Cannot confirm notification
                 retval = CommandResult.commandStop
         else:
             # Assume it is a normal email.
@@ -131,6 +139,17 @@ class ConfirmCommand(CommandABC):
             log.info(msg)
             retval = CommandResult.notACommand
         return retval
+
+    def verify_address(self, userInfo, addr):
+        # TODO: Now the Add code and this code does this. Cut 'n' paste
+        #       software engineereing for now, but the verification code
+        #       should provide this as a utility.
+        eu = EmailUser(self.context, userInfo)
+        if not eu.is_address_verified(addr):
+            evu = EmailVerificationUser(self.context, userInfo, addr)
+            verificationId = evu.create_verification_id()
+            evu.add_verification_id(verificationId)
+            evu.verify_email(verificationId)
 
     def join(self, confirmationInfo, request):
         # Because the email comes into Support we may be on a totally
@@ -142,6 +161,14 @@ class ConfirmCommand(CommandABC):
                                 confirmationInfo['userId'])
         groupInfo = createObject('groupserver.GroupInfo', site,
                                  confirmationInfo['groupId'])
-        # Member check?
+
+        if user_member_of_group(userInfo, groupInfo):
+            raise GroupMember('Already a member of the group')
+
+        auditor = JoinAuditor(site, groupInfo, userInfo)
+        auditor.info(CONFIRM)
+
+        self.verify_address(userInfo, confirmationInfo['email'])
+
         join(groupInfo.groupObj, request, userInfo, groupInfo)
         self.query.clear_confirmations(userInfo.id, groupInfo.id)
