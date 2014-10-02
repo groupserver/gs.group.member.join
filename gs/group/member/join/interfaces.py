@@ -59,9 +59,3 @@ class IGSJoinGroup(Interface):
         description='Your message delivery settings.',
         vocabulary=deliveryVocab,
         default='email')
-
-
-class IJoiner(Interface):
-    '''The joiner interface used by the commands.'''
-    def join(userInfo, email, request):
-        'Join the user to the group.'

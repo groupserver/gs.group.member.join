@@ -61,54 +61,6 @@
     template="browser/templates/newmember-admin-txt.pt"
     permission="zope2.View"/>
 
-  <!-- The subscribe command -->
-  <adapter
-    name="subscribe"
-    for="gs.group.base.interfaces.IGSGroupMarker"
-    provides="gs.group.list.command.interfaces.IEmailCommand"
-    factory=".listcommand.SubscribeCommand" />
-  <!--The myriad of "joiners", most of which do not join -->
-  <!-- anyone to anything. -->
-  <adapter
-    for="gs.group.privacy.interfaces.IPublic"
-    provides=".interfaces.IJoiner"
-    factory=".listcommandjoiners.PublicJoiner" />
-  <adapter
-    for="gs.group.privacy.interfaces.IPublicToSiteMember"
-    provides=".interfaces.IJoiner"
-    factory=".listcommandjoiners.PublicToSiteMemberJoiner" />
-  <adapter
-    for="gs.group.privacy.interfaces.IPrivate"
-    provides=".interfaces.IJoiner"
-    factory=".listcommandjoiners.PrivateJoiner" />
-  <adapter
-    for="gs.group.privacy.interfaces.ISecret"
-    provides=".interfaces.IJoiner"
-    factory=".listcommandjoiners.SecretJoiner" />
-  <adapter
-    for="gs.group.privacy.interfaces.IOdd"
-    provides=".interfaces.IJoiner"
-    factory=".listcommandjoiners.OddJoiner" />
-  <!-- The confirm subscription notification -->
-  <browser:page
-    for="gs.group.base.interfaces.IGSGroupMarker"
-    name="gs-group-member-join-confirm.html"
-    class=".notifymessages.ConfirmSubscription"
-    template="browser/templates/confirm-subscribe.pt"
-    permission="zope2.View"/>
-  <browser:page
-    for="gs.group.base.interfaces.IGSGroupMarker"
-    name="gs-group-member-join-confirm.txt"
-    class=".notifymessages.ConfirmSubscriptionText"
-    template="browser/templates/confirm-subscribe-txt.pt"
-    permission="zope2.View"/>
-  <!-- The confirm command -->
-  <adapter
-    name="confirm"
-    for="gs.group.base.interfaces.IGSGroupMarker"
-    provides="gs.group.list.command.interfaces.IEmailCommand"
-    factory=".listcommand.ConfirmCommand" />
-
   <!--The audit factory-->
   <utility
     factory=".audit.JoinAuditEventFactory"
