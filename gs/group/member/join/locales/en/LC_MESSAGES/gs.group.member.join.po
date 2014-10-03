@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gs.group.mmember.join 2.0.2\n"
-"POT-Creation-Date: 2014-10-01 17:07+0000\n"
+"POT-Creation-Date: 2014-10-03 00:33+0000\n"
 "PO-Revision-Date: 2014-09-09 20:10-0700\n"
 "Last-Translator: Michael JasonSmith <mpj17@onlinegroups.net>\n"
 "Language-Team: English <mpj17@onlinegroups.net>\n"
@@ -18,26 +18,46 @@ msgstr ""
 "Domain: gs.group.member.join\n"
 "Language: en\n"
 
-#. Default: "Confirm you want to join ${groupName} (action required) ID-${confirmationId}"
-#: ./notify.py:72
-msgid "confirm-subject"
-msgstr "Confirm you want to join ${groupName} (action required) ID-${confirmationId}"
+#: ./interfaces.py:59
+msgid "Message delivery settings"
+msgstr "Message delivery settings"
 
-#. Default: "Already joined ${groupName}"
-#: ./notify.py:116
-msgid "confirmed-subject"
-msgstr "Already joined ${groupName}"
+#: ./join.py:125
+msgid "There are errors:"
+msgstr "There are errors:"
 
-#. Default: "To join ${groupName} set how frequently you want to receive messages below, and click the <samp class=\"button\">Join</samp> button."
-#: ./browser/templates/join.pt:50
-msgid "gs-group-member-join-intro"
-msgstr "To join ${groupName} set how frequently you want to receive messages below, and click the <samp class=\"button\">Join</samp> button."
+#: ./join.py:123
+msgid "There is an error:"
+msgstr "There is an error:"
+
+#: ./interfaces.py:60
+msgid "Your message delivery settings."
+msgstr "Your message delivery settings."
 
 #. Default: "Join"
-#: ./browser/templates/join.pt:9
 #: ./join.py:79
 msgid "join"
 msgstr "Join"
+
+#. Default: "You have joined ${groupLink}."
+#: ./join.py:114
+msgid "join-confirm"
+msgstr "You have joined ${groupLink}."
+
+#. Default: "You will receive a daily digest of topics from ${groupName}."
+#: ./join.py:95
+msgid "join-delivery-digest"
+msgstr "You will receive a daily digest of topics from ${groupName}."
+
+#. Default: "You will receive an email message every time someone posts to ${groupName}."
+#: ./join.py:88
+msgid "join-delivery-email"
+msgstr "You will receive an email message every time someone posts to ${groupName}."
+
+#. Default: "You will not receive any email when someone posts to${groupName}."
+#: ./join.py:104
+msgid "join-delivery-web"
+msgstr "You will not receive any email when someone posts to${groupName}."
 
 #. Default: "Join ${groupName}"
 #: ./join.py:41
@@ -45,57 +65,9 @@ msgid "join-group"
 msgstr "Join ${groupName}"
 
 #. Default: "${userName} has joined ${groupName}"
-#: ./notify.py:49
+#: ./notify.py:47
 msgid "new-member-subject"
-msgstr ""
-
-#. Default: "People cannot join ${groupName}"
-#: ./listcommandjoiners.py:122
-msgid "odd-group-cannot-join"
-msgstr "People cannot join ${groupName}"
-
-#. Default: "Visit the page for ${groupName} to request membership: ${groupUrl}"
-#: ./listcommandjoiners.py:104
-msgid "private-group-cannot-join"
-msgstr "Visit the page for ${groupName} to request membership: ${groupUrl}"
-
-#. Default: "Only members of ${siteName} can join ${groupName}"
-#: ./listcommandjoiners.py:93
-msgid "public-site-group-cannot-join"
-msgstr "Only members of ${siteName} can join ${groupName}"
-
-#. Default: "Cannot join ${groupName}"
-#: ./notify.py:94
-msgid "refuse-subject"
-msgstr "Cannot join ${groupName}"
-
-#. Default: "Only people that have been invited can join ${groupName}"
-#: ./listcommandjoiners.py:114
-msgid "secret-group-cannot-join"
-msgstr "Only people that have been invited can join ${groupName}"
-
-#. "Hello,\n"
-#. "\n"
-#. "I received an email asking me to confirm my subscription to\n"
-#. "${groupName}\n"
-#. "    ${groupUrl}\n"
-#. "and..."
-#. Default: "Hello,\n\nI received an email asking me to confirm my subscription to\n${groupName}\n    ${groupUrl}\nand..."
-#: ./notifymessages.py:111
-#, fuzzy
-msgid "support-message-confirm-subscription-body"
-msgstr ""
-"Hello,\n"
-"\n"
-"I received an email asking me to confirm my subscription to\n"
-" ${groupName}\n"
-"    ${groupUrl}\n"
-"and..."
-
-#. Default: "Confirm subscription"
-#: ./notifymessages.py:108
-msgid "support-message-confirm-subscription-subject"
-msgstr "Confirm subscription"
+msgstr "Default: "${userName} has joined ${groupName}"
 
 #. "Hello,\n"
 #. "\n"
@@ -140,7 +112,7 @@ msgid "support-message-new-member-subject"
 msgstr "New member"
 
 #. Default: "Welcome to ${groupName}"
-#: ./notify.py:31
+#: ./notify.py:29
 msgid "welcome-subject"
 msgstr "Welcome to ${groupName}"
 
