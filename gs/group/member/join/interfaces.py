@@ -15,6 +15,7 @@
 from __future__ import absolute_import, unicode_literals
 from zope.interface import Interface
 from zope.schema import Choice
+from . import GSMessageFactory as _
 from Products.GSProfile.interfaces import deliveryVocab
 
 
@@ -55,7 +56,7 @@ class IGSJoiningUser(Interface):
 
 class IGSJoinGroup(Interface):
     delivery = Choice(
-        title='Message Delivery Settings',
-        description='Your message delivery settings.',
+        title=_('Message delivery settings'),
+        description=_('Your message delivery settings.'),
         vocabulary=deliveryVocab,
         default='email')

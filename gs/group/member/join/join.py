@@ -81,26 +81,46 @@ class JoinForm(GroupForm):
     def handle_join(self, action, data):
         assert self.canJoin
 
+        join(self.context, self.request, self.loggedInUser, self.groupInfo)
+
         if data['delivery'] == 'email':
             # --=mpj17=-- The default is one email per post
-            m = 'You will receive an email message every time '\
-                'someone posts to %s.' % self.groupInfo.name
+            deliveryMsg = _(
+                'join-delivery-email',
+                'You will receive an email message every time someone '
+                'posts to ${groupName}.',
+                mapping={'groupName': self.groupInfo.name})
         elif data['delivery'] == 'digest':
             self.loggedInUser.user.set_enableDigestByKey(self.groupInfo.id)
-            m = 'You will receive a daily digest of topics.'
+            deliveryMsg = _(
+                'join-delivery-digest',
+                'You will receive a daily digest of topics from '
+                '${groupName}.',
+                mapping={'groupName': self.groupInfo.name})
+
         elif data['delivery'] == 'web':
             self.loggedInUser.user.set_disableDeliveryByKey(
                 self.groupInfo.id)
-            m = 'You will not receive any email from this group.'
+            deliveryMsg = _(
+                'join-delivery-web',
+                'You will not receive any email when someone posts to'
+                '${groupName}.',
+                mapping={'groupName': self.groupInfo.name})
+        assert deliveryMsg
 
-        join(self.context, self.request, self.loggedInUser, self.groupInfo)
-
-        msg = '<p>You have joined <a class="group" href="%s">%s</a>. %s</p>'
-        self.status = msg % (self.groupInfo.relativeURL,
-                             self.groupInfo.name, m)
+        g = '<a class="group" href="{url}">{name}</a>'
+        groupLink = g.format(url=self.groupInfo.relativeURL,
+                             name=self.groupInfo.name)
+        joinConfirm = _(
+            'join-confirm',
+            'You have joined ${groupLink}.',
+            mapping={'groupLink': groupLink, })
+        self.status = '<p>{0} {1}</p>'.format(joinConfirm, deliveryMsg)
 
     def handle_join_action_failure(self, action, data, errors):
+
         if len(errors) == 1:
-            self.status = '<p>There is an error:</p>'
+            e = _('There is an error:')
         else:
-            self.status = '<p>There are errors:</p>'
+            e = _('There are errors:')
+        self.status = '<p>{0}</p>'.format(e)
