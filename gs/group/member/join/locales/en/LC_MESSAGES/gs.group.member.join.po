@@ -67,7 +67,7 @@ msgstr "Join ${groupName}"
 #. Default: "${userName} has joined ${groupName}"
 #: ./notify.py:47
 msgid "new-member-subject"
-msgstr "Default: "${userName} has joined ${groupName}"
+msgstr "${userName} has joined ${groupName}"
 
 #. "Hello,\n"
 #. "\n"
