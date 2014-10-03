@@ -16,6 +16,7 @@ from __future__ import absolute_import, unicode_literals
 from zope.cachedescriptors.property import Lazy
 from zope.component import createObject
 from zope.formlib import form
+from zope.i18n import translate
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 from gs.content.form.base import radio_widget
 from gs.group.base.form import GroupForm
@@ -115,12 +116,12 @@ class JoinForm(GroupForm):
             'join-confirm',
             'You have joined ${groupLink}.',
             mapping={'groupLink': groupLink, })
-        self.status = '<p>{0} {1}</p>'.format(joinConfirm, deliveryMsg)
+        self.status = '<p>{0} {1}</p>'.format(translate(joinConfirm),
+                                              translate(deliveryMsg))
 
     def handle_join_action_failure(self, action, data, errors):
-
         if len(errors) == 1:
             e = _('There is an error:')
         else:
             e = _('There are errors:')
-        self.status = '<p>{0}</p>'.format(e)
+        self.status = '<p>{0}</p>'.format(translate(e))
