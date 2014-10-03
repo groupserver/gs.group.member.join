@@ -97,31 +97,3 @@ class NotifyAdminMessageText(NotifyMemberMessage, TextMixin):
         super(NotifyAdminMessageText, self).__init__(context, request)
         filename = 'new-member-%s.txt' % self.groupInfo.id
         self.set_header(filename)
-
-
-# And the Subscription Conform message
-
-
-class ConfirmSubscription(GroupEmail):
-    @Lazy
-    def supportEmail(self):
-        subject = _('support-message-confirm-subscription-subject',
-                    'Confirm subscription')
-        translatedSubject = translate(subject)
-        body = _('support-message-confirm-subscription-body',
-                 'Hello,\n\nI received an email asking me to confirm '
-                 'my subscription to\n${groupName}\n    '
-                 '${groupUrl}\nand...',
-                 mapping={'groupName': self.groupInfo.name,
-                          'groupUrl': self.groupInfo.url})
-        translatedBody = translate(body)
-        retval = self.mailto(self.siteInfo.get_support_email(),
-                             translatedSubject, translatedBody)
-        return retval
-
-
-class ConfirmSubscriptionText(ConfirmSubscription, TextMixin):
-    def __init__(self, context, request):
-        super(ConfirmSubscriptionText, self).__init__(context, request)
-        filename = 'confirm-%s.txt' % self.groupInfo.id
-        self.set_header(filename)
