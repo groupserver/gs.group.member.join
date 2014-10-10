@@ -49,7 +49,7 @@ setup(
     author_email='alice@onlinegroups.net',
     maintainer='Michael JasonSmith',
     maintainer_email='mpj17@onlinegroups.net',
-    url='https://source.iopen.net/groupserver/gs.group.member.join/',
+    url='https://github.com/groupserver/gs.group.member.join/',
     license='ZPL 2.1',
     packages=find_packages(exclude=['ez_setup']),
     namespace_packages=['gs', 'gs.group', 'gs.group.member'],

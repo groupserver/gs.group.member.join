@@ -1,20 +1,13 @@
 Changelog
 =========
 
-4.0.0 (2014-09-xx)
+3.3.0 (2014-10-10)
 ------------------
-
-* Added support for the *Subscribe* email-command
-  
-  + The ``subscribe`` command adaptor
-  + Support for groups in public-to-site-member sites, as well
-    normal public groups
-  + The ``confirmation`` SQL table
-  + The *Confirm subscription* notification
-  + The ``confirm`` command adaptor
 
 * Added internationalisation
 * Update of the notifications
+* Pointed to GitHub as the primary code repository
+* Renamed the reStructuredText files as such
 
 3.2.2 (2014-06-13)
 ------------------
