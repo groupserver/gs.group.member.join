@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2014-10-03 00:33+0000\n"
+"POT-Creation-Date: 2014-10-24 18:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,17 +15,17 @@ msgstr ""
 "Language-Code: en\n"
 "Language-Name: English\n"
 "Preferred-Encodings: utf-8 latin1\n"
-"Domain: groupserver\n"
+"Domain: gs.group.member.join\n"
 
 #: ./interfaces.py:59
 msgid "Message delivery settings"
 msgstr ""
 
-#: ./join.py:125
+#: ./join.py:126
 msgid "There are errors:"
 msgstr ""
 
-#: ./join.py:123
+#: ./join.py:124
 msgid "There is an error:"
 msgstr ""
 
@@ -33,34 +33,50 @@ msgstr ""
 msgid "Your message delivery settings."
 msgstr ""
 
+#. Default: "You are a <strong>member</strong> of ${groupName}. Visit <a href=\"${DYNAMIC_CONTENT}\">the group homepage</a> to participate."
+#: ./browser/templates/join.pt:94
+msgid "already-a-member-instruction"
+msgstr ""
+
+#. Default: "To join ${groupName} set how frequently you want to receive messages below, and click the <samp class=\"button\">Join</samp> button."
+#: ./browser/templates/join.pt:50
+msgid "gs-group-member-join-intro"
+msgstr ""
+
 #. Default: "Join"
-#: ./join.py:79
+#: ./browser/templates/join.pt:9
+#: ./join.py:80
 msgid "join"
 msgstr ""
 
 #. Default: "You have joined ${groupLink}."
-#: ./join.py:114
+#: ./join.py:115
 msgid "join-confirm"
 msgstr ""
 
 #. Default: "You will receive a daily digest of topics from ${groupName}."
-#: ./join.py:95
+#: ./join.py:96
 msgid "join-delivery-digest"
 msgstr ""
 
 #. Default: "You will receive an email message every time someone posts to ${groupName}."
-#: ./join.py:88
+#: ./join.py:89
 msgid "join-delivery-email"
 msgstr ""
 
 #. Default: "You will not receive any email when someone posts to${groupName}."
-#: ./join.py:104
+#: ./join.py:105
 msgid "join-delivery-web"
 msgstr ""
 
 #. Default: "Join ${groupName}"
-#: ./join.py:41
+#: ./join.py:42
 msgid "join-group"
+msgstr ""
+
+#. Default: "You must <a href=\"${DYNAMIC_CONTENT}\"><strong>login</strong></a> before you can join <span class=\"group\">${DYNAMIC_CONTENT}</span>."
+#: ./browser/templates/join.pt:76
+msgid "login-instruction"
 msgstr ""
 
 #. Default: "${userName} has joined ${groupName}"
@@ -86,6 +102,11 @@ msgstr ""
 #. Default: "New member"
 #: ./notifymessages.py:82
 msgid "support-message-new-member-subject"
+msgstr ""
+
+#. Default: "You must <strong>verify your email address</strong> before you can join <span class=\"group\">${DYNAMIC_CONTENT}</span>. <strong>Visit <a href=\"${DYNAMIC_CONTENT}\">your email settings page</a></strong> to verify your address, or add a new address."
+#: ./browser/templates/join.pt:84
+msgid "verify-instruction"
 msgstr ""
 
 #. Default: "Welcome to ${groupName}"

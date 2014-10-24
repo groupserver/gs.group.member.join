@@ -67,7 +67,7 @@
         class="ui-content ui-state-highlight ui-corner-all"
         tal:condition="not:view/canJoin">
         <p style="margin:1.385em;">
-          <span id="login-instruction"
+          <span id="login-instruction" i18n:translate="login-instruction"
             tal:condition="view/loggedInUser/anonymous">
             You must
             <a
@@ -75,7 +75,7 @@
               href="/login.html"><strong>login</strong></a> before you can join
             <span class="group" tal:content="view/groupInfo/name"/>.
           </span><!--login-instruction-->
-          <span class="verify-email"
+          <span class="verify-email" i18n:translate="verify-instruction"
             tal:condition="python:not(view.loggedInUser.anonymous or view.hasEmail)">
             You must <strong>verify your email address</strong> before
             you can join
@@ -85,9 +85,11 @@
                 href="#">your email settings page</a></strong>
             to verify your address, or add a new address.
           </span><!--verify-email-->
-          <span id="is-member" tal:condition="view/isMember">
+          <span id="is-member" tal:condition="view/isMember"
+                i18n:translate="already-a-member-instruction">
             You are a <strong>member</strong> of
-            <span class="group" tal:content="view/groupInfo/name"/>.
+            <span class="group" i18n:name="groupName"
+                  tal:content="view/groupInfo/name"/>.
             Visit
             <a href="#"
               tal:attributes="href view/groupInfo/relativeURL">the group
