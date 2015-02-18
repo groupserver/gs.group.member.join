@@ -1,18 +1,22 @@
+# --- PLEASE EDIT THE LINES BELOW CORRECTLY ---
+# SOME DESCRIPTIVE TITLE.
+# Translators:
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: gs.group.member.join\n"
 "POT-Creation-Date: 2014-10-24 18:24+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"PO-Revision-Date: 2015-02-18 19:55+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: German (http://www.transifex.com/projects/p/gs-group-member-join/language/de/)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0\n"
+"Domain: gs.group.member.join\n"
+"Language: de\n"
 "Language-Code: en\n"
 "Language-Name: English\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Preferred-Encodings: utf-8 latin1\n"
-"Domain: DOMAIN\n"
 
 #: ./interfaces.py:59
 msgid "Message delivery settings"
@@ -30,19 +34,20 @@ msgstr ""
 msgid "Your message delivery settings."
 msgstr ""
 
-#. Default: "You are a <strong>member</strong> of ${groupName}. Visit <a href=\"${DYNAMIC_CONTENT}\">the group homepage</a> to participate."
+#. Default: "You are a <strong>member</strong> of ${groupName}. Visit <a
+#. href=\"${DYNAMIC_CONTENT}\">the group homepage</a> to participate."
 #: ./browser/templates/join.pt:94
 msgid "already-a-member-instruction"
 msgstr ""
 
-#. Default: "To join ${groupName} set how frequently you want to receive messages below, and click the <samp class=\"button\">Join</samp> button."
+#. Default: "To join ${groupName} set how frequently you want to receive
+#. messages below, and click the <samp class=\"button\">Join</samp> button."
 #: ./browser/templates/join.pt:50
 msgid "gs-group-member-join-intro"
 msgstr ""
 
 #. Default: "Join"
-#: ./browser/templates/join.pt:9
-#: ./join.py:80
+#: ./browser/templates/join.pt:9 ./join.py:80
 msgid "join"
 msgstr ""
 
@@ -56,12 +61,14 @@ msgstr ""
 msgid "join-delivery-digest"
 msgstr ""
 
-#. Default: "You will receive an email message every time someone posts to ${groupName}."
+#. Default: "You will receive an email message every time someone posts to
+#. ${groupName}."
 #: ./join.py:89
 msgid "join-delivery-email"
 msgstr ""
 
-#. Default: "You will not receive any email when someone posts to${groupName}."
+#. Default: "You will not receive any email when someone posts
+#. to${groupName}."
 #: ./join.py:105
 msgid "join-delivery-web"
 msgstr ""
@@ -71,7 +78,9 @@ msgstr ""
 msgid "join-group"
 msgstr ""
 
-#. Default: "You must <a href=\"${DYNAMIC_CONTENT}\"><strong>login</strong></a> before you can join <span class=\"group\">${DYNAMIC_CONTENT}</span>."
+#. Default: "You must <a
+#. href=\"${DYNAMIC_CONTENT}\"><strong>login</strong></a> before you can join
+#. <span class=\"group\">${DYNAMIC_CONTENT}</span>."
 #: ./browser/templates/join.pt:76
 msgid "login-instruction"
 msgstr ""
@@ -81,7 +90,8 @@ msgstr ""
 msgid "new-member-subject"
 msgstr ""
 
-#. Default: "Hello,\n\nI received a Welcome message for the group ${groupName}\n    ${groupUrl}\nand..."
+#. Default: "Hello,\n\nI received a Welcome message for the group
+#. ${groupName}\n    ${groupUrl}\nand..."
 #: ./notifymessages.py:44
 msgid "support-message-group-welcome-body"
 msgstr ""
@@ -91,7 +101,8 @@ msgstr ""
 msgid "support-message-group-welcome-subject"
 msgstr ""
 
-#. Default: "Hello,\n\nI am an administrator of the group ${groupName} \n    ${groupUrl}\nand..."
+#. Default: "Hello,\n\nI am an administrator of the group ${groupName} \n
+#. ${groupUrl}\nand..."
 #: ./notifymessages.py:84
 msgid "support-message-new-member-body"
 msgstr ""
@@ -101,7 +112,10 @@ msgstr ""
 msgid "support-message-new-member-subject"
 msgstr ""
 
-#. Default: "You must <strong>verify your email address</strong> before you can join <span class=\"group\">${DYNAMIC_CONTENT}</span>. <strong>Visit <a href=\"${DYNAMIC_CONTENT}\">your email settings page</a></strong> to verify your address, or add a new address."
+#. Default: "You must <strong>verify your email address</strong> before you
+#. can join <span class=\"group\">${DYNAMIC_CONTENT}</span>. <strong>Visit <a
+#. href=\"${DYNAMIC_CONTENT}\">your email settings page</a></strong> to verify
+#. your address, or add a new address."
 #: ./browser/templates/join.pt:84
 msgid "verify-instruction"
 msgstr ""
@@ -110,4 +124,3 @@ msgstr ""
 #: ./notify.py:29
 msgid "welcome-subject"
 msgstr ""
-
