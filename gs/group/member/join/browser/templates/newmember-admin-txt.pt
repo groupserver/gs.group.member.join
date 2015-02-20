@@ -1,31 +1,36 @@
-<tal:block
-  define="adminInfo options/adminInfo | view/loggedInUserInfo;
-          userInfo options/userInfo | view/loggedInUserInfo;
-          userEmail options/userEmail | view/userEmailInfo">Dear <tal:block content="adminInfo/name">Admin</tal:block>,
+<tal:block xmlns:tal="http://xml.zope.org/namespaces/tal"
+           xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+           i18n:domain="gs.group.member.join"
+           define="adminInfo options/adminInfo | view/loggedInUserInfo;
+                   userInfo options/userInfo | view/loggedInUserInfo;
+                   userEmail options/userEmail | view/userEmailInfo"
+           i18n:translate="new-member-msg-txt">Dear <tal:block i18n:name="adminName" content="adminInfo/name">Admin</tal:block>,
 
-<tal:block content="userInfo/name">A new member</tal:block> has joined
-<tal:block content="view/groupInfo/name">this group</tal:block>.
+<tal:block i18n:name="memberName"
+           content="userInfo/name">A new member</tal:block> has joined
+<tal:block i18n:name="groupName"
+           content="view/groupInfo/name">this group</tal:block>.
 
-  * View the profile for <tal:block content="userInfo/name">the new member</tal:block> at
-    <tal:block content="string:${view/siteInfo/url}${userInfo/url}">URL</tal:block>
+  * View the profile for <tal:block i18n:name="memberName" content="userInfo/name">the new member</tal:block> at
+    <tal:block i18n:name="groupURL" content="string:${view/siteInfo/url}${userInfo/url}">URL</tal:block>
 
-  * View the membership of <tal:block content="view/groupInfo/name">this group</tal:block> at
-    <tal:block content="string:${view/groupInfo/url}/membership.html">URL</tal:block>
+  * View the membership of <tal:block i18n:name="groupName" content="view/groupInfo/name">this group</tal:block> at
+    <tal:block i18n:name="membershipURL" content="string:${view/groupInfo/url}/membership.html">URL</tal:block>
 
 You are received this message because you are an administrator  of
-<tal:block content="view/groupInfo/name">This Group</tal:block>.
+<tal:block i18n:name="groupName" content="view/groupInfo/name">This Group</tal:block>.
 
 Kind regards
-  The <tal:block content="view/siteInfo/name">Site</tal:block> Team
+  The <tal:block i18n:name="siteName" content="view/siteInfo/name">Site</tal:block> Team
 
 ------------------------------------------------------------------------
 
 Privacy
-  <tal:block content="string:${view/siteInfo/url}/policies/privacy"/>
+  <tal:block i18n:name="privacyLink" content="string:${view/siteInfo/url}/policies/privacy"/>
 
 Acceptable Use
-  <tal:block content="string:${view/siteInfo/url}/policies/aup"/>
+  <tal:block i18n:name="aupLink" content="string:${view/siteInfo/url}/policies/aup"/>
 
 Terms of Service
-  <tal:block content="string:${view/siteInfo/url}/policies/tos"/>
+  <tal:block i18n:name="tosLink" content="string:${view/siteInfo/url}/policies/tos"/>
 </tal:block>

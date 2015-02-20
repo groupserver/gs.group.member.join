@@ -7,7 +7,7 @@ Join a GroupServer group
 
 :Author: `Michael JasonSmith`_
 :Contact: Michael JasonSmith <mpj17@onlinegroups.net>
-:Date: 2014-10-10
+:Date: 20115-02-20
 :Organization: `GroupServer.org`_
 :Copyright: This document is licensed under a
   `Creative Commons Attribution-Share Alike 4.0 International License`_
@@ -127,6 +127,7 @@ Resources
 =========
 
 - Code repository: https://github.com/groupserver/gs.group.member.join
+- Translations: https://www.transifex.com/projects/p/gs-group-member-join/
 - Questions and comments to http://groupserver.org/groups/development
 - Report bugs at https://redmine.iopen.net/projects/groupserver
 

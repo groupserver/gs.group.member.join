@@ -56,7 +56,8 @@ class IGSJoiningUser(Interface):
 
 class IGSJoinGroup(Interface):
     delivery = Choice(
-        title=_('Message delivery settings'),
-        description=_('Your message delivery settings.'),
+        title=_('join-form-delivery-settings', 'Message delivery settings'),
+        description=_('join-form-delivery-settings-help',
+                      'Your message delivery settings.'),
         vocabulary=deliveryVocab,
         default='email')

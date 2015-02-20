@@ -77,7 +77,7 @@ class JoinForm(GroupForm):
         retval = (len(eu.get_verified_addresses()) > 0)
         return retval
 
-    @form.action(label=_('join', 'Join'),
+    @form.action(name='join', label=_('join-button', 'Join'),
                  failure='handle_join_action_failure')
     def handle_join(self, action, data):
         assert self.canJoin
@@ -121,7 +121,7 @@ class JoinForm(GroupForm):
 
     def handle_join_action_failure(self, action, data, errors):
         if len(errors) == 1:
-            e = _('There is an error:')
+            e = _('join-page-single-error', 'There is an error:')
         else:
-            e = _('There are errors:')
+            e = _('join-page-multiple-errors', 'There are errors:')
         self.status = '<p>{0}</p>'.format(translate(e))

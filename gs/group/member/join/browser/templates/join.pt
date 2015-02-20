@@ -5,17 +5,19 @@
       i18n:domain="gs.group.member.join"
       metal:use-macro="context/@@groupserver_layout/page">
   <head>
-    <title metal:fill-slot="title">
-      <tal:block i18n:translate="join">Join</tal:block>:
-      <tal:block
-        content="string:${view/groupInfo/name}: ${view/siteInfo/get_name}"/>
+    <title metal:fill-slot="title" i18n:translate="join-page-title">
+      Join:
+      <tal:block i18n:name="groupName"
+                 replace="view/groupInfo/name">this group</tal:block>:
+      <tal:block i18n:name="siteName"
+                 replace="view/siteInfo/get_name">this site</tal:block>
     </title>
     <tal:block metal:fill-slot="metadata">
       <link rel="up" href="#"
             tal:attributes="title view/groupInfo/name;
                             href string:${view/groupInfo/relativeURL}/"/>
-      <link rel="bookmark" title="Group Homepage" href="/"
-        tal:attributes="title string:${view/groupInfo/name} Homepage;"/>
+      <link rel="bookmark" title="Group page" href="/"
+            tal:attributes="title string:${view/groupInfo/name} page;"/>
     </tal:block>
   </head>
   <body>
@@ -26,7 +28,8 @@
       <li>
         <a href="/" class="icon-alone">
           <span aria-hidden="true" data-icon="&#x2302;"></span>
-          <span class="screen-reader-text">Site home page</span>
+          <span i18n:translate="join-page-breadcrumbs-site-home"
+                class="screen-reader-text">Site home page</span>
         </a>
       </li>
       <li>
@@ -42,10 +45,10 @@
       <!--=mpj17= Check GS join permission -->
       <h1 tal:content="view/label">Join this group</h1>
       <form tal:condition="view/canJoin"
-        enctype="multipart/form-data"  method="post" action="."
-        tal:attributes="action request/URL" id="join">
+            enctype="multipart/form-data"  method="post" action="."
+            tal:attributes="action request/URL" id="join">
         <p id="gs-group-member-join-intro"
-           i18n:translate="gs-group-member-join-intro">
+           i18n:translate="join-page-intro">
           To join
           <strong class="group" i18n:name="groupName"
                 tal:content="view/groupInfo/name">this group</strong>
@@ -67,34 +70,37 @@
         class="ui-content ui-state-highlight ui-corner-all"
         tal:condition="not:view/canJoin">
         <p style="margin:1.385em;">
-          <span id="login-instruction" i18n:translate="login-instruction"
+          <span id="login-instruction"
             tal:condition="view/loggedInUser/anonymous">
-            You must
-            <a
+            <a i18n:translate="join-page-login"
               tal:attributes="href string:/login.html?came_from=${view/groupInfo/relativeURL}/join.html"
-              href="/login.html"><strong>login</strong></a> before you can join
-            <span class="group" tal:content="view/groupInfo/name"/>.
+              href="/login.html">You must <strong>login</strong>.</a>
+            <span i18n:translate="join-page-login-explanation">
+              Then you can join
+              <span class="group" i18n:name="groupName"
+                    tal:content="view/groupInfo/name"/>.</span>
           </span><!--login-instruction-->
-          <span class="verify-email" i18n:translate="verify-instruction"
-            tal:condition="python:not(view.loggedInUser.anonymous or view.hasEmail)">
+          <span class="verify-email"
+                i18n:translate="join-page-verify-instruction"
+                tal:condition="python:not(view.loggedInUser.anonymous or view.hasEmail)">
             You must <strong>verify your email address</strong> before
             you can join
-            <span class="group" tal:content="view/groupInfo/name"/>.
-            <strong>Visit
-              <a tal:attributes="href string:${view/loggedInUser/url}/emailsettings.html"
-                href="#">your email settings page</a></strong>
-            to verify your address, or add a new address.
-          </span><!--verify-email-->
-          <span id="is-member" tal:condition="view/isMember"
-                i18n:translate="already-a-member-instruction">
-            You are a <strong>member</strong> of
             <span class="group" i18n:name="groupName"
                   tal:content="view/groupInfo/name"/>.
             Visit
-            <a href="#"
-              tal:attributes="href view/groupInfo/relativeURL">the group
-              homepage</a>
-            to participate.
+              <a tal:attributes="href string:${view/loggedInUser/url}/emailsettings.html"
+                href="#">your email settings page</a>
+            to verify your address, or add a new address.
+          </span><!--verify-email-->
+          <span id="is-member" tal:condition="view/isMember">
+            <span i18n:translate="join-page-already-a-member-issue">You are a
+              <strong>member</strong> of
+              <span i18n:name="groupName" class="group"
+                    tal:content="view/groupInfo/name">the group</span>.
+            </span>
+            <a href="#" i18n:translate="join-page-already-a-member-task"
+               tal:attributes="href view/groupInfo/relativeURL">Visit
+            the group to participate.</a>
           </span><!--is-member-->
         </p>
       </div><!--cannot-join-->

@@ -1,13 +1,23 @@
 Changelog
 =========
 
+3.3.1 (2015-02-20)
+------------------
+
+* Updated the translations to better work with Transifex_
+
+_Transifex: https://www.transifex.com/projects/p/gs-group-member-join/
+
+
 3.3.0 (2014-10-10)
 ------------------
 
 * Added internationalisation
 * Update of the notifications
-* Pointed to GitHub as the primary code repository
+* Pointed to GitHub_ as the primary code repository
 * Renamed the reStructuredText files as such
+
+.. _GitHub: https://github.com/groupserver/gs.group.member.join
 
 3.2.2 (2014-06-13)
 ------------------
@@ -111,3 +121,5 @@ Changelog
 ------------------
 
 * Initial release, moving the page here from ``Products.GSGroupMember``
+
+..  LocalWords:  Changelog Transifex GitHub reStructuredText

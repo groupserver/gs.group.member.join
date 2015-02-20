@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2014-10-24 18:24+0000\n"
+"POT-Creation-Date: 2015-02-20 23:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,36 +17,14 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: gs.group.member.join\n"
 
-#: ./interfaces.py:59
-msgid "Message delivery settings"
-msgstr ""
-
-#: ./join.py:126
-msgid "There are errors:"
-msgstr ""
-
-#: ./join.py:124
-msgid "There is an error:"
-msgstr ""
-
-#: ./interfaces.py:60
-msgid "Your message delivery settings."
-msgstr ""
-
-#. Default: "You are a <strong>member</strong> of ${groupName}. Visit <a href=\"${DYNAMIC_CONTENT}\">the group homepage</a> to participate."
-#: ./browser/templates/join.pt:94
-msgid "already-a-member-instruction"
-msgstr ""
-
-#. Default: "To join ${groupName} set how frequently you want to receive messages below, and click the <samp class=\"button\">Join</samp> button."
-#: ./browser/templates/join.pt:50
-msgid "gs-group-member-join-intro"
+#. Default: "Join"
+#: ./browser/templates/join.pt:41
+msgid "join"
 msgstr ""
 
 #. Default: "Join"
-#: ./browser/templates/join.pt:9
 #: ./join.py:80
-msgid "join"
+msgid "join-button"
 msgstr ""
 
 #. Default: "You have joined ${groupLink}."
@@ -69,14 +47,114 @@ msgstr ""
 msgid "join-delivery-web"
 msgstr ""
 
+#. Default: "Message delivery settings"
+#: ./interfaces.py:59
+msgid "join-form-delivery-settings"
+msgstr ""
+
+#. Default: "Your message delivery settings."
+#: ./interfaces.py:60
+msgid "join-form-delivery-settings-help"
+msgstr ""
+
 #. Default: "Join ${groupName}"
 #: ./join.py:42
 msgid "join-group"
 msgstr ""
 
-#. Default: "You must <a href=\"${DYNAMIC_CONTENT}\"><strong>login</strong></a> before you can join <span class=\"group\">${DYNAMIC_CONTENT}</span>."
-#: ./browser/templates/join.pt:76
-msgid "login-instruction"
+#. Default: "You are a <strong>member</strong> of ${groupName}."
+#: ./browser/templates/join.pt:98
+msgid "join-page-already-a-member-issue"
+msgstr ""
+
+#. Default: "Visit the group to participate."
+#: ./browser/templates/join.pt:101
+msgid "join-page-already-a-member-task"
+msgstr ""
+
+#. Default: "Site home page"
+#: ./browser/templates/join.pt:31
+msgid "join-page-breadcrumbs-site-home"
+msgstr ""
+
+#. Default: "To join ${groupName} set how frequently you want to receive messages below, and click the <samp class=\"button\">Join</samp> button."
+#: ./browser/templates/join.pt:53
+msgid "join-page-intro"
+msgstr ""
+
+#. Default: "You must <strong>login</strong>."
+#: ./browser/templates/join.pt:75
+msgid "join-page-login"
+msgstr ""
+
+#. Default: "Then you can join ${groupName}."
+#: ./browser/templates/join.pt:80
+msgid "join-page-login-explanation"
+msgstr ""
+
+#. Default: "There are errors:"
+#: ./join.py:126
+msgid "join-page-multiple-errors"
+msgstr ""
+
+#. Default: "There is an error:"
+#: ./join.py:124
+msgid "join-page-single-error"
+msgstr ""
+
+#. Default: "Join: ${groupName}: ${siteName}"
+#: ./browser/templates/join.pt:12
+msgid "join-page-title"
+msgstr ""
+
+#. Default: "You must <strong>verify your email address</strong> before you can join ${groupName}. Visit <a href=\"${DYNAMIC_CONTENT}\">your email settings page</a> to verify your address, or add a new address."
+#: ./browser/templates/join.pt:91
+msgid "join-page-verify-instruction"
+msgstr ""
+
+#. Default: "(You received this message because you are an administrator of ${groupName}. If you have any queries email us at ${supportEmail}.)"
+#: ./browser/templates/newmember-admin.pt:55
+msgid "new-member-msg-are-admin"
+msgstr ""
+
+#. Default: "Kind regards,<br /> <span>The ${siteName} Team</span>"
+#: ./browser/templates/newmember-admin.pt:63
+msgid "new-member-msg-closing"
+msgstr ""
+
+#. Default: "New member of ${groupName}"
+#: ./browser/templates/newmember-admin.pt:20
+msgid "new-member-msg-heading"
+msgstr ""
+
+#. Default: "${memberName} has joined ${groupName}."
+#: ./browser/templates/newmember-admin.pt:29
+msgid "new-member-msg-intro"
+msgstr ""
+
+#. Default: "<strong>View the membership</strong> of ${groupName}."
+#: ./browser/templates/newmember-admin.pt:45
+msgid "new-member-msg-membership"
+msgstr ""
+
+#. Default: "Dear ${adminName},"
+#: ./browser/templates/newmember-admin.pt:24
+msgid "new-member-msg-salutation"
+msgstr ""
+
+#. Default: "New member: ${groupName}: ${siteName}"
+#: ./browser/templates/newmember-admin.pt:12
+msgid "new-member-msg-title"
+msgstr ""
+
+#. Default: "Dear ${adminName}, ${memberName} has joined ${groupName}. * View the profile for ${memberName} at ${groupURL} * View the membership of ${groupName} at ${membershipURL} You are received this message because you are an administrator of ${groupName}. Kind regards The ${siteName} Team ------------------------------------------------------------------------ Privacy ${privacyLink} Acceptable Use ${aupLink} Terms of Service ${tosLink}"
+#: ./browser/templates/newmember-admin-txt.pt:35
+msgid "new-member-msg-txt"
+msgstr ""
+
+#. Default: "<strong>View the profile</strong> for ${memberName}."
+#: ./browser/templates/newmember-admin.pt:38
+msgid "new-member-msg-view-profile"
 msgstr ""
 
 #. Default: "${userName} has joined ${groupName}"
@@ -104,9 +182,69 @@ msgstr ""
 msgid "support-message-new-member-subject"
 msgstr ""
 
-#. Default: "You must <strong>verify your email address</strong> before you can join <span class=\"group\">${DYNAMIC_CONTENT}</span>. <strong>Visit <a href=\"${DYNAMIC_CONTENT}\">your email settings page</a></strong> to verify your address, or add a new address."
-#: ./browser/templates/join.pt:84
-msgid "verify-instruction"
+#. Default: "<strong>View</strong> the welcome message"
+#: ./browser/templates/viewlinks.pt:5
+msgid "view-welcome-link"
+msgstr ""
+
+#. Default: "Kind regards,<br /> <span>The ${siteName} Team</span>"
+#: ./browser/templates/newmember.pt:82
+msgid "welcome-msg-closing"
+msgstr ""
+
+#. Default: "Welcome to ${groupName}"
+#: ./browser/templates/newmember.pt:19
+msgid "welcome-msg-heading"
+msgstr ""
+
+#. Default: "Welcome to ${groupName}. Below is some information to help you get the most out of your new group."
+#: ./browser/templates/newmember.pt:28
+msgid "welcome-msg-intro"
+msgstr ""
+
+#. Default: "You can leave ${groupName} at any time by visiting <code>${leaveURL}</code>."
+#: ./browser/templates/newmember.pt:57
+msgid "welcome-msg-leave"
+msgstr ""
+
+#. Default: "To post a message using <strong>email</strong> send a message to <code>${groupEmail}</code>"
+#: ./browser/templates/newmember.pt:47
+msgid "welcome-msg-post"
+msgstr ""
+
+#. Default: "Visit <strong>your profile</strong>."
+#: ./browser/templates/newmember.pt:62
+msgid "welcome-msg-profile"
+msgstr ""
+
+#. Default: "There you can see what other groups you are in, and change your <strong>email settings.</strong>"
+#: ./browser/templates/newmember.pt:65
+msgid "welcome-msg-profile-details"
+msgstr ""
+
+#. Default: "Dear ${memberName},"
+#: ./browser/templates/newmember.pt:23
+msgid "welcome-msg-salutation"
+msgstr ""
+
+#. Default: "If you have any problems, email us at <code>${supportEmail}</code>."
+#: ./browser/templates/newmember.pt:73
+msgid "welcome-msg-support-link"
+msgstr ""
+
+#. Default: "Welcome: ${groupName}: ${siteName}"
+#: ./browser/templates/newmember.pt:12
+msgid "welcome-msg-title"
+msgstr ""
+
+#. Default: "Dear ${memberName}, Welcome to ${groupName}. Below is some information to help you get the most out of your new group. * See who else is a member, view the archives, and more by visiting the page for ${groupName} at ${groupUrl} * To post a message using email send a message to ${groupEmail} * You can leave ${groupName} by visiting ${leaveLink} Visit your profile to see what other groups you are in, and change your email settings, at ${profileLink} If you have any problems, email us at ${supportEmail} Kind regards, The ${suteName} Team ------------------------------------------------------------------------ Privacy ${privacyLink} Acceptable Use ${aupLink} Terms of Service ${tosLink}"
+#: ./browser/templates/newmember-txt.pt:40
+msgid "welcome-msg-txt"
+msgstr ""
+
+#. Default: "Visit the page for ${groupName} at <code>${groupUrl}</code> to see who else is a <strong>member,</strong> view the <strong>archives</strong>, and more."
+#: ./browser/templates/newmember.pt:38
+msgid "welcome-msg-visit-group"
 msgstr ""
 
 #. Default: "Welcome to ${groupName}"

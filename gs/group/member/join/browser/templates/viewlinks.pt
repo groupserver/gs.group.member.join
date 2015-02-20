@@ -1,5 +1,9 @@
-<li id="gs-group-member-join-view-message">
+<li id="gs-group-member-join-view-message"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="gs.group.member.join">
   <a tal:attributes="href string:${view/groupInfo/relative_url}/new-member-msg.html"
-     href="new-member-msg.html"><strong>View</strong> the welcome message</a>
+     href="new-member-msg.html"
+     i18n:translate="view-welcome-link"><strong>View</strong>
+     the welcome message</a>
 </li>
-

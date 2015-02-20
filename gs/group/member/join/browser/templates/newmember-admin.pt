@@ -5,49 +5,63 @@
       i18n:domain="gs.group.member.join"
       metal:use-macro="context/@@groupserver_email_layout/page">
   <head>
-    <title metal:fill-slot="title">New member:
-        <span tal:replace="view/groupInfo/name">This group</span>:
-        <span tal:replace="view/siteInfo/name">This site</span></title>
+    <title metal:fill-slot="title" i18n:translate="new-member-msg-title">
+      New member:
+      <tal:block i18n:name="groupName"
+                 replace="view/groupInfo/name">This group</tal:block>:
+      <tal:block i18n:name="siteName"
+                 replace="view/siteInfo/name">This site</tal:block></title>
   </head>
   <body>
     <div metal:fill-slot="body"
          tal:define="adminInfo options/adminInfo | view/loggedInUserInfo;
                      userInfo options/userInfo | view/loggedInUserInfo;">
-      <h2>New member of
-      <span tal:content="view/groupInfo/name">This Group</span></h2>
-      <p>
+      <h2 i18n:translate="new-member-msg-heading">New member of
+      <span i18n:name="groupName"
+            tal:content="view/groupInfo/name">This Group</span></h2>
+      <p i18n:translate="new-member-msg-salutation">
         Dear
-        <span tal:content="adminInfo/name">Admin</span>,
+        <span i18n:name="adminName" tal:content="adminInfo/name">Admin</span>,
       </p>
-      <p>
-        <span tal:content="userInfo/name">a new member</span> has joined
+      <p i18n:translate="new-member-msg-intro">
+        <span i18n:name="memberName"
+              tal:content="userInfo/name">a new member</span> has joined
         <a href="#" tal:attributes="href view/groupInfo/url"
+           i18n:name="groupName"
            tal:content="view/groupInfo/name">this group</a>.
       </p>
       <ul>
         <li tal:define="u string:${view/siteInfo/url}${userInfo/url}">
-          View
-          <a href="#" tal:attributes="href u"><strong>the profile</strong>
-          for  <span tal:content="userInfo/name">a new member</span>.</a>
+          <a href="#" tal:attributes="href u"
+             i18n:translate="new-member-msg-view-profile"><strong>View
+            the profile</strong>
+          for <span tal:content="userInfo/name"
+                    i18n:name="memberName">a new member</span>.</a>
         </li>
-        <li>View
-        <a tal:attributes="href string:${view/groupInfo/url}/members.html"><strong>the
-        membership</strong></a> of
-        <span tal:content="view/groupInfo/name">this group</span>.
+        <li tal:define="membershipURL string:${view/groupInfo/url}/members.html">
+          <a i18n:translate="new-member-msg-membership"
+             tal:attributes="href membershipURL"><strong>View the
+          membership</strong> of
+          <span i18n:name="groupName"
+                tal:content="view/groupInfo/name">this group</span>.
+          </a>
         </li>
       </ul>
-      <p class="muted">
+      <p class="muted" i18n:translate="new-member-msg-are-admin">
         (You received this message because you are an administrator of
-        <span tal:content="view/groupInfo/name">This Group</span>.
+        <span i18n:name="groupName"
+              tal:content="view/groupInfo/name">This Group</span>.
         If you have any queries email us at
-        <a tal:attributes="href view/supportEmail"
+        <a i18n:name="supportEmail"
+           tal:attributes="href view/supportEmail"
            href="#"><code tal:content="view/siteInfo/get_support_email">this address</code></a>.)
       </p>
       <!--Website address-->
-      <p class="closing">
+      <p class="closing" i18n:translate="new-member-msg-closing">
         Kind regards,<br/>
         <span>The
-        <span tal:content="view/siteInfo/name">Site</span>
+        <span i18n:name="siteName"
+              tal:content="view/siteInfo/name">Site</span>
         Team</span>
       </p>
     </div>
