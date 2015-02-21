@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gs.group.mmember.join 2.0.2\n"
-"POT-Creation-Date: 2015-02-20 23:21+0000\n"
-"PO-Revision-Date: 2015-02-20 15:25-0800\n"
+"POT-Creation-Date: 2015-02-21 00:31+0000\n"
+"PO-Revision-Date: 2015-02-20 16:37-0800\n"
 "Last-Translator: Michael JasonSmith <mpj17@onlinegroups.net>\n"
 "Language-Team: English <mpj17@onlinegroups.net>\n"
 "MIME-Version: 1.0\n"
@@ -18,33 +18,38 @@ msgstr ""
 "Domain: gs.group.member.join\n"
 "Language: en\n"
 
+#. Default: "Visit <a href=\"${link}\">your email settings page</a> to verify your address, or add a new address."
+#: ./join.py:83
+msgid "email-settings-phrase"
+msgstr "<a href=\"${link}\">Visit your <strong>email settings</strong> page</a> to verify your address, or add a new address."
+
 #. Default: "Join"
 #: ./browser/templates/join.pt:41
 msgid "join"
 msgstr "Join"
 
 #. Default: "Join"
-#: ./join.py:80
+#: ./join.py:91
 msgid "join-button"
 msgstr "Join"
 
 #. Default: "You have joined ${groupLink}."
-#: ./join.py:115
+#: ./join.py:126
 msgid "join-confirm"
 msgstr "You have joined ${groupLink}."
 
 #. Default: "You will receive a daily digest of topics from ${groupName}."
-#: ./join.py:96
+#: ./join.py:107
 msgid "join-delivery-digest"
 msgstr "You will receive a daily digest of topics from ${groupName}."
 
 #. Default: "You will receive an email message every time someone posts to ${groupName}."
-#: ./join.py:89
+#: ./join.py:100
 msgid "join-delivery-email"
 msgstr "You will receive an email message every time someone posts to ${groupName}."
 
 #. Default: "You will not receive any email when someone posts to${groupName}."
-#: ./join.py:105
+#: ./join.py:116
 msgid "join-delivery-web"
 msgstr "You will not receive any email when someone posts to ${groupName}."
 
@@ -64,12 +69,12 @@ msgid "join-group"
 msgstr "Join ${groupName}"
 
 #. Default: "You are a <strong>member</strong> of ${groupName}."
-#: ./browser/templates/join.pt:98
+#: ./browser/templates/join.pt:96
 msgid "join-page-already-a-member-issue"
 msgstr "You are a <strong>member</strong> of ${groupName}."
 
 #. Default: "Visit the group to participate."
-#: ./browser/templates/join.pt:101
+#: ./browser/templates/join.pt:99
 msgid "join-page-already-a-member-task"
 msgstr "Visit the group to participate."
 
@@ -94,12 +99,12 @@ msgid "join-page-login-explanation"
 msgstr "Then you can join ${groupName}."
 
 #. Default: "There are errors:"
-#: ./join.py:126
+#: ./join.py:137
 msgid "join-page-multiple-errors"
 msgstr "There are errors:"
 
 #. Default: "There is an error:"
-#: ./join.py:124
+#: ./join.py:135
 msgid "join-page-single-error"
 msgstr "There is an error:"
 
@@ -108,10 +113,10 @@ msgstr "There is an error:"
 msgid "join-page-title"
 msgstr "Join: ${groupName}: ${siteName}"
 
-#. Default: "You must <strong>verify your email address</strong> before you can join ${groupName}. Visit <a href=\"${DYNAMIC_CONTENT}\">your email settings page</a> to verify your address, or add a new address."
-#: ./browser/templates/join.pt:91
+#. Default: "You must <strong>verify your email address</strong> before you can join ${groupName}. ${emailSettingsPhrase}"
+#: ./browser/templates/join.pt:90
 msgid "join-page-verify-instruction"
-msgstr ""
+msgstr "You must <strong>verify your email address</strong> before you can join ${groupName}. ${emailSettingsPhrase}"
 
 #. Default: "(You received this message because you are an administrator of ${groupName}. If you have any queries email us at ${supportEmail}.)"
 #: ./browser/templates/newmember-admin.pt:55
