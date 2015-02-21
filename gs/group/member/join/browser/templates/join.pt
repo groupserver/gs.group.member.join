@@ -87,10 +87,8 @@
             you can join
             <span class="group" i18n:name="groupName"
                   tal:content="view/groupInfo/name"/>.
-            Visit
-              <a tal:attributes="href string:${view/loggedInUser/url}/emailsettings.html"
-                href="#">your email settings page</a>
-            to verify your address, or add a new address.
+            <span i18n:name="emailSettingsPhrase"
+                  tal:content="structure view/emailSettingsPhrase"/>
           </span><!--verify-email-->
           <span id="is-member" tal:condition="view/isMember">
             <span i18n:translate="join-page-already-a-member-issue">You are a

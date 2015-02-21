@@ -77,6 +77,17 @@ class JoinForm(GroupForm):
         retval = (len(eu.get_verified_addresses()) > 0)
         return retval
 
+    @property
+    def emailSettingsPhrase(self):
+        settingsUrl = '{0}/emailsettings.html'.format(self.loggedInUser.url)
+        retval = _(
+            'email-settings-phrase',
+            'Visit <a href="${link}">your email '
+            'settings page</a> to verify your address, or add a new '
+            'address.',
+            mapping={'link': settingsUrl})
+        return retval
+
     @form.action(name='join', label=_('join-button', 'Join'),
                  failure='handle_join_action_failure')
     def handle_join(self, action, data):
