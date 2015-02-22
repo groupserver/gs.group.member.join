@@ -5,22 +5,22 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gs.group.member.join\n"
-"POT-Creation-Date: 2015-02-21 00:31+0000\n"
+"POT-Creation-Date: 2015-02-22 22:28+0000\n"
 "PO-Revision-Date: 2015-02-22 21:51+0000\n"
 "Last-Translator: Alice Rose <heldinz@posteo.de>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/gs-group-member-join/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Domain: gs.group.member.join\n"
-"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Language-Code: en\n"
 "Language-Name: English\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Preferred-Encodings: utf-8 latin1\n"
+"Domain: gs.group.member.join\n"
+"Language: de\n"
 
-#. Default: "Visit <a href=\"${link}\">your email settings page</a> to verify
 #. your address, or add a new address."
+#. Default: "Visit <a href=\"${link}\">your email settings page</a> to verify your address, or add a new address."
 #: ./join.py:83
 msgid "email-settings-phrase"
 msgstr ""
@@ -45,14 +45,14 @@ msgstr "Sie haben ${groupLink} beigetreten."
 msgid "join-delivery-digest"
 msgstr ""
 
-#. Default: "You will receive an email message every time someone posts to
 #. ${groupName}."
+#. Default: "You will receive an email message every time someone posts to ${groupName}."
 #: ./join.py:100
 msgid "join-delivery-email"
 msgstr ""
 
-#. Default: "You will not receive any email when someone posts
 #. to${groupName}."
+#. Default: "You will not receive any email when someone posts to${groupName}."
 #: ./join.py:116
 msgid "join-delivery-web"
 msgstr ""
@@ -87,8 +87,8 @@ msgstr ""
 msgid "join-page-breadcrumbs-site-home"
 msgstr "Startseite"
 
-#. Default: "To join ${groupName} set how frequently you want to receive
 #. messages below, and click the <samp class=\"button\">Join</samp> button."
+#. Default: "To join ${groupName} set how frequently you want to receive messages below, and click the <samp class=\"button\">Join</samp> button."
 #: ./browser/templates/join.pt:53
 msgid "join-page-intro"
 msgstr ""
@@ -118,14 +118,14 @@ msgstr "<p>Es ist ein Fehler aufgetreten:</p>"
 msgid "join-page-title"
 msgstr "Beitreten: ${groupName}: ${siteName}"
 
-#. Default: "You must <strong>verify your email address</strong> before you
 #. can join ${groupName}. ${emailSettingsPhrase}"
+#. Default: "You must <strong>verify your email address</strong> before you can join ${groupName}. ${emailSettingsPhrase}"
 #: ./browser/templates/join.pt:90
 msgid "join-page-verify-instruction"
 msgstr ""
 
-#. Default: "(You received this message because you are an administrator of
 #. ${groupName}. If you have any queries email us at ${supportEmail}.)"
+#. Default: "(You received this message because you are an administrator of ${groupName}. If you have any queries email us at ${supportEmail}.)"
 #: ./browser/templates/newmember-admin.pt:55
 msgid "new-member-msg-are-admin"
 msgstr ""
@@ -160,13 +160,13 @@ msgstr "Liebe/r ${adminName},"
 msgid "new-member-msg-title"
 msgstr "Neues Mitglied: ${groupName}: ${siteName}"
 
-#. Default: "Dear ${adminName}, ${memberName} has joined ${groupName}. * View
 #. the profile for ${memberName} at ${groupURL} * View the membership of
 #. ${groupName} at ${membershipURL} You are received this message because you
 #. are an administrator of ${groupName}. Kind regards The ${siteName} Team
 #. ------------------------------------------------------------------------
 #. Privacy ${privacyLink} Acceptable Use ${aupLink} Terms of Service
 #. ${tosLink}"
+#. Default: "Dear ${adminName}, ${memberName} has joined ${groupName}. * View the profile for ${memberName} at ${groupURL} * View the membership of ${groupName} at ${membershipURL} You are received this message because you are an administrator of ${groupName}. Kind regards The ${siteName} Team ------------------------------------------------------------------------ Privacy ${privacyLink} Acceptable Use ${aupLink} Terms of Service ${tosLink}"
 #: ./browser/templates/newmember-admin-txt.pt:35
 msgid "new-member-msg-txt"
 msgstr ""
@@ -186,8 +186,8 @@ msgstr "${userName} hat ${groupName} beigetreten"
 #. "I received a Welcome message for the group ${groupName}\n"
 #. "    ${groupUrl}\n"
 #. "and..."
-#. Default: "Hello,\n\nI received a Welcome message for the group
 #. ${groupName}\n    ${groupUrl}\nand..."
+#. Default: "Hello,\n\nI received a Welcome message for the group ${groupName}\n    ${groupUrl}\nand..."
 #: ./notifymessages.py:44
 msgid "support-message-group-welcome-body"
 msgstr ""
@@ -202,11 +202,17 @@ msgstr ""
 #. "I am an administrator of the group ${groupName}\n"
 #. "    ${groupUrl}\n"
 #. "and..."
-#. Default: "Hello,\n\nI am an administrator of the group ${groupName} \n
 #. ${groupUrl}\nand..."
+#. Default: "Hello,\n\nI am an administrator of the group ${groupName} \n    ${groupUrl}\nand..."
 #: ./notifymessages.py:84
+#, fuzzy
 msgid "support-message-new-member-body"
-msgstr "Hallo,\n\nich bin Administrator von der Gruppe ${groupName}\n    ${groupUrl}\nund..."
+msgstr ""
+"Hallo,\n"
+"\n"
+"ich bin Administrator von der Gruppe ${groupName}\n"
+"    ${groupUrl}\n"
+"und..."
 
 #. Default: "New member"
 #: ./notifymessages.py:82
@@ -228,20 +234,20 @@ msgstr "Mit freundlichen Grüßen,<br /> <span>Team ${siteName}</span>"
 msgid "welcome-msg-heading"
 msgstr "Willkommen in ${groupName}"
 
-#. Default: "Welcome to ${groupName}. Below is some information to help you
 #. get the most out of your new group."
+#. Default: "Welcome to ${groupName}. Below is some information to help you get the most out of your new group."
 #: ./browser/templates/newmember.pt:28
 msgid "welcome-msg-intro"
 msgstr ""
 
-#. Default: "You can leave ${groupName} at any time by visiting
 #. <code>${leaveURL}</code>."
+#. Default: "You can leave ${groupName} at any time by visiting <code>${leaveURL}</code>."
 #: ./browser/templates/newmember.pt:57
 msgid "welcome-msg-leave"
 msgstr ""
 
-#. Default: "To post a message using <strong>email</strong> send a message to
 #. <code>${groupEmail}</code>"
+#. Default: "To post a message using <strong>email</strong> send a message to <code>${groupEmail}</code>"
 #: ./browser/templates/newmember.pt:47
 msgid "welcome-msg-post"
 msgstr ""
@@ -251,8 +257,8 @@ msgstr ""
 msgid "welcome-msg-profile"
 msgstr "<strong>Ihr Profil</strong> anzeigen."
 
-#. Default: "There you can see what other groups you are in, and change your
 #. <strong>email settings.</strong>"
+#. Default: "There you can see what other groups you are in, and change your <strong>email settings.</strong>"
 #: ./browser/templates/newmember.pt:65
 msgid "welcome-msg-profile-details"
 msgstr ""
@@ -262,9 +268,10 @@ msgstr ""
 msgid "welcome-msg-salutation"
 msgstr "Liebe/r ${memberName},"
 
-#. Default: "If you have any problems, email us at
 #. <code>${supportEmail}</code>."
+#. Default: "If you have any problems, email us at <code>${supportEmail}</code>."
 #: ./browser/templates/newmember.pt:73
+#, fuzzy
 msgid "welcome-msg-support-link"
 msgstr "Falls es Probleme gibt, schicken Sie eine Mail zu <code>${supportEmail}</code>."
 
@@ -273,7 +280,6 @@ msgstr "Falls es Probleme gibt, schicken Sie eine Mail zu <code>${supportEmail}<
 msgid "welcome-msg-title"
 msgstr "Willkommen: ${groupName}: ${siteName}"
 
-#. Default: "Dear ${memberName}, Welcome to ${groupName}. Below is some
 #. information to help you get the most out of your new group. * See who else
 #. is a member, view the archives, and more by visiting the page for
 #. ${groupName} at ${groupUrl} * To post a message using email send a message
@@ -284,13 +290,14 @@ msgstr "Willkommen: ${groupName}: ${siteName}"
 #. ------------------------------------------------------------------------
 #. Privacy ${privacyLink} Acceptable Use ${aupLink} Terms of Service
 #. ${tosLink}"
+#. Default: "Dear ${memberName}, Welcome to ${groupName}. Below is some information to help you get the most out of your new group. * See who else is a member, view the archives, and more by visiting the page for ${groupName} at ${groupUrl} * To post a message using email send a message to ${groupEmail} * You can leave ${groupName} by visiting ${leaveLink} Visit your profile to see what other groups you are in, and change your email settings, at ${profileLink} If you have any problems, email us at ${supportEmail} Kind regards, The ${suteName} Team ------------------------------------------------------------------------ Privacy ${privacyLink} Acceptable Use ${aupLink} Terms of Service ${tosLink}"
 #: ./browser/templates/newmember-txt.pt:40
 msgid "welcome-msg-txt"
 msgstr ""
 
-#. Default: "Visit the page for ${groupName} at <code>${groupUrl}</code> to
 #. see who else is a <strong>member,</strong> view the
 #. <strong>archives</strong>, and more."
+#. Default: "Visit the page for ${groupName} at <code>${groupUrl}</code> to see who else is a <strong>member,</strong> view the <strong>archives</strong>, and more."
 #: ./browser/templates/newmember.pt:38
 msgid "welcome-msg-visit-group"
 msgstr ""
@@ -299,3 +306,4 @@ msgstr ""
 #: ./notify.py:29
 msgid "welcome-subject"
 msgstr "Willkommen in ${groupName}"
+
