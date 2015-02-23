@@ -55,7 +55,7 @@
                 tal:content="view/groupInfo/name">This Group</span>
           at any time by visiting
           <code><a i18n:name="leaveURL" tal:attributes="href leaveUrl"
-                   tal:content="leaveUrl href="#">this url</a></code>.
+                   tal:content="leaveUrl" href="#">this url</a></code>.
         </li>
       </ul>
       <p>
