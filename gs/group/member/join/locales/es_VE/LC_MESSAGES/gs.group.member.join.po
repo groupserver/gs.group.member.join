@@ -1,19 +1,18 @@
 # --- PLEASE EDIT THE LINES BELOW CORRECTLY ---
 # gs.group.member.join translation strings
 # Translators:
-# Alice Rose <heldinz@posteo.de>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: gs.group.member.join\n"
 "POT-Creation-Date: 2015-02-23 21:30+0000\n"
 "PO-Revision-Date: 2015-02-23 22:37+0000\n"
 "Last-Translator: Michael JasonSmith <mpj17@onlinegroups.net>\n"
-"Language-Team: German (http://www.transifex.com/projects/p/gs-group-member-join/language/de/)\n"
+"Language-Team: Spanish (Venezuela) (http://www.transifex.com/projects/p/gs-group-member-join/language/es_VE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Domain: gs.group.member.join\n"
-"Language: de\n"
+"Language: es_VE\n"
 "Language-Code: en\n"
 "Language-Name: English\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -33,17 +32,17 @@ msgstr ""
 #. Default: "Join"
 #: ./browser/templates/join.pt:41
 msgid "join"
-msgstr "Beitreten"
+msgstr ""
 
 #. Default: "Join"
 #: ./join.py:90
 msgid "join-button"
-msgstr "Beitreten"
+msgstr ""
 
 #. Default: "You have joined ${groupLink}."
 #: ./join.py:125
 msgid "join-confirm"
-msgstr "Sie haben ${groupLink} beigetreten."
+msgstr ""
 
 #. Default: "You will receive a daily digest of topics from ${groupName}."
 #: ./join.py:106
@@ -75,12 +74,12 @@ msgstr ""
 #. Default: "Join ${groupName}"
 #: ./join.py:42
 msgid "join-group"
-msgstr "${groupName} beitreten"
+msgstr ""
 
 #. Default: "You are a <strong>member</strong> of ${groupName}."
 #: ./browser/templates/join.pt:96
 msgid "join-page-already-a-member-issue"
-msgstr "Sie sind <strong>Mitglied</strong> von ${groupName}."
+msgstr ""
 
 #. Default: "Visit the group to participate."
 #: ./browser/templates/join.pt:99
@@ -90,7 +89,7 @@ msgstr ""
 #. Default: "Site home page"
 #: ./browser/templates/join.pt:31
 msgid "join-page-breadcrumbs-site-home"
-msgstr "Startseite"
+msgstr ""
 
 #. Default: "To join ${groupName} set how frequently you want to receive
 #. messages below, and click the <samp class=\"button\">Join</samp> button."
@@ -101,27 +100,27 @@ msgstr ""
 #. Default: "You must <strong>login</strong>."
 #: ./browser/templates/join.pt:75
 msgid "join-page-login"
-msgstr "Sie müssen sich <strong>anmelden</strong>."
+msgstr ""
 
 #. Default: "Then you can join ${groupName}."
 #: ./browser/templates/join.pt:80
 msgid "join-page-login-explanation"
-msgstr "Dann können Sie ${groupName} beitreten."
+msgstr ""
 
 #. Default: "There are errors:"
 #: ./join.py:136
 msgid "join-page-multiple-errors"
-msgstr "<p>Es sind mehrere Fehler aufgetreten:</p>"
+msgstr ""
 
 #. Default: "There is an error:"
 #: ./join.py:134
 msgid "join-page-single-error"
-msgstr "<p>Es ist ein Fehler aufgetreten:</p>"
+msgstr ""
 
 #. Default: "Join: ${groupName}: ${siteName}"
 #: ./browser/templates/join.pt:12
 msgid "join-page-title"
-msgstr "Beitreten: ${groupName}: ${siteName}"
+msgstr ""
 
 #. Default: "You must <strong>verify your email address</strong> before you
 #. can join ${groupName}. ${emailSettingsPhrase}"
@@ -138,32 +137,32 @@ msgstr ""
 #. Default: "Kind regards,<br /> <span>The ${siteName} Team</span>"
 #: ./browser/templates/newmember-admin.pt:63
 msgid "new-member-msg-closing"
-msgstr "Mit freundlichen Grüßen,<br /> <span>Team ${siteName}</span>"
+msgstr ""
 
 #. Default: "New member of ${groupName}"
 #: ./browser/templates/newmember-admin.pt:20
 msgid "new-member-msg-heading"
-msgstr "Neues Mitglied von ${groupName}"
+msgstr ""
 
 #. Default: "${memberName} has joined ${groupName}."
 #: ./browser/templates/newmember-admin.pt:29
 msgid "new-member-msg-intro"
-msgstr "${memberName} hat ${groupName} beigetreten."
+msgstr ""
 
 #. Default: "<strong>View the membership</strong> of ${groupName}."
 #: ./browser/templates/newmember-admin.pt:45
 msgid "new-member-msg-membership"
-msgstr "<strong>Mitgliedschaft</strong> von ${groupName} anzeigen."
+msgstr ""
 
 #. Default: "Dear ${adminName},"
 #: ./browser/templates/newmember-admin.pt:24
 msgid "new-member-msg-salutation"
-msgstr "Liebe/r ${adminName},"
+msgstr ""
 
 #. Default: "New member: ${groupName}: ${siteName}"
 #: ./browser/templates/newmember-admin.pt:12
 msgid "new-member-msg-title"
-msgstr "Neues Mitglied: ${groupName}: ${siteName}"
+msgstr ""
 
 #. Default: "Dear ${adminName}, ${memberName} has joined ${groupName}. * View
 #. the profile for ${memberName} at ${groupURL} * View the membership of
@@ -179,12 +178,12 @@ msgstr ""
 #. Default: "<strong>View the profile</strong> for ${memberName}."
 #: ./browser/templates/newmember-admin.pt:38
 msgid "new-member-msg-view-profile"
-msgstr "<strong>Profil</strong> von ${memberName} anzeigen."
+msgstr ""
 
 #. Default: "${userName} has joined ${groupName}"
 #: ./notify.py:47
 msgid "new-member-subject"
-msgstr "${userName} hat ${groupName} beigetreten"
+msgstr ""
 
 #. Default: "Privacy"
 #: ./browser/templates/newmember-txt.pt:30
@@ -216,12 +215,12 @@ msgstr ""
 #. ${groupUrl}\nand..."
 #: ./notifymessages.py:84
 msgid "support-message-new-member-body"
-msgstr "Hallo,\n\nich bin Administrator von der Gruppe ${groupName}\n    ${groupUrl}\nund..."
+msgstr ""
 
 #. Default: "New member"
 #: ./notifymessages.py:82
 msgid "support-message-new-member-subject"
-msgstr "Neues Mitglied"
+msgstr ""
 
 #. Default: "Terms of Service"
 #: ./browser/templates/newmember-txt.pt:36
@@ -236,12 +235,12 @@ msgstr ""
 #. Default: "Kind regards,<br /> <span>The ${siteName} Team</span>"
 #: ./browser/templates/newmember.pt:82
 msgid "welcome-msg-closing"
-msgstr "Mit freundlichen Grüßen,<br /> <span>Team ${siteName}</span>"
+msgstr ""
 
 #. Default: "Welcome to ${groupName}"
 #: ./browser/templates/newmember.pt:19
 msgid "welcome-msg-heading"
-msgstr "Willkommen in ${groupName}"
+msgstr ""
 
 #. Default: "Welcome to ${groupName}. Below is some information to help you
 #. get the most out of your new group."
@@ -264,7 +263,7 @@ msgstr ""
 #. Default: "Visit <strong>your profile</strong>."
 #: ./browser/templates/newmember.pt:62
 msgid "welcome-msg-profile"
-msgstr "<strong>Ihr Profil</strong> anzeigen."
+msgstr ""
 
 #. Default: "There you can see what other groups you are in, and change your
 #. <strong>email settings.</strong>"
@@ -275,18 +274,18 @@ msgstr ""
 #. Default: "Dear ${memberName},"
 #: ./browser/templates/newmember.pt:23
 msgid "welcome-msg-salutation"
-msgstr "Liebe/r ${memberName},"
+msgstr ""
 
 #. Default: "If you have any problems, email us at
 #. <code>${supportEmail}</code>."
 #: ./browser/templates/newmember.pt:73
 msgid "welcome-msg-support-link"
-msgstr "Falls es Probleme gibt, schicken Sie eine Mail zu <code>${supportEmail}</code>."
+msgstr ""
 
 #. Default: "Welcome: ${groupName}: ${siteName}"
 #: ./browser/templates/newmember.pt:12
 msgid "welcome-msg-title"
-msgstr "Willkommen: ${groupName}: ${siteName}"
+msgstr ""
 
 #. Default: "Kind regards, The ${suteName} Team"
 #: ./browser/templates/newmember-txt.pt:26
@@ -344,4 +343,4 @@ msgstr ""
 #. Default: "Welcome to ${groupName}"
 #: ./notify.py:29
 msgid "welcome-subject"
-msgstr "Willkommen in ${groupName}"
+msgstr ""
