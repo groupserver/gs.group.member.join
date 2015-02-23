@@ -82,9 +82,8 @@ class JoinForm(GroupForm):
         settingsUrl = '{0}/emailsettings.html'.format(self.loggedInUser.url)
         retval = _(
             'email-settings-phrase',
-            'Visit <a href="${link}">your email '
-            'settings page</a> to verify your address, or add a new '
-            'address.',
+            'Visit <a href="${link}">your email settings page</a> to '
+            'verify your address, or add a new address.',
             mapping={'link': settingsUrl})
         return retval
 
