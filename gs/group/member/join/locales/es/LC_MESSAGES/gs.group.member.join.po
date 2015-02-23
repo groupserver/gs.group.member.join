@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gs.group.member.join\n"
-"POT-Creation-Date: 2015-02-23 21:30+0000\n"
-"PO-Revision-Date: 2015-02-23 22:37+0000\n"
+"POT-Creation-Date: 2015-02-23 22:43+0000\n"
+"PO-Revision-Date: 2015-02-23 22:47+0000\n"
 "Last-Translator: Michael JasonSmith <mpj17@onlinegroups.net>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/gs-group-member-join/language/es/)\n"
 "MIME-Version: 1.0\n"
@@ -19,6 +19,7 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 
 #. Default: "Acceptable Use"
+#: ./browser/templates/newmember-admin-txt.pt:30
 #: ./browser/templates/newmember-txt.pt:33
 msgid "aup"
 msgstr ""
@@ -164,15 +165,35 @@ msgstr ""
 msgid "new-member-msg-title"
 msgstr ""
 
-#. Default: "Dear ${adminName}, ${memberName} has joined ${groupName}. * View
-#. the profile for ${memberName} at ${groupURL} * View the membership of
-#. ${groupName} at ${membershipURL} You are received this message because you
-#. are an administrator of ${groupName}. Kind regards The ${siteName} Team
-#. ------------------------------------------------------------------------
-#. Privacy ${privacyLink} Acceptable Use ${aupLink} Terms of Service
-#. ${tosLink}"
-#: ./browser/templates/newmember-admin-txt.pt:35
-msgid "new-member-msg-txt"
+#. Default: "You are received this message because you are an administrator of
+#. ${groupName}."
+#: ./browser/templates/newmember-admin-txt.pt:20
+msgid "new-member-msg-txt-admin"
+msgstr ""
+
+#. Default: "Kind regards The ${siteName} Team"
+#: ./browser/templates/newmember-admin-txt.pt:23
+msgid "new-member-msg-txt-closing"
+msgstr ""
+
+#. Default: "${memberName} has joined ${groupName}."
+#: ./browser/templates/newmember-admin-txt.pt:10
+msgid "new-member-msg-txt-intro"
+msgstr ""
+
+#. Default: "View the membership of ${groupName} at ${membershipURL}"
+#: ./browser/templates/newmember-admin-txt.pt:17
+msgid "new-member-msg-txt-membership"
+msgstr ""
+
+#. Default: "View the profile for ${memberName} at ${groupURL}"
+#: ./browser/templates/newmember-admin-txt.pt:14
+msgid "new-member-msg-txt-profile"
+msgstr ""
+
+#. Default: "Dear ${adminName},"
+#: ./browser/templates/newmember-admin-txt.pt:6
+msgid "new-member-msg-txt-salutation"
 msgstr ""
 
 #. Default: "<strong>View the profile</strong> for ${memberName}."
@@ -186,6 +207,7 @@ msgid "new-member-subject"
 msgstr ""
 
 #. Default: "Privacy"
+#: ./browser/templates/newmember-admin-txt.pt:27
 #: ./browser/templates/newmember-txt.pt:30
 msgid "privacy"
 msgstr ""
@@ -223,6 +245,7 @@ msgid "support-message-new-member-subject"
 msgstr ""
 
 #. Default: "Terms of Service"
+#: ./browser/templates/newmember-admin-txt.pt:33
 #: ./browser/templates/newmember-txt.pt:36
 msgid "tos"
 msgstr ""
@@ -322,8 +345,8 @@ msgstr ""
 #. Default: "Visit your profile to see what other groups you are in, and
 #. change your email settings, at ${profileLink}"
 # Visit your profile to see what other groups you are in, and
-#     change your email settings, at
-#     ${profileLink}
+# change your email settings, at
+# ${profileLink}
 #: ./browser/templates/newmember-txt.pt:20
 msgid "welcome-msg-txt-profile"
 msgstr ""
