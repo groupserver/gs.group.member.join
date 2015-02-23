@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2015-02-23 21:30+0000\n"
+"POT-Creation-Date: 2015-02-23 22:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,6 +18,7 @@ msgstr ""
 "Domain: gs.group.member.join\n"
 
 #. Default: "Acceptable Use"
+#: ./browser/templates/newmember-admin-txt.pt:30
 #: ./browser/templates/newmember-txt.pt:33
 msgid "aup"
 msgstr ""
@@ -157,9 +158,34 @@ msgstr ""
 msgid "new-member-msg-title"
 msgstr ""
 
-#. Default: "Dear ${adminName}, ${memberName} has joined ${groupName}. * View the profile for ${memberName} at ${groupURL} * View the membership of ${groupName} at ${membershipURL} You are received this message because you are an administrator of ${groupName}. Kind regards The ${siteName} Team ------------------------------------------------------------------------ Privacy ${privacyLink} Acceptable Use ${aupLink} Terms of Service ${tosLink}"
-#: ./browser/templates/newmember-admin-txt.pt:35
-msgid "new-member-msg-txt"
+#. Default: "You are received this message because you are an administrator of ${groupName}."
+#: ./browser/templates/newmember-admin-txt.pt:20
+msgid "new-member-msg-txt-admin"
+msgstr ""
+
+#. Default: "Kind regards The ${siteName} Team"
+#: ./browser/templates/newmember-admin-txt.pt:23
+msgid "new-member-msg-txt-closing"
+msgstr ""
+
+#. Default: "${memberName} has joined ${groupName}."
+#: ./browser/templates/newmember-admin-txt.pt:10
+msgid "new-member-msg-txt-intro"
+msgstr ""
+
+#. Default: "View the membership of ${groupName} at ${membershipURL}"
+#: ./browser/templates/newmember-admin-txt.pt:17
+msgid "new-member-msg-txt-membership"
+msgstr ""
+
+#. Default: "View the profile for ${memberName} at ${groupURL}"
+#: ./browser/templates/newmember-admin-txt.pt:14
+msgid "new-member-msg-txt-profile"
+msgstr ""
+
+#. Default: "Dear ${adminName},"
+#: ./browser/templates/newmember-admin-txt.pt:6
+msgid "new-member-msg-txt-salutation"
 msgstr ""
 
 #. Default: "<strong>View the profile</strong> for ${memberName}."
@@ -173,6 +199,7 @@ msgid "new-member-subject"
 msgstr ""
 
 #. Default: "Privacy"
+#: ./browser/templates/newmember-admin-txt.pt:27
 #: ./browser/templates/newmember-txt.pt:30
 msgid "privacy"
 msgstr ""
@@ -198,6 +225,7 @@ msgid "support-message-new-member-subject"
 msgstr ""
 
 #. Default: "Terms of Service"
+#: ./browser/templates/newmember-admin-txt.pt:33
 #: ./browser/templates/newmember-txt.pt:36
 msgid "tos"
 msgstr ""

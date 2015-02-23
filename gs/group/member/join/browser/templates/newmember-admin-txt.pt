@@ -3,34 +3,33 @@
            i18n:domain="gs.group.member.join"
            define="adminInfo options/adminInfo | view/loggedInUserInfo;
                    userInfo options/userInfo | view/loggedInUserInfo;
-                   userEmail options/userEmail | view/userEmailInfo"
-           i18n:translate="new-member-msg-txt">Dear <tal:block i18n:name="adminName" content="adminInfo/name">Admin</tal:block>,
+                   userEmail options/userEmail | view/userEmailInfo"><tal:block i18n:translate="new-member-msg-txt-salutation">Dear <tal:block i18n:name="adminName" content="adminInfo/name">Admin</tal:block>,</tal:block>
 
-<tal:block i18n:name="memberName"
+<tal:block i18n:translate="new-member-msg-txt-intro"><tal:block i18n:name="memberName"
            content="userInfo/name">A new member</tal:block> has joined
 <tal:block i18n:name="groupName"
-           content="view/groupInfo/name">this group</tal:block>.
+           content="view/groupInfo/name">this group</tal:block>.</tal:block>
 
-  * View the profile for <tal:block i18n:name="memberName" content="userInfo/name">the new member</tal:block> at
-    <tal:block i18n:name="groupURL" content="string:${view/siteInfo/url}${userInfo/url}">URL</tal:block>
+  * <tal:block i18n:translate="new-member-msg-txt-profile">View the profile for <tal:block i18n:name="memberName" content="userInfo/name">the new member</tal:block> at
+    <tal:block i18n:name="groupURL" content="string:${view/siteInfo/url}${userInfo/url}">URL</tal:block></tal:block>
 
-  * View the membership of <tal:block i18n:name="groupName" content="view/groupInfo/name">this group</tal:block> at
-    <tal:block i18n:name="membershipURL" content="string:${view/groupInfo/url}/membership.html">URL</tal:block>
+  * <tal:block i18n:translate="new-member-msg-txt-membership">View the membership of <tal:block i18n:name="groupName" content="view/groupInfo/name">this group</tal:block> at
+    <tal:block i18n:name="membershipURL" content="string:${view/groupInfo/url}/membership.html">URL</tal:block></tal:block>
 
-You are received this message because you are an administrator  of
-<tal:block i18n:name="groupName" content="view/groupInfo/name">This Group</tal:block>.
+<tal:block i18n:translate="new-member-msg-txt-admin">You are received this message because you are an administrator  of
+<tal:block i18n:name="groupName" content="view/groupInfo/name">This Group</tal:block>.</tal:block>
 
-Kind regards
-  The <tal:block i18n:name="siteName" content="view/siteInfo/name">Site</tal:block> Team
+<tal:block i18n:translate="new-member-msg-txt-closing">Kind regards
+  The <tal:block i18n:name="siteName" content="view/siteInfo/name">Site</tal:block> Team</tal:block>
 
 ------------------------------------------------------------------------
 
-Privacy
-  <tal:block i18n:name="privacyLink" content="string:${view/siteInfo/url}/policies/privacy"/>
+<tal:block i18n:translate="privacy">Privacy</tal:block>
+  <tal:block content="string:${view/siteInfo/url}/policies/privacy"/>
 
-Acceptable Use
-  <tal:block i18n:name="aupLink" content="string:${view/siteInfo/url}/policies/aup"/>
+<tal:block i18n:translate="aup">Acceptable Use</tal:block>
+  <tal:block content="string:${view/siteInfo/url}/policies/aup"/>
 
-Terms of Service
-  <tal:block i18n:name="tosLink" content="string:${view/siteInfo/url}/policies/tos"/>
+<tal:block i18n:translate="tos">Terms of Service</tal:block>
+  <tal:block content="string:${view/siteInfo/url}/policies/tos"/>
 </tal:block>
