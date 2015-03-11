@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gs.group.member.join\n"
 "POT-Creation-Date: 2015-02-23 22:57+0000\n"
-"PO-Revision-Date: 2015-03-11 20:12+0000\n"
+"PO-Revision-Date: 2015-03-11 23:10+0000\n"
 "Last-Translator: Michael JasonSmith <mpj17@onlinegroups.net>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/gs-group-member-join/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -305,7 +305,7 @@ msgstr "Cher ${memberName},"
 #. <code>${supportEmail}</code>."
 #: ./browser/templates/newmember.pt:73
 msgid "welcome-msg-support-link"
-msgstr "Pour la mo"
+msgstr "Si vous avez le moindre problème, veuillez nous contacter à l'adresse suivante <code>${supportEmail}</code>."
 
 #. Default: "Welcome: ${groupName}: ${siteName}"
 #: ./browser/templates/newmember.pt:12
@@ -363,7 +363,7 @@ msgstr "Cher ${memberName},"
 #. <strong>archives</strong>, and more."
 #: ./browser/templates/newmember.pt:38
 msgid "welcome-msg-visit-group"
-msgstr "Visitez la page pour le groupe ${groupName} à l'adresse <code>${groupUrl}, afin d'afficher tous les <strong>membres</strong>, ainsi que les <strong>archives</strong>, et plus encore !"
+msgstr "Visitez la page pour le groupe ${groupName} à l'adresse <code>${groupUrl}</code>, afin d'afficher tous les <strong>membres,</strong> ainsi que les <strong>archives,</strong> et plus encore !"
 
 #. Default: "Welcome to ${groupName}"
 #: ./notify.py:29
