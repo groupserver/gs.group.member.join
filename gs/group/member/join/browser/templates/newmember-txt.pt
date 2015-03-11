@@ -23,7 +23,7 @@ email settings, at
   <tal:block i18n:name="supportEmail" content="view/siteInfo/get_support_email">this address</tal:block></tal:block>
 
 <tal:block i18n:translate="welcome-msg-txt-closing">Kind regards,
-  The <tal:block i18n:name="suteName" content="view/siteInfo/name">Site</tal:block> Team</tal:block>
+  The <tal:block i18n:name="siteName" content="view/siteInfo/name">Site</tal:block> Team</tal:block>
 
 ------------------------------------------------------------------------
 

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2015-02-23 22:57+0000\n"
+"POT-Creation-Date: 2015-03-11 23:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -285,7 +285,7 @@ msgstr ""
 msgid "welcome-msg-title"
 msgstr ""
 
-#. Default: "Kind regards, The ${suteName} Team"
+#. Default: "Kind regards, The ${siteName} Team"
 #: ./browser/templates/newmember-txt.pt:26
 msgid "welcome-msg-txt-closing"
 msgstr ""

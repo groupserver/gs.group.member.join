@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gs.group.member.join\n"
-"POT-Creation-Date: 2015-02-23 22:57+0000\n"
+"POT-Creation-Date: 2015-03-11 23:32+0000\n"
 "PO-Revision-Date: 2015-02-23 22:47+0000\n"
 "Last-Translator: Michael JasonSmith <mpj17@onlinegroups.net>\n"
 "Language-Team: Spanish (Venezuela) (http://www.transifex.com/projects/p/gs-group-member-join/language/es_VE/)\n"
@@ -310,7 +310,7 @@ msgstr ""
 msgid "welcome-msg-title"
 msgstr ""
 
-#. Default: "Kind regards, The ${suteName} Team"
+#. Default: "Kind regards, The ${siteName} Team"
 #: ./browser/templates/newmember-txt.pt:26
 msgid "welcome-msg-txt-closing"
 msgstr ""
