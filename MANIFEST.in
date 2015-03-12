@@ -3,4 +3,4 @@ recursive-include docs *
 include version.py
 include *.txt
 include *.rst
-global-exclude *mo
+global-exclude *.mo

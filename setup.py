@@ -64,7 +64,7 @@ setup(
         'zope.event',
         'zope.formlib',
         'zope.interface',
-        'zope.i18n',
+        'zope.i18n[compile]',
         'zope.i18nmessageid',
         'zope.tal',
         'zope.tales',
