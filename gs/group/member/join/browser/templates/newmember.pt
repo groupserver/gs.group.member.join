@@ -19,7 +19,7 @@
       <span i18n:name="groupName"
             tal:content="view/groupInfo/name">This Group</span></h2>
       <p i18n:translate="welcome-msg-salutation">
-        Dear
+        Hello
         <span i18n:name="memberName"
               tal:content="userInfo/name">New Member</span>,
       </p>

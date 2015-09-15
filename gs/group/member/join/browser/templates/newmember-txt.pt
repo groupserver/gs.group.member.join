@@ -1,7 +1,7 @@
 <tal:block xmlns:tal="http://xml.zope.org/namespaces/tal"
            xmlns:i18n="http://xml.zope.org/namespaces/i18n"
            i18n:domain="gs.group.member.join"
-           define="userInfo options/userInfo | view/loggedInUserInfo;"><tal:block i18n:translate="welcome-msg-txt-salutation">Dear <tal:block i18n:name="memberName" content="userInfo/name">New Member</tal:block>,</tal:block>
+           define="userInfo options/userInfo | view/loggedInUserInfo;"><tal:block i18n:translate="welcome-msg-txt-salutation">Hello <tal:block i18n:name="memberName" content="userInfo/name">New Member</tal:block>,</tal:block>
 
 <tal:block i18n:translate="welcome-msg-txt-intro">Welcome to <tal:block i18n:name="groupName" content="view/groupInfo/name">This Group</tal:block>. Below is some information to help you get the most out of your new group.</tal:block>
 

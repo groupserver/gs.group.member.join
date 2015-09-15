@@ -3,7 +3,7 @@
            i18n:domain="gs.group.member.join"
            define="adminInfo options/adminInfo | view/loggedInUserInfo;
                    userInfo options/userInfo | view/loggedInUserInfo;
-                   userEmail options/userEmail | view/userEmailInfo"><tal:block i18n:translate="new-member-msg-txt-salutation">Dear <tal:block i18n:name="adminName" content="adminInfo/name">Admin</tal:block>,</tal:block>
+                   userEmail options/userEmail | view/userEmailInfo"><tal:block i18n:translate="new-member-msg-txt-salutation">Hello <tal:block i18n:name="adminName" content="adminInfo/name">Admin</tal:block>,</tal:block>
 
 <tal:block i18n:translate="new-member-msg-txt-intro"><tal:block i18n:name="memberName"
            content="userInfo/name">A new member</tal:block> has joined
