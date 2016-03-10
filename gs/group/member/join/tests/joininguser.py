@@ -115,3 +115,64 @@ class TestJoiningUser(TestCase):
         j.set_moderation(groupInfo, auditor)
 
         self.assertEqual(0, m_m_m.call_count)
+
+    @patch('gs.group.member.join.joininguser.log')
+    def test_moderate_member_already(self, m_l):
+        'Ensure we cope if someone is already moderated'
+        j = JoiningUser(MagicMock())
+        durk = MagicMock()
+        durk.id = 'durk'
+
+        mailingList = MagicMock()
+        dinsdale = MagicMock()
+        dinsdale.id = 'dinsdale'
+        mailingList.moderatees = [durk, dinsdale, ]
+
+        groupInfo = MagicMock()
+        auditor = MagicMock()
+        j.moderate_member(durk, mailingList, groupInfo, auditor)
+
+        self.assertEqual(1, m_l.warn.call_count)
+        self.assertEqual(0, mailingList.hasProperty.call_count)
+
+    def test_moderate_member_property_missing(self):
+        'Cope with the ``moderated_members`` property missing'
+        durk = MagicMock()
+        durk.id = 'durk'
+
+        mailingList = MagicMock()
+        mList = mailingList.mlist
+        mList.hasProperty.return_value = False
+        dinsdale = MagicMock()
+        dinsdale.id = 'dinsdale'
+        mailingList.moderatees = [dinsdale, ]
+
+        groupInfo = MagicMock()
+        auditor = MagicMock()
+
+        j = JoiningUser(MagicMock())
+        j.moderate_member(durk, mailingList, groupInfo, auditor)
+
+        mList.manage_addProperty.assert_called_once_with(
+            'moderated_members', ['dinsdale', 'durk', ], 'lines')
+
+    def test_moderate_member(self):
+        'Cope with the ``moderated_members`` property being present'
+        durk = MagicMock()
+        durk.id = 'durk'
+
+        mailingList = MagicMock()
+        mList = mailingList.mlist
+        mList.hasProperty.return_value = True
+        dinsdale = MagicMock()
+        dinsdale.id = 'dinsdale'
+        mailingList.moderatees = [dinsdale, ]
+
+        groupInfo = MagicMock()
+        auditor = MagicMock()
+
+        j = JoiningUser(MagicMock())
+        j.moderate_member(durk, mailingList, groupInfo, auditor)
+
+        mList.manage_changeProperties.assert_called_once_with(
+            moderated_members=['dinsdale', 'durk', ])
