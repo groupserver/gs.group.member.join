@@ -25,10 +25,11 @@ with codecs.open(os.path.join("docs", "HISTORY.rst"),
                  encoding='utf-8') as f:
     long_description += '\n' + f.read()
 
+name = 'gs.group.member.join'
 version = get_version()
 
 setup(
-    name='gs.group.member.join',
+    name=name,
     version=version,
     description="The pages and code to join people to GroupServer groups",
     long_description=long_description,
@@ -49,10 +50,11 @@ setup(
     author_email='alice@onlinegroups.net',
     maintainer='Michael JasonSmith',
     maintainer_email='mpj17@onlinegroups.net',
-    url='https://github.com/groupserver/gs.group.member.join/',
+    url='https://github.com/groupserver/{0}'.format(name),
     license='ZPL 2.1',
     packages=find_packages(exclude=['ez_setup']),
-    namespace_packages=['gs', 'gs.group', 'gs.group.member'],
+    namespace_packages=['.'.join(name.split('.')[:i])
+                        for i in range(1, len(name.split('.')))],
     include_package_data=True,
     zip_safe=False,
     install_requires=[
@@ -86,7 +88,7 @@ setup(
         'Products.XWFCore',
     ],
     extras_require={'docs': ['Sphinx', ], },
-    test_suite="gs.group.member.join.tests.test_all",
+    test_suite="{0}.tests.test_all".format(name),
     tests_require=['mock', ],
     entry_points="""# -*- Entry points: -*-
     """,
