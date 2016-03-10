@@ -12,13 +12,16 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ############################################################################
-from __future__ import unicode_literals
+from __future__ import unicode_literals, absolute_import, print_function
+from logging import getLogger
 from zope.i18n import translate
 from gs.content.email.base import (GroupNotifierABC)
 from gs.profile.email.base.emailuser import EmailUser
 from gs.profile.notify import MessageSender
 from . import GSMessageFactory as _
-UTF8 = 'utf-8'
+
+#: The logger for warnings
+log = getLogger('gs.group.member.join.notify')
 
 
 class NotifyNewMember(GroupNotifierABC):
@@ -55,5 +58,11 @@ class NotifyAdmin(GroupNotifierABC):
         html = self.htmlTemplate(adminInfo=adminInfo, userInfo=userInfo,
                                  userEmail=emailUser)
         ms = MessageSender(self.context, adminInfo)
-        ms.send_message(translatedSubject, text, html)
+        try:
+            ms.send_message(translatedSubject, text, html)
+        except ValueError:
+            m = 'Could not send a "New member" notification to %s (%s) in the group %s (%s) on '\
+                '%s (%s) because they lack a verified email address. Skipping the notification.'
+            log.warn(m, adminInfo.name, adminInfo.id, self.groupInfo.name, self.groupInfo.id,
+                     self.groupInfo.siteInfo.name, self.groupInfo.siteInfo.id)
         self.reset_content_type()
