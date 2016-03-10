@@ -41,3 +41,77 @@ class TestJoiningUser(TestCase):
         j.join_member_group('ethel_member')
 
         acl_users.addGroupsToUser.assert_called_once_with(['ethel_member', ], 'dinsdale')
+
+    @patch('gs.group.member.join.joininguser.user_division_admin_of_group')
+    @patch('gs.group.member.join.joininguser.createObject')
+    @patch.object(JoiningUser, 'moderate_member')
+    def test_set_moderation_site_admin(self, m_m_m, m_cO, m_u_d_a_o_g):
+        'Ensure that site-administrators are not moderated'
+        mailingList = m_cO()
+        mailingList.is_moderated = True
+        mailingList.is_moderate_new = True
+        m_u_d_a_o_g.return_value = True
+
+        userInfo = MagicMock()
+        userInfo.id = 'dinsdale'
+        j = JoiningUser(userInfo)
+        j.set_moderation(MagicMock(), MagicMock())
+
+        self.assertEqual(0, m_m_m.call_count)
+
+    @patch('gs.group.member.join.joininguser.user_division_admin_of_group')
+    @patch('gs.group.member.join.joininguser.createObject')
+    @patch.object(JoiningUser, 'moderate_member')
+    def test_set_moderation_moderate_new(self, m_m_m, m_cO, m_u_d_a_o_g):
+        'Ensure that we moderate new members'
+        mailingList = m_cO()
+        mailingList.is_moderated = True
+        mailingList.is_moderate_new = True
+        m_u_d_a_o_g.return_value = False
+
+        userInfo = MagicMock()
+        userInfo.id = 'dinsdale'
+        j = JoiningUser(userInfo)
+        groupInfo = MagicMock()
+        auditor = MagicMock()
+        j.set_moderation(groupInfo, auditor)
+
+        m_m_m.assert_called_once_with(userInfo, mailingList, groupInfo, auditor)
+
+    @patch('gs.group.member.join.joininguser.user_division_admin_of_group')
+    @patch('gs.group.member.join.joininguser.createObject')
+    @patch.object(JoiningUser, 'moderate_member')
+    def test_set_moderation_moderate_some(self, m_m_m, m_cO, m_u_d_a_o_g):
+        'Ensure that we skip setting moderation if we only moderate some members'
+        mailingList = m_cO()
+        mailingList.is_moderated = True
+        mailingList.is_moderate_new = False
+        m_u_d_a_o_g.return_value = False
+
+        userInfo = MagicMock()
+        userInfo.id = 'dinsdale'
+        j = JoiningUser(userInfo)
+        groupInfo = MagicMock()
+        auditor = MagicMock()
+        j.set_moderation(groupInfo, auditor)
+
+        self.assertEqual(0, m_m_m.call_count)
+
+    @patch('gs.group.member.join.joininguser.user_division_admin_of_group')
+    @patch('gs.group.member.join.joininguser.createObject')
+    @patch.object(JoiningUser, 'moderate_member')
+    def test_set_moderation_moderate_none(self, m_m_m, m_cO, m_u_d_a_o_g):
+        'Ensure that we skip setting moderation if it is off'
+        mailingList = m_cO()
+        mailingList.is_moderated = False
+        mailingList.is_moderate_new = True
+        m_u_d_a_o_g.return_value = False
+
+        userInfo = MagicMock()
+        userInfo.id = 'dinsdale'
+        j = JoiningUser(userInfo)
+        groupInfo = MagicMock()
+        auditor = MagicMock()
+        j.set_moderation(groupInfo, auditor)
+
+        self.assertEqual(0, m_m_m.call_count)
