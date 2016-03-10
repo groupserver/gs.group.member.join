@@ -123,31 +123,28 @@ listen for that event.
 
     def set_moderation(self, groupInfo, auditor):
         # TODO: Move to an event-handler. It can react to groups that
-        #       have a Moderated Group marker interface/
+        #       have a Moderated Group marker interface.
         # This is tricky:
         #     <https://projects.iopen.net/groupserver/ticket/235>
-        mailingList = createObject('groupserver.MailingListInfo',
-                                   self.context, groupInfo.id)
-        isDivisionAdmin = user_division_admin_of_group(self.userInfo,
-                                                       groupInfo)
-        if (mailingList.is_moderated and
-           not(isDivisionAdmin) and
-           mailingList.is_moderate_new):
-            # TODO: Rip this code out into a utility that can be called
-            #   by manage members
+        mailingList = createObject('groupserver.MailingListInfo', self.context, groupInfo.id)
+        isDivisionAdmin = user_division_admin_of_group(self.userInfo, groupInfo)
+        if (mailingList.is_moderated and not(isDivisionAdmin) and mailingList.is_moderate_new):
+            self.moderate_member(self.userInfo, mailingList, groupInfo, auditor)
+
+    @staticmethod
+    def moderate_member(userInfo, mailingList, groupInfo, auditor):
+            # TODO: Move this code out into a utility that can be called by manage members
             mList = mailingList.mlist
             moderatedIds = [m.id for m in mailingList.moderatees]
-            assert self.userInfo.id not in moderatedIds, \
-                '%s was marked for moderation in %s (%s), but is '\
-                'already moderated.' % \
-                (self.userInfo.id, groupInfo.name, groupInfo.id)
-            moderatedIds.append(self.userInfo.id)
+            if userInfo.id in moderatedIds:
+                m = '%s was marked for moderation in %s (%s), but is already moderated.'
+                msg = m % (userInfo.id, groupInfo.name, groupInfo.id)
+                raise ValueError(msg)
+            moderatedIds.append(userInfo.id)
             if mList.hasProperty('moderated_members'):
-                mList.manage_changeProperties(
-                    moderated_members=moderatedIds)
+                mList.manage_changeProperties(moderated_members=moderatedIds)
             else:
-                mList.manage_addProperty('moderated_members', moderatedIds,
-                                         'lines')
+                mList.manage_addProperty('moderated_members', moderatedIds, 'lines')
             auditor.info(MODERATED)
 
     def tell_admin(self, groupInfo):
