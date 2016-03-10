@@ -1,6 +1,12 @@
 Changelog
 =========
 
+3.3.4 (2016-03-10)
+------------------
+
+* Handling an administrator lacking a verified email address
+* Adding some unit tests
+
 3.3.3 (2015-09-15)
 ------------------
 
