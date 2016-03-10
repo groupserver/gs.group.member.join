@@ -85,14 +85,19 @@ listen for that event.
         self.join_member_group(member_id(groupInfo.id))
         auditor.info(JOIN_GROUP)
 
-    def join_member_group(self, member_group_id):
+    @Lazy
+    def acl_users(self):
         site_root = self.userInfo.user.site_root()
-        acl_users = getattr(site_root, 'acl_users')
-        assert acl_users, 'ACL Users not found in site_root'
-        groupNames = acl_users.getGroupNames()
-        assert member_group_id in groupNames, \
-            '%s not in %s' % (member_group_id, groupNames)
-        acl_users.addGroupsToUser([member_group_id], self.userInfo.id)
+        retval = getattr(site_root, 'acl_users')
+        assert retval, 'ACL Users not found in site_root'
+        return retval
+
+    def join_member_group(self, member_group_id):
+        groupNames = self.acl_users.getGroupNames()
+        if member_group_id not in groupNames:
+            m = 'Unknown user-group: %s not in %s' % (member_group_id, groupNames)
+            raise ValueError(m)
+        self.acl_users.addGroupsToUser([member_group_id], self.userInfo.id)
 
     def send_welcome(self, groupInfo):
         # TODO: <https://projects.iopen.net/groupserver/ticket/414>
