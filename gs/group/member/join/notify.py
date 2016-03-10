@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ############################################################################
 #
-# Copyright © 2013, 2014 OnlineGroups.net and Contributors.
+# Copyright © 2013, 2014, 2016 OnlineGroups.net and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -22,6 +22,7 @@ UTF8 = 'utf-8'
 
 
 class NotifyNewMember(GroupNotifierABC):
+    '''The "Welcome" notification'''
     textTemplateName = 'new-member-msg.txt'
     htmlTemplateName = 'new-member-msg.html'
 
@@ -37,9 +38,8 @@ class NotifyNewMember(GroupNotifierABC):
         self.reset_content_type()
 
 
-# And the equivilent class for telling the admin
-
 class NotifyAdmin(GroupNotifierABC):
+    'The notification telling the admin about the new member'
     textTemplateName = 'new-member-admin-msg.txt'
     htmlTemplateName = 'new-member-admin-msg.html'
 
