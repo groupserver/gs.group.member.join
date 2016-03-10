@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ############################################################################
 #
-# Copyright © 2010, 2011, 2012, 2013, 2014 OnlineGroups.net and
+# Copyright © 2010, 2011, 2012, 2013, 2014, 2016 OnlineGroups.net and
 # Contributors.
 #
 # All Rights Reserved.
@@ -14,7 +14,8 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ############################################################################
-from __future__ import absolute_import, unicode_literals
+from __future__ import absolute_import, unicode_literals, print_function
+from logging import getLogger
 from zope.cachedescriptors.property import Lazy
 from zope.component import createObject
 from zope.event import notify
@@ -22,6 +23,9 @@ from gs.group.member.base import member_id, user_division_admin_of_group
 from gs.profile.notify.interfaces import IGSNotifyUser
 from .audit import JoinAuditor, JOIN_GROUP, MODERATED
 from .event import GSJoinGroupEvent
+
+#: The event logger
+log = getLogger('gs.group.member.join.joininguser')
 
 
 class JoiningUser(object):
@@ -139,7 +143,8 @@ listen for that event.
             if userInfo.id in moderatedIds:
                 m = '%s was marked for moderation in %s (%s), but is already moderated.'
                 msg = m % (userInfo.id, groupInfo.name, groupInfo.id)
-                raise ValueError(msg)
+                log.warn(msg)
+                return
             moderatedIds.append(userInfo.id)
             if mList.hasProperty('moderated_members'):
                 mList.manage_changeProperties(moderated_members=moderatedIds)
